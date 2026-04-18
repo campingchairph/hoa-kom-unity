@@ -27,7 +27,7 @@ img{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ══════════════════════════════════════
-   WELCOME SPLASH!
+   WELCOME SPLASH
 ══════════════════════════════════════ */
 .splash{position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
 .splash-bg{position:absolute;inset:0;background:var(--p1);z-index:0;transition:background .4s}
@@ -377,6 +377,84 @@ select.inp{cursor:pointer}
 
 /* ASSIGN DRIVER MODAL */
 .assign-form .fg{margin-bottom:11px}
+
+/* ONBOARDING SLIDER */
+.onb-wrap{background:var(--p1);min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.onb-slider{flex:0 0 auto;overflow:hidden;position:relative}
+.onb-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
+.onb-slide{flex:0 0 100vw;min-height:50vw;max-height:240px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.onb-bg{position:absolute;inset:0}
+.onb-content{position:relative;z-index:2;padding:18px 22px 22px;width:100%}
+.onb-icon{font-size:32px;margin-bottom:8px;display:block}
+.onb-title{font-family:var(--font);font-weight:900;font-size:20px;color:#fff;line-height:1.2;margin-bottom:5px}
+.onb-desc{font-size:12px;color:rgba(255,255,255,.58);line-height:1.5;max-width:290px}
+.onb-dots{display:flex;justify-content:center;gap:5px;padding:10px 0 3px}
+.onb-dot{width:6px;height:6px;background:rgba(255,255,255,.2);border-radius:3px;transition:all .3s;cursor:pointer}
+.onb-dot.on{width:20px;background:var(--acc)}
+.onb-auth-area{flex:1;overflow-y:auto;padding:4px 14px 22px}
+
+/* COMPACT SERVICE CHIPS */
+.svc-compact{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 14px}
+.svc-chip{background:var(--card);border-radius:10px;padding:10px 6px 9px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .15s;box-shadow:var(--sh);border:2px solid transparent;text-align:center}
+.svc-chip:active{transform:scale(.93);border-color:var(--acc)}
+.svc-chip.hero{background:var(--p1)}
+.svc-chip-ic{font-size:21px;line-height:1}
+.svc-chip-lbl{font-family:var(--font);font-weight:700;font-size:10px;color:var(--text);line-height:1.3}
+.svc-chip.hero .svc-chip-lbl{color:#fff}
+/* 3-COL SERVICE GRID */
+.svc-3col{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px}
+.s3-chip{background:var(--card);border-radius:12px;padding:13px 8px 11px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .15s;box-shadow:var(--sh);border:2px solid transparent;text-align:center}
+.s3-chip:active{transform:scale(.95);border-color:var(--acc)}
+.s3-chip.hero{background:var(--p1)}
+.s3-ic{font-size:24px;line-height:1}
+.s3-lbl{font-family:var(--font);font-weight:700;font-size:11px;color:var(--text);line-height:1.3}
+.s3-chip.hero .s3-lbl{color:#fff}
+.s3-sub{font-size:10px;color:var(--muted)}
+.s3-chip.hero .s3-sub{color:rgba(255,255,255,.4)}
+/* COMPACT STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 14px;margin-top:10px}
+.stat-chip{background:var(--card);border-radius:10px;padding:10px 6px;text-align:center;box-shadow:var(--sh);cursor:pointer;transition:all .15s;border:2px solid transparent;position:relative}
+.stat-chip:active{transform:scale(.95);border-color:var(--acc)}
+.sc-ic{font-size:18px;margin-bottom:3px}
+.sc-num{font-family:var(--font);font-weight:900;font-size:18px;color:var(--text);line-height:1}
+.sc-lbl{font-size:10px;color:var(--muted);font-weight:600;margin-top:2px;line-height:1.2}
+.sc-bdg{position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--red);border-radius:50%;border:2px solid var(--card);font-size:8px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center}
+/* DASHBOARD BANNER */
+.dash-banner{margin:12px 14px 0;border-radius:13px;background:linear-gradient(130deg,var(--p2) 0%,var(--p1) 100%);padding:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shm);position:relative;overflow:hidden}
+.db-deco{position:absolute;right:-18px;top:-18px;width:110px;height:110px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none}
+.db-deco2{position:absolute;right:20px;top:28px;width:65px;height:65px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none}
+.db-icon{font-size:30px;flex-shrink:0;position:relative;z-index:1}
+.db-body{flex:1;position:relative;z-index:1}
+.db-title{font-family:var(--font);font-weight:800;font-size:14px;color:#fff;margin-bottom:1px}
+.db-sub{font-size:11px;color:rgba(255,255,255,.5)}
+.db-badge{background:var(--acc);color:#fff;font-family:var(--font);font-weight:800;font-size:10px;padding:4px 9px;border-radius:20px;white-space:nowrap;position:relative;z-index:1;cursor:pointer;flex-shrink:0}
+/* DATE SEPARATOR */
+.date-sep{display:flex;align-items:center;gap:8px;padding:6px 14px 3px}
+.date-sep-line{flex:1;height:1px;background:var(--border)}
+.date-sep-txt{font-family:var(--font);font-weight:700;font-size:10px;color:var(--muted);white-space:nowrap}
+/* CALENDAR */
+.cal-wrap{padding:0 14px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.cal-month{font-family:var(--font);font-weight:800;font-size:14px;color:var(--text)}
+.cal-nav-btn{width:28px;height:28px;background:var(--bg);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1px solid var(--border)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow{font-family:var(--font);font-weight:700;font-size:9px;color:var(--muted);text-align:center;padding:3px 0}
+.cal-day{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .15s;font-family:var(--font);font-weight:600;font-size:12px;color:var(--text)}
+.cal-day.empty{cursor:default}
+.cal-day.today{background:var(--p1);color:#fff;font-weight:800}
+.cal-day.has-event::after{content:"";position:absolute;bottom:2px;width:4px;height:4px;border-radius:50%;background:var(--acc)}
+.cal-day.today.has-event::after{background:#fff}
+.cal-day.selected{background:rgba(0,184,151,.12);border:1.5px solid var(--acc)}
+.cal-legend{display:flex;gap:10px;padding:7px 0 10px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.leg-dot{width:7px;height:7px;border-radius:50%}
+.cal-event-item{background:var(--card);border-radius:9px;padding:9px 11px;margin-bottom:6px;box-shadow:var(--sh);border-left:3px solid var(--border);cursor:pointer}
+.cei-date{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.cei-title{font-family:var(--font);font-weight:700;font-size:12px;color:var(--text)}
+/* DECLINE REASON MODAL */
+.decline-reason-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.onb-auth-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 16px;width:100%;max-width:460px;margin:0 auto}
+.mt12{margin-top:12px}.px{padding-left:14px;padding-right:14px}
 </style>
 </head>
 <body>
@@ -385,7 +463,18 @@ select.inp{cursor:pointer}
      LANDING AUTH
 ════════════════════════════════════ -->
 <div class="scr on" id="scr-auth">
-  <div class="auth-wrap">
+  <div class="onb-wrap">
+    <!-- SLIDERS -->
+    <div class="onb-slider">
+      <div class="onb-track" id="onb-track">
+        <div class="onb-slide"><div class="onb-bg" style="background:linear-gradient(135deg,#0F2137,#1A3A5C)"></div><div class="onb-content"><span class="onb-icon">🏡</span><div class="onb-title">Your HOA, in your pocket.</div><div class="onb-desc">CasaConnect brings your homeowners association to life — announcements, bookings, and community updates in one place.</div></div></div>
+        <div class="onb-slide"><div class="onb-bg" style="background:linear-gradient(135deg,#0a4a3a,#0F2137)"></div><div class="onb-content"><span class="onb-icon">📢</span><div class="onb-title">Stay informed, always.</div><div class="onb-desc">Get urgent notices, HOA updates, and event reminders the moment they're posted.</div></div></div>
+        <div class="onb-slide"><div class="onb-bg" style="background:linear-gradient(135deg,#3d2400,#1A3A5C)"></div><div class="onb-content"><span class="onb-icon">🛎️</span><div class="onb-title">Book services with two taps.</div><div class="onb-desc">Reserve the pool, book a tricycle, log a maintenance request — fast and simple.</div></div></div>
+        <div class="onb-slide"><div class="onb-bg" style="background:linear-gradient(135deg,#2d0066,#0F2137)"></div><div class="onb-content"><span class="onb-icon">🔐</span><div class="onb-title">Secure, just for your community.</div><div class="onb-desc">Admin creates accounts, residents join via personal QR code. Your data stays private.</div></div></div>
+      </div>
+      <div class="onb-dots"><div class="onb-dot on" id="dot-0" onclick="onbGoTo(0)"></div><div class="onb-dot" id="dot-1" onclick="onbGoTo(1)"></div><div class="onb-dot" id="dot-2" onclick="onbGoTo(2)"></div><div class="onb-dot" id="dot-3" onclick="onbGoTo(3)"></div></div>
+    </div>
+    <div class="onb-auth-area"><div class="onb-auth-card">
     <div class="auth-logo">
       <div class="auth-logo-ic">🏡</div>
       <div class="auth-logo-name">CasaConnect</div>
@@ -429,8 +518,7 @@ select.inp{cursor:pointer}
         <div class="auth-note">Secondary members use the same household code.<br>Each person is saved as a separate access record.</div>
       </div>
     </div>
-  </div>
-</div>
+  </div></div></div></div></div>
 
 <!-- ════════════════════════════════════
      ADMIN SIGN UP
@@ -508,12 +596,19 @@ select.inp{cursor:pointer}
     <div class="page-scroll">
       <!-- DASHBOARD -->
       <div class="pg on" id="ap-dash">
-        <div class="sec" style="padding-top:16px"><span class="sec-t">📊 Dashboard</span></div>
-        <div class="stat-grid">
-          <div class="stat-card"><div class="stat-ic">📬</div><div class="stat-num">4</div><div class="stat-lbl">Pending Bookings</div></div>
-          <div class="stat-card"><div class="stat-ic">💬</div><div class="stat-num">7</div><div class="stat-lbl">New Feedbacks</div></div>
-          <div class="stat-card"><div class="stat-ic">🏠</div><div class="stat-num">142</div><div class="stat-lbl">Households</div></div>
-          <div class="stat-card"><div class="stat-ic">📢</div><div class="stat-num">2</div><div class="stat-lbl">Live Announcements</div></div>
+        <!-- Banner -->
+        <div class="dash-banner" style="margin-top:14px">
+          <div class="db-deco"></div><div class="db-deco2"></div>
+          <div class="db-icon">🏘️</div>
+          <div class="db-body"><div class="db-title" id="a-dash-banner-title">Sunset Village Phase 2</div><div class="db-sub">HOA Admin · April 2026</div></div>
+          <div class="db-badge" onclick="aNav('theme')">🎨 Theme</div>
+        </div>
+        <!-- Compact clickable stat chips -->
+        <div class="stat-row">
+          <div class="stat-chip" onclick="aNav('bookings')"><div class="sc-ic">📅</div><div class="sc-num">4</div><div class="sc-lbl">Pending</div><div class="sc-bdg">4</div></div>
+          <div class="stat-chip" onclick="aNav('feedback')"><div class="sc-ic">💬</div><div class="sc-num">7</div><div class="sc-lbl">Feedback</div><div class="sc-bdg">7</div></div>
+          <div class="stat-chip" onclick="aNav('members')"><div class="sc-ic">🏠</div><div class="sc-num">142</div><div class="sc-lbl">Households</div></div>
+          <div class="stat-chip" onclick="aNav('post')"><div class="sc-ic">📢</div><div class="sc-num">2</div><div class="sc-lbl">Live Posts</div></div>
         </div>
         <div class="sec"><span class="sec-t">📢 My Posts</span><span class="sec-a" onclick="aNav('post')">+ New Post</span></div>
         <div class="post-card" style="border-left-color:var(--red)">
@@ -570,11 +665,11 @@ select.inp{cursor:pointer}
         <div class="ibox mt12"><div class="ibox-ic">🛺</div><p class="ibox-t"><strong>Tricycle bookings</strong> are managed by the TODA Admin account only.</p></div>
         <div class="bkr">
           <div class="bkr-h"><div><div class="bkr-name">🏊 Pool Slot — Unit 5A · Maria Santos</div><div class="bkr-det">Sun Apr 20 · 2:00 PM</div></div><span class="tag tg-amber">Pending</span></div>
-          <div class="bkr-acts"><button class="btn btn-green btn-sm" onclick="handleBkr(this,'✅ Approved','Maria Santos (Unit 5A) — Pool slot Sun Apr 20 at 2PM APPROVED. Max 4 persons. – HOA')">✓ Approve</button><button class="btn btn-red btn-sm" onclick="handleBkr(this,'❌ Declined','Maria Santos (Unit 5A) — Pool slot Sun Apr 20 declined. Please choose another slot. – HOA')">✗ Decline</button></div>
+          <div class="bkr-acts"><button class="btn btn-green btn-sm" onclick="handleBkr(this,'✅ Approved','Maria Santos (Unit 5A) — Pool slot Sun Apr 20 at 2PM APPROVED. Max 4 persons. – HOA')">✓ Approve</button><button class="btn btn-red btn-sm" onclick="openDeclineModal(this,'Maria Santos','Pool Slot · Sun Apr 20 2PM')">✗ Decline</button></div>
         </div>
         <div class="bkr">
           <div class="bkr-h"><div><div class="bkr-name">🏟️ Function Hall — Unit 9C · Carmen Flores</div><div class="bkr-det">Sat Apr 26 · Full Day</div></div><span class="tag tg-green">Approved</span></div>
-          <div class="bkr-acts"><button class="btn btn-ghost btn-sm" onclick="handleBkr(this,'❌ Cancelled','Carmen Flores (Unit 9C) — Function Hall Apr 26 CANCELLED by admin. Contact HOA. – HOA')">Cancel</button></div>
+          <div class="bkr-acts"><button class="btn btn-ghost btn-sm" onclick="openDeclineModal(this,'Carmen Flores','Function Hall · Apr 26')">Cancel</button></div>
         </div>
         <div class="bkr">
           <div class="bkr-h"><div><div class="bkr-name">🔧 Maintenance — Unit 3B · Roberto Cruz</div><div class="bkr-det">Leaking pipe, Block 3 alley</div></div><span class="tag tg-amber">Pending</span></div>
@@ -582,10 +677,18 @@ select.inp{cursor:pointer}
         </div>
       </div>
 
-      <!-- ADD SERVICE -->
+      <!-- SERVICES -->
       <div class="pg" id="ap-services">
         <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div class="subhdr-t"><div class="subhdr-title">➕ Manage Services</div></div></div>
-        <div class="px mt16">
+        <div class="sec mt12"><span class="sec-t">Current Services</span></div>
+        <div id="a-svc-list">
+          <div class="mr"><div class="mr-av">🛺</div><div class="mr-info"><div class="mr-name">Tricycle Booking</div><div class="mr-meta">Managed by TODA Admin</div></div><span class="tag tg-teal">Live</span></div>
+          <div class="mr"><div class="mr-av">🗑️</div><div class="mr-info"><div class="mr-name">Garbage Schedule</div><div class="mr-meta">Information · Active</div></div><span class="tag tg-teal">Live</span></div>
+          <div class="mr"><div class="mr-av">🏊</div><div class="mr-info"><div class="mr-name">Pool Reservation</div><div class="mr-meta">Booking · Active</div></div><span class="tag tg-teal">Live</span></div>
+          <div class="mr"><div class="mr-av">🔧</div><div class="mr-info"><div class="mr-name">Maintenance Request</div><div class="mr-meta">Request · Active</div></div><span class="tag tg-teal">Live</span></div>
+        </div>
+        <div class="sec"><span class="sec-t">Add New Service</span></div>
+        <div class="px">
           <div class="card cp">
             <div class="fg"><span class="lbl">Service Name</span><input class="inp" type="text" placeholder="e.g. Basketball Court Booking" id="svc-name"></div>
             <div class="fg"><span class="lbl">Icon</span>
@@ -595,20 +698,21 @@ select.inp{cursor:pointer}
               </div>
             </div>
             <div class="fg"><span class="lbl">Type</span><select class="inp"><option>Booking (time slots)</option><option>Request (form)</option><option>Information (schedule)</option></select></div>
-            <div class="fg"><span class="lbl">Details / Rules</span><textarea class="inp" placeholder="Rules, limits, instructions…" style="min-height:70px"></textarea></div>
+            <div class="fg"><span class="lbl">Details / Rules</span><textarea class="inp" placeholder="Rules, limits, instructions…" style="min-height:65px"></textarea></div>
             <div class="tog-row" style="margin:0 0 11px" onclick="this.querySelector('.tog').classList.toggle('on')"><div class="tog-l"><span class="tog-ic">✅</span><div><div class="tog-t">Active (visible to residents)</div></div></div><div class="tog on"></div></div>
             <button class="btn btn-acc" onclick="addSvc()">➕ Add Service</button>
-          </div>
-          <div class="sec" style="padding-left:0;padding-right:0"><span class="sec-t">Current Services</span></div>
-          <div id="a-svc-list">
-            <div class="mr"><div class="mr-av">🛺</div><div class="mr-info"><div class="mr-name">Tricycle Booking</div><div class="mr-meta">Managed by TODA Admin</div></div><span class="tag tg-teal">Live</span></div>
-            <div class="mr"><div class="mr-av">🗑️</div><div class="mr-info"><div class="mr-name">Garbage Schedule</div><div class="mr-meta">Information · Active</div></div><span class="tag tg-teal">Live</span></div>
-            <div class="mr"><div class="mr-av">🏊</div><div class="mr-info"><div class="mr-name">Pool Reservation</div><div class="mr-meta">Booking · Active</div></div><span class="tag tg-teal">Live</span></div>
-            <div class="mr"><div class="mr-av">🔧</div><div class="mr-info"><div class="mr-name">Maintenance Request</div><div class="mr-meta">Request · Active</div></div><span class="tag tg-teal">Live</span></div>
           </div>
         </div>
       </div>
 
+      <!-- CALENDAR ADMIN -->
+      <div class="pg" id="ap-calendar">
+        <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div class="subhdr-t"><div class="subhdr-title">📆 Community Calendar</div><div class="subhdr-sub">Events, announcements & bookings</div></div></div>
+        <div id="admin-calendar" class="mt12" style="padding-top:8px"></div>
+        <div class="cal-legend px"><div class="leg-item"><div class="leg-dot" style="background:var(--acc)"></div>Event</div><div class="leg-item"><div class="leg-dot" style="background:var(--amber)"></div>Booking</div><div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Urgent</div></div>
+        <div class="sec"><span class="sec-t">Scheduled Events</span></div>
+        <div id="cal-events-admin" class="px"></div>
+      </div>
       <!-- QR -->
       <div class="pg" id="ap-qr">
         <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div class="subhdr-t"><div class="subhdr-title">🔐 Generate Access QR</div></div></div>
@@ -710,8 +814,8 @@ select.inp{cursor:pointer}
       <div class="bni on" id="abn-dash" onclick="aNav('dash')"><div class="bni-ic">📊</div><div class="bni-lbl">Dashboard</div></div>
       <div class="bni" id="abn-post" onclick="aNav('post')"><div class="bni-ic">📢</div><div class="bni-lbl">Post</div></div>
       <div class="bni" id="abn-bookings" onclick="aNav('bookings')"><div class="bni-ic">📅</div><div class="bni-lbl">Bookings</div><div class="bni-badge">4</div></div>
+      <div class="bni" id="abn-calendar" onclick="aNav('calendar')"><div class="bni-ic">📆</div><div class="bni-lbl">Calendar</div></div>
       <div class="bni" id="abn-qr" onclick="aNav('qr')"><div class="bni-ic">🔐</div><div class="bni-lbl">QR</div></div>
-      <div class="bni" id="abn-members" onclick="aNav('members')"><div class="bni-ic">👥</div><div class="bni-lbl">Members</div></div>
     </nav>
   </div>
 </div>
@@ -757,6 +861,11 @@ select.inp{cursor:pointer}
           <div class="divider" style="margin-top:16px"></div>
         </div>
 
+                <div class="dash-banner" style="margin-top:12px">
+          <div class="db-deco"></div><div class="db-deco2"></div>
+          <div class="db-icon">🏡</div>
+          <div class="db-body"><div class="db-title" id="r-banner-title">Sunset Village</div><div class="db-sub">April 2026 · Community Updates</div></div>
+        </div>
         <div class="urgent" onclick="rOpenDetail('rd-ann')">
           <div class="urg-ic">⚠️</div>
           <div class="urg-b"><div class="urg-tag"><div class="pulse"></div>Urgent Notice</div><div class="urg-title">Water interruption tonight 10PM–2AM</div><div class="urg-time">Tap to read · Today</div></div>
@@ -766,34 +875,55 @@ select.inp{cursor:pointer}
         <div class="uc" style="border-left-color:var(--acc)" onclick="rOpenDetail('rd-upd')"><div class="uc-ic" style="background:rgba(0,184,151,.1)">📅</div><div class="uc-b"><div class="uc-t">General Assembly — April 25</div><div class="uc-p">Annual meeting at the clubhouse.</div><div class="uc-f"><span class="uc-tm">Yesterday</span><span class="tag tg-teal">New</span></div></div></div>
         <div class="uc" style="border-left-color:var(--amber)"><div class="uc-ic" style="background:rgba(245,158,11,.1)">🗑️</div><div class="uc-b"><div class="uc-t">Bulk Garbage Pickup — Saturday</div><div class="uc-p">Place bins outside by 6:00 AM.</div><div class="uc-f"><span class="uc-tm">2 days ago</span></div></div></div>
         <div class="sec"><span class="sec-t">🛎️ Quick Services</span><span class="sec-a" onclick="rNav('services')">More</span></div>
-        <div class="svc-grid" id="r-quick-grid">
-          <div class="svc-btn hero" onclick="rOpenDetail('rd-book')"><span class="svc-em">🛺</span><div class="svc-lbl">Book Tricycle</div><div class="svc-s">Tap to schedule</div></div>
-          <div class="svc-btn" onclick="rOpenDetail('rd-book')"><span class="svc-em">🏊</span><div class="svc-lbl">Pool Slot</div><div class="svc-s">Check availability</div></div>
+        <div class="svc-compact" id="r-quick-grid">
+          <div class="svc-chip hero" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🛺</div><div class="svc-chip-lbl">Tricycle</div></div>
+          <div class="svc-chip" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🏊</div><div class="svc-chip-lbl">Pool</div></div>
+          <div class="svc-chip" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🔧</div><div class="svc-chip-lbl">Repair</div></div>
+          <div class="svc-chip" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🅿️</div><div class="svc-chip-lbl">Parking</div></div>
         </div>
       </div>
 
-      <!-- UPDATES -->
+      <!-- ALL UPDATES with date separators -->
       <div class="pg" id="rp-updates">
-        <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div class="subhdr-t"><div class="subhdr-title">📋 All Updates</div></div></div>
-        <div class="uc" style="border-left-color:var(--red)"><div class="uc-ic" style="background:rgba(239,68,68,.1)">⚠️</div><div class="uc-b"><div class="uc-t">Water interruption tonight 10PM–2AM</div><div class="uc-p">Blocks 5–9 affected.</div><div class="uc-f"><span class="uc-tm">Today</span><span class="tag tg-red">Urgent</span></div></div></div>
-        <div class="uc" style="border-left-color:var(--acc)" onclick="rOpenDetail('rd-upd')"><div class="uc-ic" style="background:rgba(0,184,151,.1)">📅</div><div class="uc-b"><div class="uc-t">General Assembly — April 25</div><div class="uc-p">Annual meeting at the clubhouse.</div><div class="uc-f"><span class="uc-tm">Yesterday</span><span class="tag tg-teal">New</span></div></div></div>
-        <div class="uc" style="border-left-color:var(--purple)"><div class="uc-ic" style="background:rgba(124,58,237,.1)">🎉</div><div class="uc-b"><div class="uc-t">Fiesta sa Subdivision — May 5</div><div class="uc-p">Annual block party at the clubhouse.</div><div class="uc-f"><span class="uc-tm">3 days ago</span></div></div></div>
-        <div class="uc" style="border-left-color:var(--p1)"><div class="uc-ic" style="background:rgba(15,33,55,.06)">💵</div><div class="uc-b"><div class="uc-t">Monthly Dues Reminder</div><div class="uc-p">Pay at HOA office 1st–5th.</div><div class="uc-f"><span class="uc-tm">Apr 15</span></div></div></div>
+        <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div class="subhdr-t"><div class="subhdr-title">📋 All Updates</div><div class="subhdr-sub">Sorted by date</div></div></div>
+        <div class="date-sep"><div class="date-sep-line"></div><div class="date-sep-txt">TODAY — April 18</div><div class="date-sep-line"></div></div>
+        <div class="uc" style="border-left-color:var(--red)" onclick="rOpenDetail('rd-ann')"><div class="uc-ic" style="background:rgba(239,68,68,.1)">⚠️</div><div class="uc-b"><div class="uc-t">Water interruption tonight 10PM–2AM</div><div class="uc-p">Blocks 5–9 affected. Scheduled maintenance.</div><div class="uc-f"><span class="uc-tm">8:00 AM</span><span class="tag tg-red">Urgent</span></div></div></div>
+        <div class="date-sep"><div class="date-sep-line"></div><div class="date-sep-txt">YESTERDAY — April 17</div><div class="date-sep-line"></div></div>
+        <div class="uc" style="border-left-color:var(--acc)" onclick="rOpenDetail('rd-upd')"><div class="uc-ic" style="background:rgba(0,184,151,.1)">📅</div><div class="uc-b"><div class="uc-t">General Assembly — April 25</div><div class="uc-p">Annual meeting at the Main Clubhouse, 5:30 PM.</div><div class="uc-f"><span class="uc-tm">2:30 PM</span><span class="tag tg-teal">New</span></div></div></div>
+        <div class="date-sep"><div class="date-sep-line"></div><div class="date-sep-txt">APRIL 16</div><div class="date-sep-line"></div></div>
+        <div class="uc" style="border-left-color:var(--amber)"><div class="uc-ic" style="background:rgba(245,158,11,.1)">🗑️</div><div class="uc-b"><div class="uc-t">Bulk Garbage Pickup — Saturday</div><div class="uc-p">Place bins outside by 6:00 AM.</div><div class="uc-f"><span class="uc-tm">9:00 AM</span></div></div></div>
+        <div class="uc" style="border-left-color:var(--purple)"><div class="uc-ic" style="background:rgba(124,58,237,.1)">🎉</div><div class="uc-b"><div class="uc-t">Fiesta sa Subdivision — May 5</div><div class="uc-p">Annual block party at the main clubhouse.</div><div class="uc-f"><span class="uc-tm">10:00 AM</span></div></div></div>
+        <div class="date-sep"><div class="date-sep-line"></div><div class="date-sep-txt">APRIL 15</div><div class="date-sep-line"></div></div>
+        <div class="uc" style="border-left-color:var(--p1)"><div class="uc-ic" style="background:rgba(15,33,55,.07)">💵</div><div class="uc-b"><div class="uc-t">Monthly Dues Reminder</div><div class="uc-p">Pay at HOA office 1st–5th of each month.</div><div class="uc-f"><span class="uc-tm">8:00 AM</span></div></div></div>
       </div>
-
       <!-- SERVICES -->
       <div class="pg" id="rp-services">
-        <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div class="subhdr-t"><div class="subhdr-title">🛎️ Services</div></div></div>
-        <div class="svc-grid mt12" id="r-svc-grid">
-          <div class="svc-btn hero" onclick="rOpenDetail('rd-book')"><span class="svc-em">🛺</span><div class="svc-lbl">Book Tricycle</div><div class="svc-s">Schedule a ride</div></div>
-          <div class="svc-btn" onclick="rOpenDetail('rd-book')"><span class="svc-em">🗑️</span><div class="svc-lbl">Garbage Schedule</div><div class="svc-s">View pickup days</div></div>
-          <div class="svc-btn" onclick="rOpenDetail('rd-book')"><span class="svc-em">🏊</span><div class="svc-lbl">Pool Reservation</div><div class="svc-s">Check slots</div></div>
-          <div class="svc-btn" onclick="rOpenDetail('rd-book')"><span class="svc-em">🏟️</span><div class="svc-lbl">Function Hall</div><div class="svc-s">Book a venue</div></div>
-          <div class="svc-btn" onclick="rOpenDetail('rd-book')"><span class="svc-em">🔧</span><div class="svc-lbl">Maintenance</div><div class="svc-s">Report an issue</div></div>
-          <div class="svc-btn" onclick="rOpenDetail('rd-book')"><span class="svc-em">🅿️</span><div class="svc-lbl">Visitor Parking</div><div class="svc-s">Register a guest</div></div>
+        <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div class="subhdr-t"><div class="subhdr-title">🛎️ Services</div><div class="subhdr-sub">Book · Schedule · Request</div></div></div>
+        <div class="vtabs" style="padding-top:12px;padding-bottom:0">
+          <div class="vtab on" id="svc-tab-svc" onclick="svcTab('svc')">All Services</div>
+          <div class="vtab" id="svc-tab-cal" onclick="svcTab('cal')">📆 Calendar</div>
+        </div>
+        <div id="svc-panel-svc" style="margin-top:10px">
+          <div class="svc-3col" id="r-svc-grid">
+            <div class="s3-chip hero" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🛺</div><div class="s3-lbl">Book Tricycle</div><div class="s3-sub">Schedule a ride</div></div>
+            <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🗑️</div><div class="s3-lbl">Garbage</div><div class="s3-sub">View schedule</div></div>
+            <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🏊</div><div class="s3-lbl">Pool Slot</div><div class="s3-sub">Reserve now</div></div>
+            <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🏟️</div><div class="s3-lbl">Function Hall</div><div class="s3-sub">Book a venue</div></div>
+            <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🔧</div><div class="s3-lbl">Maintenance</div><div class="s3-sub">Report issue</div></div>
+            <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🅿️</div><div class="s3-lbl">Visitor Parking</div><div class="s3-sub">Register guest</div></div>
+          </div>
+        </div>
+        <div id="svc-panel-cal" style="display:none;padding-top:8px">
+          <div id="resident-svc-calendar"></div>
+          <div class="cal-legend px">
+            <div class="leg-item"><div class="leg-dot" style="background:var(--acc)"></div>HOA Event</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--amber)"></div>Pool / Hall Demand</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--purple)"></div>My Bookings</div>
+          </div>
+          <div class="sec"><span class="sec-t">Upcoming</span></div>
+          <div id="cal-events-resident" class="px"></div>
         </div>
       </div>
-
       <!-- CONTACT -->
       <div class="pg" id="rp-contact">
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div class="subhdr-t"><div class="subhdr-title">📞 Contact HOA</div></div></div>
@@ -865,6 +995,19 @@ select.inp{cursor:pointer}
       </div>
 
       <!-- DETAIL: ANN -->
+      <!-- LEADER CALENDAR -->
+      <div class="pg" id="rp-calendar">
+        <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div class="subhdr-t"><div class="subhdr-title">📆 Calendar</div><div class="subhdr-sub">Events, announcements & your bookings</div></div></div>
+        <div id="leader-calendar" style="padding-top:8px"></div>
+        <div class="cal-legend px">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--acc)"></div>HOA Event</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--purple)"></div>My Bookings</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--amber)"></div>Block Alert</div>
+        </div>
+        <div class="sec"><span class="sec-t">Upcoming Events</span></div>
+        <div id="cal-events-leader" class="px"></div>
+      </div>
+
       <div class="pg" id="rd-ann">
         <div class="ann-hdr"><div class="ann-back" onclick="rCloseDetail()">← Back</div><div style="margin-bottom:5px"><span class="tag tg-red">⚠️ Urgent</span></div><div class="ann-title">Water interruption tonight 10PM–2AM</div><div class="ann-meta">HOA Admin · April 18, 2026 · 8:00 AM</div></div>
         <div class="ann-body">Dear Residents of Blocks 5–9,<br><br>The main water supply will be <strong>temporarily interrupted tonight, April 18, from 10:00 PM to 2:00 AM</strong>, due to scheduled maintenance on the water line near the entrance gate.<br><br>We recommend storing water beforehand. Normal supply resumes by 2:00 AM.</div>
@@ -1087,6 +1230,51 @@ select.inp{cursor:pointer}
 </div>
 
 <!-- ── ASSIGN DRIVER MODAL ── -->
+<!-- DECLINE WITH REASON MODAL -->
+<div class="mbg" id="decline-modal" onclick="closeModal('decline-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✗ Decline Booking</div>
+    <div id="decline-booking-info" style="font-family:var(--font);font-weight:700;font-size:13px;color:var(--text);background:var(--bg);border-radius:9px;padding:10px 12px;margin-bottom:12px"></div>
+    <div class="fg"><span class="lbl">Reason for declining</span>
+      <div class="pill-row" id="decline-reason-pills">
+        <div class="pill on" onclick="selPill(this)">Slot unavailable</div>
+        <div class="pill" onclick="selPill(this)">Facility closed</div>
+        <div class="pill" onclick="selPill(this)">Incomplete request</div>
+        <div class="pill" onclick="selPill(this)">Policy violation</div>
+        <div class="pill" onclick="selPill(this)">Other</div>
+      </div>
+    </div>
+    <div class="fg"><span class="lbl">Additional note (optional)</span><textarea class="inp" placeholder="Any extra info for the resident…" style="min-height:65px" id="decline-extra-note"></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="closeModal('decline-modal')">Cancel</button>
+      <button class="btn btn-red" style="flex:2;padding:10px" onclick="confirmDeclineBooking()">✗ Decline & Notify</button>
+    </div>
+  </div>
+</div>
+
+<!-- DECLINE TRIKE MODAL -->
+<div class="mbg" id="decline-trike-modal" onclick="closeModal('decline-trike-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✗ Decline Tricycle Booking</div>
+    <div class="fg"><span class="lbl">Reason</span>
+      <div class="pill-row" id="trike-decline-pills">
+        <div class="pill on" onclick="selPill(this)">No driver available</div>
+        <div class="pill" onclick="selPill(this)">Slot conflict</div>
+        <div class="pill" onclick="selPill(this)">Service suspended</div>
+        <div class="pill" onclick="selPill(this)">Weather condition</div>
+        <div class="pill" onclick="selPill(this)">Other</div>
+      </div>
+    </div>
+    <div class="fg"><span class="lbl">Note (optional)</span><textarea class="inp" placeholder="Add a note for the resident…" style="min-height:58px" id="trike-decline-note"></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="closeModal('decline-trike-modal')">Cancel</button>
+      <button class="btn btn-red" style="flex:2;padding:10px" onclick="confirmDeclineTrike()">✗ Decline & Notify</button>
+    </div>
+  </div>
+</div>
+
 <div class="mbg" id="assign-modal" onclick="closeModal('assign-modal')">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
@@ -1126,40 +1314,42 @@ select.inp{cursor:pointer}
 </div>
 
 <script>
-/* ── APP STATE ── */
-const S = {
-  role:'', sub:'Sunset Village Phase 2', hoa:'Sunset Village HOA',
-  adminName:'', greeting:'',
-  unit:'', block:'', phase:'',
-  splashBg:'', assignTarget:null
-};
+/* ── STATE ── */
+const S={role:'',sub:'Sunset Village Phase 2',hoa:'Sunset Village HOA',adminName:'',splashBg:'',assignTarget:null,declineTarget:null};
+
+/* ── ONBOARDING SLIDER ── */
+let onbIdx=0;
+function onbGoTo(i){
+  onbIdx=Math.max(0,Math.min(3,i));
+  document.getElementById('onb-track').style.transform='translateX(-'+onbIdx*100+'vw)';
+  for(let j=0;j<4;j++){const d=document.getElementById('dot-'+j);if(d)d.classList.toggle('on',j===onbIdx);}
+}
+let _onbT=setInterval(()=>{if(onbIdx<3)onbGoTo(onbIdx+1);else clearInterval(_onbT);},3200);
+(function(){
+  const t=document.getElementById('onb-track');if(!t)return;
+  let sx=0;
+  t.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+  t.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40){clearInterval(_onbT);onbGoTo(onbIdx+(dx<0?1:-1));}},{passive:true});
+})();
 
 /* ── SCREEN NAV ── */
-function showScr(id){
-  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  window.scrollTo(0,0);
-}
+function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
 
-/* ── AUTH TABS ── */
+/* ── AUTH ── */
 function authTab(t){
   document.getElementById('tab-adm').classList.toggle('on',t==='adm');
   document.getElementById('tab-acc').classList.toggle('on',t==='acc');
   document.getElementById('panel-adm').style.display=t==='adm'?'':'none';
   document.getElementById('panel-acc').style.display=t==='acc'?'':'none';
 }
-
-/* ── ADMIN LOGIN ── */
 function adminLogin(){
   const e=document.getElementById('adm-email').value;
   const p=document.getElementById('adm-pass').value;
   if(!e||!p){toast('⚠️','Missing Fields','Enter your email and password.');return;}
-  S.role='admin'; S.adminName=e.split('@')[0];
-  setSplash('admin',S.adminName,'','Admin','');
+  S.role='admin';S.adminName=e.split('@')[0];
+  setSplash('admin',S.adminName,'','Admin');
   showScr('scr-splash');
 }
-
-/* ── CREATE ADMIN ── */
 function createAdmin(){
   const sub=document.getElementById('su-sub').value;
   const nm=document.getElementById('su-name').value;
@@ -1168,58 +1358,35 @@ function createAdmin(){
   const p2=document.getElementById('su-pass2').value;
   if(!sub||!nm||!em||!p){toast('⚠️','Incomplete','Fill in all required fields.');return;}
   if(p!==p2){toast('⚠️','Mismatch','Passwords do not match.');return;}
-  S.sub=sub; S.hoa=document.getElementById('su-hoa').value||sub+' HOA'; S.adminName=nm;
-  S.role='admin';
-  setSplash('admin',nm,'','Admin','');
-  applySubLabels();
-  showScr('scr-splash');
+  S.sub=sub;S.hoa=document.getElementById('su-hoa').value||sub+' HOA';S.adminName=nm;S.role='admin';
+  setSplash('admin',nm,'','Admin');applySubLabels();showScr('scr-splash');
 }
-
-/* ── QR/CODE LOGIN ── */
 function loginRole(role){
   S.role=role;
-  const maps={
-    resident:{name:'Jose Reyes',role:'Resident',addr:'Unit 12B · Block 7 · Phase 2'},
-    leader:{name:'Roberto Cruz',role:'Block Leader',addr:'Blocks 7 & 8 · Phase 2'},
-    guard:{name:'Guard Station 1',role:'Guardhouse',addr:'Main Gate'},
-    toda:{name:'Mang Ben',role:'Tricycle Admin',addr:'TODA-2024-0001 · TRC-001'}
-  };
-  const m=maps[role]||{name:'User',role:'Member',addr:''};
-  setSplash(role,m.name,m.addr,m.role,m.addr);
-  applySubLabels();
-  showScr('scr-splash');
+  const maps={resident:{name:'Jose Reyes',roleLabel:'Resident',addr:'Unit 12B · Block 7 · Phase 2'},leader:{name:'Roberto Cruz',roleLabel:'Block Leader',addr:'Blocks 7 & 8 · Phase 2'},guard:{name:'Guard Station 1',roleLabel:'Guardhouse',addr:'Main Gate'},toda:{name:'Mang Ben',roleLabel:'Tricycle Admin',addr:'TODA-2024-0001 · TRC-001'}};
+  const m=maps[role]||{name:'User',roleLabel:'Member',addr:''};
+  setSplash(role,m.name,m.addr,m.roleLabel);applySubLabels();showScr('scr-splash');
 }
-function loginCode(){
-  const c=document.getElementById('acc-code').value.replace(/-/g,'');
-  if(!c||c.length<4){toast('⚠️','Invalid Code','Enter your 8-character access code.');return;}
-  loginRole('resident');
-}
+function loginCode(){const c=document.getElementById('acc-code').value.replace(/-/g,'');if(!c||c.length<4){toast('⚠️','Invalid Code','Enter your 8-character access code.');return;}loginRole('resident');}
 function fmtCode(el){let v=el.value.replace(/[^A-Z0-9a-z]/gi,'').toUpperCase().substring(0,8);if(v.length>4)v=v.substring(0,4)+'-'+v.substring(4);el.value=v;}
 
-/* ── SPLASH SETUP ── */
-function setSplash(role,name,addr,roleLabel,detail){
-  const greetHour=new Date().getHours();
-  const greet=greetHour<12?'Good morning':greetHour<17?'Good afternoon':'Good evening';
+/* ── SPLASH ── */
+function setSplash(role,name,addr,roleLabel){
+  const h=new Date().getHours();
+  const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   document.getElementById('splash-hello').textContent=greet;
   document.getElementById('splash-name').textContent=name;
   document.getElementById('splash-sub').textContent=S.sub;
   document.getElementById('splash-role-addr').textContent=roleLabel+' · '+(addr||S.sub);
-  if(S.splashBg){
-    document.getElementById('splash-bg-img').src=S.splashBg;
-    document.getElementById('splash-bg-img').style.display='block';
-    document.getElementById('splash-bg').style.background='transparent';
-  }else{
-    document.getElementById('splash-bg').style.background=getCSSVar('--p1');
-    document.getElementById('splash-bg-img').style.display='none';
-  }
+  if(S.splashBg){document.getElementById('splash-bg-img').src=S.splashBg;document.getElementById('splash-bg-img').style.display='block';document.getElementById('splash-bg').style.background='transparent';}
+  else{document.getElementById('splash-bg').style.background='var(--p1)';document.getElementById('splash-bg-img').style.display='none';}
 }
 function getCSSVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
 
 /* ── ENTER DASHBOARD ── */
 function enterDashboard(){
   applySubLabels();
-  const scrs={admin:'scr-admin',resident:'scr-resident',leader:'scr-resident',guard:'scr-guard',toda:'scr-toda'};
-  const scr=scrs[S.role]||'scr-resident';
+  const map={admin:'scr-admin',resident:'scr-resident',leader:'scr-resident',guard:'scr-guard',toda:'scr-toda'};
   if(S.role==='leader'){
     document.getElementById('leader-dash-panel').style.display='block';
     document.getElementById('r-role-badge').textContent='LEADER';
@@ -1241,67 +1408,103 @@ function enterDashboard(){
   }
   if(S.role==='admin'){
     document.getElementById('a-sub-lbl').textContent=S.sub;
-    const initials=S.adminName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-    document.getElementById('a-av').textContent=initials||'AD';
+    const el=document.getElementById('a-dash-banner-title');if(el)el.textContent=S.sub;
+    const ini=S.adminName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    document.getElementById('a-av').textContent=ini||'AD';
     document.getElementById('a-title-lbl').textContent='Admin Dashboard';
   }
-  showScr(scr);
+  buildCalendar('admin-calendar','admin');
+  buildCalendar('resident-svc-calendar','resident');
+  buildCalendar('leader-calendar','leader');
+  buildCalendarEvents();
+  showScr(map[S.role]||'scr-resident');
 }
 function applySubLabels(){
   ['a-sub-lbl','r-sub-lbl','g-sub-lbl','t-sub-lbl'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=S.sub;});
-  const mh=document.getElementById('trike-month-hdr');
-  if(mh) mh.textContent=new Date().toLocaleString('en-PH',{month:'long'})+' · Bookings';
+  const rb=document.getElementById('r-banner-title');if(rb)rb.textContent=S.sub;
+  const db=document.getElementById('a-dash-banner-title');if(db)db.textContent=S.sub;
+  const mh=document.getElementById('trike-month-hdr');if(mh)mh.textContent=new Date().toLocaleString('en-PH',{month:'long'})+' · Bookings';
 }
 
 /* ── LEADER TABS ── */
 function addLeaderTabs(){
-  const nav=document.getElementById('r-botnav');
-  if(document.getElementById('rbn-post'))return;
-  const tabs=[{id:'rbn-post',ic:'📢',lbl:'Post',fn:"rNav('post')"},
-              {id:'rbn-myblock',ic:'🏘️',lbl:'My Block',fn:"rNav('myblock')"}];
-  tabs.forEach(t=>{
-    const d=document.createElement('div');
-    d.className='bni'; d.id=t.id; d.onclick=new Function(t.fn);
-    d.innerHTML=`<div class="bni-ic">${t.ic}</div><div class="bni-lbl">${t.lbl}</div>`;
-    nav.appendChild(d);
+  const nav=document.getElementById('r-botnav');if(document.getElementById('rbn-post'))return;
+  [{id:'rbn-post',ic:'📢',lbl:'Post',fn:"rNav('post')"},{id:'rbn-myblock',ic:'🏘️',lbl:'My Block',fn:"rNav('myblock')"},{id:'rbn-calendar',ic:'📆',lbl:'Calendar',fn:"rNav('calendar')"}].forEach(t=>{
+    const d=document.createElement('div');d.className='bni';d.id=t.id;d.onclick=new Function(t.fn);
+    d.innerHTML=`<div class="bni-ic">${t.ic}</div><div class="bni-lbl">${t.lbl}</div>`;nav.appendChild(d);
   });
 }
-function removeLeaderTabs(){
-  ['rbn-post','rbn-myblock'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
-}
+function removeLeaderTabs(){['rbn-post','rbn-myblock','rbn-calendar'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});}
 
-/* ── RESIDENT/LEADER NAV ── */
-const rDetailPgs=['rd-ann','rd-upd','rd-book'];
+/* ── NAV ── */
 function rNav(p){
   document.querySelectorAll('#scr-resident .pg').forEach(x=>x.classList.remove('on'));
   document.getElementById('rp-'+p)?.classList.add('on');
   document.querySelectorAll('#r-botnav .bni').forEach(x=>x.classList.remove('on'));
   document.getElementById('rbn-'+p)?.classList.add('on');
 }
-function rOpenDetail(id){
-  document.querySelectorAll('#scr-resident .pg').forEach(x=>x.classList.remove('on'));
-  document.getElementById(id)?.classList.add('on');
-}
+function rOpenDetail(id){document.querySelectorAll('#scr-resident .pg').forEach(x=>x.classList.remove('on'));document.getElementById(id)?.classList.add('on');}
 function rCloseDetail(){rNav('home');}
-
-/* ── ADMIN NAV ── */
 function aNav(p){
   document.querySelectorAll('#scr-admin .pg').forEach(x=>x.classList.remove('on'));
   document.getElementById('ap-'+p)?.classList.add('on');
   document.querySelectorAll('#scr-admin .bni').forEach(x=>x.classList.remove('on'));
   document.getElementById('abn-'+p)?.classList.add('on');
 }
+function svcTab(t){
+  document.getElementById('svc-tab-svc').classList.toggle('on',t==='svc');
+  document.getElementById('svc-tab-cal').classList.toggle('on',t==='cal');
+  document.getElementById('svc-panel-svc').style.display=t==='svc'?'':'none';
+  document.getElementById('svc-panel-cal').style.display=t==='cal'?'':'none';
+  if(t==='cal')buildCalendar('resident-svc-calendar','resident');
+}
+
+/* ── CALENDAR ── */
+const CAL_EVENTS=[
+  {date:'2026-04-18',title:'Water Interruption 10PM–2AM',type:'urgent',color:'var(--red)'},
+  {date:'2026-04-19',title:'Tricycle Booking — Unit 12B',type:'booking',color:'var(--purple)',roles:['admin','resident']},
+  {date:'2026-04-20',title:'Pool Slot — Unit 5A',type:'booking',color:'var(--amber)',roles:['admin']},
+  {date:'2026-04-25',title:'General Assembly Meeting',type:'event',color:'var(--acc)'},
+  {date:'2026-04-26',title:'Function Hall Booking — Unit 9C',type:'booking',color:'var(--amber)',roles:['admin']},
+  {date:'2026-05-05',title:'Fiesta sa Subdivision',type:'event',color:'var(--purple)'},
+];
+let calYear=2026,calMonth=3;
+function buildCalendar(cid,role){
+  const el=document.getElementById(cid);if(!el)return;
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const todayStr=new Date().toISOString().slice(0,10);
+  const evtDays=new Set(CAL_EVENTS.filter(e=>!e.roles||e.roles.includes(role)).map(e=>parseInt(e.date.slice(8))));
+  const mn=new Date(calYear,calMonth,1).toLocaleString('en-PH',{month:'long',year:'numeric'});
+  let h=`<div class="cal-wrap"><div class="cal-nav"><div class="cal-nav-btn" onclick="calNav(-1,'${cid}','${role}')">‹</div><div class="cal-month">${mn}</div><div class="cal-nav-btn" onclick="calNav(1,'${cid}','${role}')">›</div></div><div class="cal-grid">`;
+  ['S','M','T','W','T','F','S'].forEach(d=>h+=`<div class="cal-dow">${d}</div>`);
+  for(let i=0;i<firstDay;i++)h+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=ds===todayStr,hasEv=evtDays.has(d);
+    h+=`<div class="cal-day${isToday?' today':''}${hasEv?' has-event':''}" onclick="calDayClick(${d},'${role}')">${d}</div>`;
+  }
+  h+=`</div></div>`;el.innerHTML=h;
+}
+function calNav(dir,cid,role){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}buildCalendar(cid,role);}
+function calDayClick(d,role){
+  const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const evs=CAL_EVENTS.filter(e=>e.date===ds&&(!e.roles||e.roles.includes(role)));
+  if(evs.length)toast('📆',`${new Date(calYear,calMonth,d).toLocaleDateString('en-PH',{month:'long',day:'numeric'})}`,evs.map(e=>e.title).join('\n'));
+}
+function buildCalendarEvents(){
+  [['cal-events-admin','admin'],['cal-events-leader','leader'],['cal-events-resident','resident']].forEach(([id,role])=>{
+    const el=document.getElementById(id);if(!el)return;
+    const evs=CAL_EVENTS.filter(e=>!e.roles||e.roles.includes(role)).slice(0,5);
+    el.innerHTML=evs.map(e=>`<div class="cal-event-item" style="border-left-color:${e.color}"><div class="cei-date">${new Date(e.date+'T00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric'})}</div><div class="cei-title">${e.title}</div><span class="tag" style="background:${e.color}22;color:${e.color};margin-top:4px;display:inline-flex">${e.type}</span></div>`).join('');
+  });
+}
 
 /* ── THEME ── */
 function applyTheme(el,p1,p2,acc){
-  document.querySelectorAll('.theme-preset').forEach(x=>x.classList.remove('on'));
-  el.classList.add('on');
-  document.documentElement.style.setProperty('--p1',p1);
-  document.documentElement.style.setProperty('--p2',p2);
-  document.documentElement.style.setProperty('--acc',acc);
-  document.getElementById('c-p1').value=p1;
-  document.getElementById('c-p2').value=p2;
-  document.getElementById('c-acc').value=acc;
+  document.querySelectorAll('.theme-preset').forEach(x=>x.classList.remove('on'));el.classList.add('on');
+  document.documentElement.style.setProperty('--p1',p1);document.documentElement.style.setProperty('--p2',p2);document.documentElement.style.setProperty('--acc',acc);
+  document.getElementById('c-p1').value=p1;document.getElementById('c-p2').value=p2;document.getElementById('c-acc').value=acc;
 }
 function applyCustomTheme(){
   document.documentElement.style.setProperty('--p1',document.getElementById('c-p1').value);
@@ -1312,57 +1515,48 @@ function applyCustomTheme(){
 function uploadPhoto(input){
   if(!input.files[0])return;
   const r=new FileReader();
-  r.onload=e=>{
-    S.splashBg=e.target.result;
-    const prev=document.getElementById('photo-preview');
-    prev.src=e.target.result; prev.style.display='block';
-    toast('📸','Photo Uploaded!','Your community photo will appear on the welcome screen for all users.');
-  };
+  r.onload=e=>{S.splashBg=e.target.result;const p=document.getElementById('photo-prev');p.src=e.target.result;p.style.display='block';toast('📸','Photo Uploaded!','Your community photo will appear on the welcome screen for all users.');};
   r.readAsDataURL(input.files[0]);
 }
 
-/* ── VISITOR SYSTEM ── */
-function switchVTab(t){
-  document.getElementById('vtab-exp').classList.toggle('on',t==='exp');
-  document.getElementById('vtab-walk').classList.toggle('on',t==='walk');
-  document.getElementById('vpanel-exp').style.display=t==='exp'?'':'none';
-  document.getElementById('vpanel-walk').style.display=t==='walk'?'':'none';
+/* ── DECLINE BOOKING (with reason) ── */
+function openDeclineModal(btn,name,service){
+  S.declineTarget={btn,name,service};
+  document.getElementById('decline-booking-info').innerHTML=`<b>${name}</b> — ${service}`;
+  document.getElementById('decline-extra-note').value='';
+  openModal('decline-modal');
 }
-function logEntry(btn,name,dest){
-  toast('✅','Visitor Admitted',`${name} logged in. Destination: ${dest}. ID collected.`);
-  btn.closest('.vlist-item').style.opacity='.5';
-  btn.textContent='✅'; btn.disabled=true;
-}
-function logWalkIn(){
-  const n=document.getElementById('g-v-name').value;
-  const u=document.getElementById('g-v-unit').value;
-  const p=document.getElementById('g-v-purpose').value;
-  if(!n||!u){toast('⚠️','Incomplete','Enter visitor name and destination.');return;}
-  toast('✅','Walk-in Logged',`${n} → ${u}. Purpose: ${p||'unspecified'}. ID held at gate. Logged ${new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'})}.`);
-  ['g-v-name','g-v-unit','g-v-purpose'].forEach(id=>document.getElementById(id).value='');
+function confirmDeclineBooking(){
+  const reason=document.querySelector('#decline-reason-pills .pill.on')?.textContent||'Slot unavailable';
+  const note=document.getElementById('decline-extra-note').value;
+  const t=S.declineTarget;
+  const sms=`CasaConnect: Your booking "${t.service}" was declined. Reason: ${reason}${note?'. Note: '+note:''}. Contact HOA for more info. – ${S.sub} HOA`;
+  closeModal('decline-modal');
+  if(t.btn)handleBkr(t.btn,'❌ Declined',sms);
+  else toast('❌','Booking Declined','Resident notified via SMS.',sms);
 }
 
-/* ── TRIKE ASSIGN ── */
+/* ── ASSIGN DRIVER (TODA) ── */
 function openAssign(unit,name,date,time){
   S.assignTarget={unit,name,date,time};
-  document.getElementById('assign-booking-info').innerHTML=`<span style="font-size:16px">🛺</span> <b>${unit} · ${name}</b><br><span style="color:var(--muted);font-size:12px">${date} · ${time}</span>`;
-  document.getElementById('assign-driver').value='';
-  document.getElementById('assign-tric').value='';
+  document.getElementById('assign-booking-info').innerHTML=`<b>${unit} · ${name}</b><br><span style="font-size:12px;color:var(--muted)">${date} · ${time}</span>`;
+  document.getElementById('assign-driver').value='';document.getElementById('assign-tric').value='';
   openModal('assign-modal');
 }
 function confirmAssign(){
-  const driver=document.getElementById('assign-driver').value;
-  const tric=document.getElementById('assign-tric').value;
+  const driver=document.getElementById('assign-driver').value;const tric=document.getElementById('assign-tric').value;
   if(!driver||!tric){toast('⚠️','Missing Info','Enter driver name and tricycle number.');return;}
-  const t=S.assignTarget;
-  closeModal('assign-modal');
-  toast('✅','Booking Approved!',`${t.name} (${t.unit}) — ${t.date} ${t.time} assigned to ${driver} (${tric}).`,`CasaConnect: Your tricycle booking ${t.date} at ${t.time} is APPROVED! Driver: ${driver} · ${tric}. – ${S.sub} HOA`);
+  const t=S.assignTarget;closeModal('assign-modal');
+  toast('✅','Booking Approved!',`${t.name} (${t.unit}) — ${t.date} ${t.time} approved.`,`CasaConnect: Tricycle ${t.date} at ${t.time} APPROVED! Driver: ${driver} · ${tric}. – ${S.sub} HOA`);
 }
-function declineBooking(){
-  const t=S.assignTarget;
-  closeModal('assign-modal');
-  toast('❌','Booking Declined',`Resident notified via SMS.`,`CasaConnect: Your tricycle booking ${t.date} at ${t.time} could not be accommodated. Please rebook via the app. – ${S.sub} HOA`);
+function openDeclineTrike(){closeModal('assign-modal');document.getElementById('trike-decline-note').value='';openModal('decline-trike-modal');}
+function confirmDeclineTrike(){
+  const reason=document.querySelector('#trike-decline-pills .pill.on')?.textContent||'No driver available';
+  const note=document.getElementById('trike-decline-note').value;
+  const t=S.assignTarget;closeModal('decline-trike-modal');
+  toast('❌','Booking Declined','Resident notified via SMS.',`CasaConnect: Tricycle ${t.date} at ${t.time} DECLINED. Reason: ${reason}${note?'. '+note:''}. Please rebook. – ${S.sub} HOA`);
 }
+function declineBooking(){openDeclineTrike();}
 
 /* ── BOOKING ACTIONS ── */
 function handleBkr(btn,title,sms){
@@ -1374,110 +1568,112 @@ function handleBkr(btn,title,sms){
   row.querySelectorAll('.btn').forEach(b=>{b.disabled=true;b.style.opacity='.35';});
 }
 
-/* ── POST ANNOUNCEMENT ── */
+/* ── POST ── */
 function postAnn(){
   const t=document.getElementById('a-ann-t').value||'New Announcement';
   const b=document.getElementById('a-ann-b').value||'';
   const pill=document.querySelector('#ap-post .pill.on')?.textContent||'📋 Update';
-  const colors={'⚠️ Urgent':'var(--red)','📋 Update':'var(--acc)','📅 Event':'var(--purple)','💵 Reminder':'var(--amber)'};
-  const col=Object.entries(colors).find(([k])=>pill.includes(k.split(' ')[1]))?.[1]||'var(--acc)';
-  const container=document.getElementById('a-all-posts');
-  const d=document.createElement('div'); d.className='post-card'; d.style.borderLeftColor=col;
-  d.innerHTML=`<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-navy">${pill.substring(2).trim()}</span></div><div class="post-body">${b||'No details provided.'}</div><div class="post-foot"><span class="post-tm">Just now · All blocks</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
-  container.prepend(d);
-  document.getElementById('a-ann-t').value=''; document.getElementById('a-ann-b').value='';
-  toast('📢','Published!',`"${t}" is now live.`,`CasaConnect ALERT: ${t}. Open the CasaConnect app for details. – ${S.sub} HOA`);
+  const colors={'Urgent':'var(--red)','Update':'var(--acc)','Event':'var(--purple)','Reminder':'var(--amber)'};
+  const col=Object.entries(colors).find(([k])=>pill.includes(k))?.[1]||'var(--acc)';
+  const d=document.createElement('div');d.className='post-card';d.style.borderLeftColor=col;
+  d.innerHTML=`<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-navy">${pill.substring(2).trim()}</span></div><div class="post-body">${b||'No details.'}</div><div class="post-foot"><span class="post-tm">Just now · All blocks</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
+  document.getElementById('a-all-posts').prepend(d);
+  document.getElementById('a-ann-t').value='';document.getElementById('a-ann-b').value='';
+  toast('📢','Published!',`"${t}" is now live.`,`CasaConnect ALERT: ${t}. Check the app for details. – ${S.sub} HOA`);
+}
+function leaderPost(){
+  const t=document.getElementById('l-post-t').value||'Notice';const b=document.getElementById('l-post-b').value||'';
+  const pill=document.querySelector('#rp-post .pill.on')?.textContent||'📌 Reminder';
+  const d=document.createElement('div');d.className='post-card';d.style.borderLeftColor='var(--amber)';
+  d.innerHTML=`<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-amber">Block Post</span></div><div class="post-body">${b}</div><div class="post-foot"><span class="post-tm">Just now · Block 7 & 8</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
+  document.getElementById('l-posts').prepend(d);
+  document.getElementById('l-post-t').value='';document.getElementById('l-post-b').value='';
+  toast('📢','Posted!',`Block post "${t}" sent to Block 7 & 8.`);rNav('home');
 }
 function removePost(el){el.closest('.post-card').remove();}
 
-/* ── LEADER POST ── */
-function leaderPost(){
-  const t=document.getElementById('l-post-t').value||'Notice';
-  const b=document.getElementById('l-post-b').value||'';
-  const pill=document.querySelector('#rp-post .pill.on')?.textContent||'📌 Reminder';
-  const d=document.createElement('div'); d.className='post-card'; d.style.borderLeftColor='var(--amber)';
-  d.innerHTML=`<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-amber">Block Post</span></div><div class="post-body">${b||''}</div><div class="post-foot"><span class="post-tm">Just now · Block 7 & 8</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
-  document.getElementById('l-posts').prepend(d);
-  document.getElementById('l-post-t').value=''; document.getElementById('l-post-b').value='';
-  toast('📢','Posted!',`Your block post "${t}" has been sent to Block 7 & 8 residents.`);
-  rNav('home');
-}
-
-/* ── ADD SERVICE ── */
+/* ── SERVICES ── */
 function addSvc(){
-  const n=document.getElementById('svc-name').value; if(!n){toast('⚠️','Enter name','');return;}
+  const n=document.getElementById('svc-name').value;if(!n){toast('⚠️','Enter name','');return;}
   const ic=document.querySelector('.ic-opt.on')?.textContent||'📌';
   const l=document.getElementById('a-svc-list');
-  const d=document.createElement('div'); d.className='mr';
+  const d=document.createElement('div');d.className='mr';
   d.innerHTML=`<div class="mr-av">${ic}</div><div class="mr-info"><div class="mr-name">${n}</div><div class="mr-meta">Booking · Active</div></div><span class="tag tg-teal">Live</span>`;
   l.appendChild(d);
   const g=document.getElementById('r-svc-grid');
-  const b=document.createElement('div'); b.className='svc-btn'; b.onclick=()=>rOpenDetail('rd-book');
-  b.innerHTML=`<span class="svc-em">${ic}</span><div class="svc-lbl">${n}</div><div class="svc-s">Tap to book</div>`;
+  const b=document.createElement('div');b.className='s3-chip';b.onclick=()=>rOpenDetail('rd-book');
+  b.innerHTML=`<div class="s3-ic">${ic}</div><div class="s3-lbl">${n}</div><div class="s3-sub">Tap to book</div>`;
   g.appendChild(b);
   document.getElementById('svc-name').value='';
   toast('✅','Service Added!',`"${n}" is now in the resident Services tab.`);
 }
 
-/* ── QR GENERATOR ── */
-function toggleQrF(){
-  const r=document.getElementById('qr-role').value;
-  document.getElementById('qrf-resident').style.display=r==='toda'?'none':'';
-  document.getElementById('qrf-toda').style.display=r==='toda'?'':'none';
-}
-let _qr=null;
+/* ── QR ── */
+function toggleQrF(){const r=document.getElementById('qr-role').value;document.getElementById('qrf-resident').style.display=r==='toda'?'none':'';document.getElementById('qrf-toda').style.display=r==='toda'?'':'none';}
 function genQR(){
-  const nm=document.getElementById('qr-name').value; if(!nm){toast('⚠️','Enter name','');return;}
+  const nm=document.getElementById('qr-name').value;if(!nm){toast('⚠️','Enter name','');return;}
   const role=document.getElementById('qr-role').value;
-  const unit=document.getElementById('qr-unit')?.value||'';
-  const block=document.getElementById('qr-block')?.value||'';
-  const phase=document.getElementById('qr-phase')?.value||'';
-  const todaId=document.getElementById('qr-toda-id')?.value||'';
-  const tricNum=document.getElementById('qr-tric-num')?.value||'';
+  const unit=document.getElementById('qr-unit')?.value||'';const block=document.getElementById('qr-block')?.value||'';const phase=document.getElementById('qr-phase')?.value||'';
+  const todaId=document.getElementById('qr-toda-id')?.value||'';const tricNum=document.getElementById('qr-tric-num')?.value||'';
   const code=genCode();
   const payload=JSON.stringify({role,name:nm,unit,block,phase,todaId,tricNum,code,sub:S.sub,issued:new Date().toISOString().slice(0,10)});
-  const lbl=role==='toda'?`${nm} · ${todaId} · ${tricNum}`:`${nm} · ${unit} · ${block} · ${phase}`;
-  document.getElementById('qr-lbl-txt').textContent=lbl;
+  document.getElementById('qr-lbl-txt').textContent=role==='toda'?`${nm} · ${todaId} · ${tricNum}`:`${nm} · ${unit} · ${block} · ${phase}`;
   document.getElementById('qr-manual').textContent=code;
   document.getElementById('qr-result').style.display='block';
-  const qc=document.getElementById('qrcode'); qc.innerHTML='';
-  try{new QRCode(qc,{text:payload,width:160,height:160,colorDark:getCSSVar('--p1'),colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.M});}
-  catch(e){qc.innerHTML='<div style="width:160px;height:160px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);text-align:center;padding:12px">QR loading…<br>Use backup code above.</div>';}
+  const qc=document.getElementById('qrcode');qc.innerHTML='';
+  try{new QRCode(qc,{text:payload,width:150,height:150,colorDark:getCSSVar('--p1')||'#0F2137',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.M});}
+  catch(e){qc.innerHTML='<div style="width:150px;height:150px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);text-align:center;padding:10px">QR loading…<br>Use backup code above.</div>';}
   document.getElementById('qr-result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<8;i++){if(i===4)s+='-';s+=c[Math.floor(Math.random()*c.length)];}return s;}
 
-/* ── PILL SELECT ── */
+/* ── UI HELPERS ── */
 function selPill(el){el.closest('.pill-row').querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');}
-/* ── ICON PICKER ── */
 function pickIc(el){document.querySelectorAll('.ic-opt').forEach(i=>i.classList.remove('on'));el.classList.add('on');}
+
+/* ── VISITOR ── */
+function switchVTab(t){
+  document.getElementById('vtab-exp').classList.toggle('on',t==='exp');document.getElementById('vtab-walk').classList.toggle('on',t==='walk');
+  document.getElementById('vpanel-exp').style.display=t==='exp'?'':'none';document.getElementById('vpanel-walk').style.display=t==='walk'?'':'none';
+}
+function logEntry(btn,name,dest){toast('✅','Visitor Admitted',`${name} logged in. Destination: ${dest}. ID collected.`);btn.closest('.vli').style.opacity='.5';btn.textContent='✅';btn.disabled=true;}
+function logWalkIn(){
+  const n=document.getElementById('g-v-name').value;const u=document.getElementById('g-v-unit').value;
+  if(!n||!u){toast('⚠️','Incomplete','Enter visitor name and destination.');return;}
+  toast('✅','Walk-in Logged',`${n} → ${u}. ID held at gate. Logged ${new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'})}.`);
+  ['g-v-name','g-v-unit','g-v-purpose'].forEach(id=>document.getElementById(id).value='');
+}
 
 /* ── NOTIFICATIONS ── */
 const NOTIFS={
   admin:[{u:1,t:'📅 New Booking — Unit 12B',m:'Tricycle Sat Apr 19 9AM',tm:'Today 7:44 AM'},{u:1,t:'💬 New Feedback',m:'Streetlight issue Unit 7D',tm:'Today 7:14 AM'},{u:0,t:'👥 New Member',m:'Unit 2A registered via QR.',tm:'Apr 16'}],
   resident:[{u:1,t:'⚠️ Urgent Notice',m:'Water interruption 10PM–2AM.',tm:'Today 8:00 AM'},{u:1,t:'✅ Booking Received',m:'Tricycle request pending approval.',tm:'Today 7:45 AM'},{u:0,t:'📋 New Update',m:'General Assembly April 25.',tm:'Yesterday'}],
-  leader:[{u:1,t:'📢 HOA: Water Interruption',m:'Tonight 10PM–2AM. Relay to block.',tm:'Today 8:00 AM'},{u:1,t:'💬 Resident Feedback',m:'Noise issue near Unit 9.',tm:'Yesterday'}],
+  leader:[{u:1,t:'📢 HOA: Water Interruption',m:'Tonight 10PM–2AM.',tm:'Today 8:00 AM'},{u:1,t:'💬 Resident Feedback',m:'Noise issue near Unit 9.',tm:'Yesterday'}],
   guard:[{u:1,t:'⚠️ Urgent Notice',m:'Water interruption tonight.',tm:'Today 8:00 AM'}],
   toda:[{u:1,t:'🛺 2 New Booking Requests',m:'Units 12B and 4A for Sat Apr 19.',tm:'Today 7:44 AM'}]
 };
 function openNotif(){
-  const list=document.getElementById('notif-list'); list.innerHTML='';
-  const ns=NOTIFS[S.role]||NOTIFS.resident;
-  ns.forEach(n=>{const d=document.createElement('div');d.className='ni'+(n.u?' unread':'');d.innerHTML=`<div class="ni-dot${n.u?'':' r'}"></div><div class="ni-b"><div class="ni-t">${n.t}</div><div class="ni-m">${n.m}</div><div class="ni-tm">${n.tm}</div></div>`;list.appendChild(d);});
+  const list=document.getElementById('notif-list');list.innerHTML='';
+  (NOTIFS[S.role]||NOTIFS.resident).forEach(n=>{
+    const d=document.createElement('div');
+    d.style.cssText='display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)';
+    d.innerHTML=`<div style="width:7px;height:7px;border-radius:50%;background:${n.u?'var(--acc)':'var(--border)'};flex-shrink:0;margin-top:5px"></div><div><div style="font-family:var(--font);font-weight:700;font-size:13px;color:var(--text)">${n.t}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${n.m}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${n.tm}</div></div>`;
+    list.appendChild(d);
+  });
   openModal('notif-modal');
 }
-/* ── MODAL ── */
+
+/* ── MODAL / TOAST ── */
 function openModal(id){document.getElementById(id).classList.add('on');}
 function closeModal(id){document.getElementById(id).classList.remove('on');}
 function toast(icon,title,msg,sms){
-  document.getElementById('t-icon').textContent=icon;
-  document.getElementById('t-title').textContent=title;
-  document.getElementById('t-msg').textContent=msg;
+  document.getElementById('t-icon').textContent=icon;document.getElementById('t-title').textContent=title;document.getElementById('t-msg').textContent=msg;
   const s=document.getElementById('t-sms');
   if(sms){s.style.display='block';document.getElementById('t-sms-txt').textContent=sms;}else s.style.display='none';
   openModal('toast-modal');
 }
-/* ── INTERACTIVE SLOTS/DATES ── */
+
+/* ── INTERACTIVE ── */
 document.querySelectorAll('.dc').forEach(c=>c.addEventListener('click',function(){this.closest('.date-scroll').querySelectorAll('.dc').forEach(x=>x.classList.remove('on'));this.classList.add('on');}));
 document.querySelectorAll('.slot:not(.taken)').forEach(s=>s.addEventListener('click',function(){this.closest('.slot-grid').querySelectorAll('.slot').forEach(x=>x.classList.remove('on'));this.classList.add('on');}));
 </script>
