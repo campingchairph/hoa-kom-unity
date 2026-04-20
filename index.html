@@ -314,9 +314,12 @@ select.inp{cursor:pointer}
 .cal-day{aspect-ratio:1;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .15s}
 .cal-day.empty{cursor:default}
 .cal-day-num{font-family:var(--font);font-weight:700;font-size:12px;color:var(--text)}
-.cal-day-slots{font-size:8px;font-weight:700;color:var(--acc);letter-spacing:0.03em}
+.cal-day-slots{font-size:8px;font-weight:800;letter-spacing:0.02em;border-radius:4px;padding:1px 3px;margin-top:1px;display:inline-block}
+.cal-day.avail-high .cal-day-slots{background:rgba(16,185,129,.18);color:#065f46}
+.cal-day.avail-med .cal-day-slots{background:rgba(245,158,11,.2);color:#92600a}
+.cal-day.avail-low .cal-day-slots{background:rgba(239,68,68,.15);color:#b91c1c}
 .cal-day.full .cal-day-num{color:var(--muted)}
-.cal-day.full .cal-day-slots{color:var(--red)}
+.cal-day.full .cal-day-slots{background:rgba(239,68,68,.12);color:#b91c1c}
 .cal-day.today{background:var(--p1)}
 .cal-day.today .cal-day-num{color:#fff}
 .cal-day.today .cal-day-slots{color:var(--acc2)}
@@ -326,7 +329,7 @@ select.inp{cursor:pointer}
 .leg-dot{width:8px;height:8px;border-radius:50%}
 /* Booking timeline items */
 .bk-item{background:var(--card);border-radius:10px;padding:10px 12px;margin-bottom:7px;box-shadow:var(--sh);border-left:3px solid var(--acc);cursor:pointer}
-.bk-date{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
+.bk-date{font-size:10px;font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
 .bk-title{font-family:var(--font);font-weight:700;font-size:13px;color:var(--text);letter-spacing:0.02em}
 .bk-status{margin-top:4px}
 
@@ -688,9 +691,25 @@ select.inp{cursor:pointer}
       <div class="pg" id="ap-bookings">
         <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div><div class="subhdr-title">📅 Booking Requests</div><div class="subhdr-sub">Approve · Decline with reason · SMS sent</div></div></div>
         <div class="ibox mt12"><div class="ibox-ic">🛺</div><p class="ibox-t"><strong>Tricycle bookings</strong> are managed by the TODA Admin account only.</p></div>
+        <div class="vtabs" style="padding:8px 0 5px"><div class="vtab on" id="bkr-tab-svc" onclick="bkrTab('svc')">Services</div><div class="vtab" id="bkr-tab-vis" onclick="bkrTab('vis')">👤 Visitor Requests</div></div>
+        <div id="bkr-panel-svc">
         <div class="bkr"><div class="bkr-h"><div><div class="bkr-name">🏊 Pool Slot — Unit 5A · Maria Santos</div><div class="bkr-det">Sun Apr 20 · 2:00 PM</div></div><span class="tag tg-amber">Pending</span></div><div class="bkr-acts"><button class="btn btn-green btn-sm" onclick="handleBkr(this,'✅ Approved','Maria Santos (Unit 5A) — Pool slot Sun Apr 20 at 2PM APPROVED. – HOA')">✓ Approve</button><button class="btn btn-red btn-sm" onclick="openDeclineModal(this,'Maria Santos','Pool Slot · Sun Apr 20 2PM')">✗ Decline</button></div></div>
         <div class="bkr"><div class="bkr-h"><div><div class="bkr-name">🏟️ Function Hall — Unit 9C · Carmen Flores</div><div class="bkr-det">Sat Apr 26 · Full Day</div></div><span class="tag tg-green">Approved</span></div><div class="bkr-acts"><button class="btn btn-ghost btn-sm" onclick="openDeclineModal(this,'Carmen Flores','Function Hall · Apr 26')">Cancel</button></div></div>
         <div class="bkr"><div class="bkr-h"><div><div class="bkr-name">🔧 Maintenance — Unit 3B · Roberto Cruz</div><div class="bkr-det">Leaking pipe, Block 3 alley</div></div><span class="tag tg-amber">Pending</span></div><div class="bkr-acts"><button class="btn btn-amber btn-sm" onclick="handleBkr(this,'🔔 Acknowledged','Roberto Cruz (Unit 3B) — Maintenance request logged. Team visits in 48 hrs. – HOA')">Acknowledge</button><button class="btn btn-green btn-sm" onclick="handleBkr(this,'✅ Resolved','Roberto Cruz (Unit 3B) — Issue marked RESOLVED. – HOA')">Resolve</button></div></div>
+        </div><!-- /bkr-panel-svc -->
+        <div id="bkr-panel-vis" style="display:none">
+          <div class="ibox" style="background:rgba(0,184,151,.07);border-color:rgba(0,184,151,.2)"><div class="ibox-ic">👤</div><p class="ibox-t">Review visitor requests. Approve with a parking slot (optional) or decline with reason. An SMS with QR pass is sent to the resident upon approval.</p></div>
+          <div class="bkr">
+            <div class="bkr-h"><div><div class="bkr-name">👤 Visitor — Ana Reyes (Unit 12B)</div><div class="bkr-det">Guest: Carlos Mendoza · Apr 20 · 10AM–12PM · <strong>Parking requested</strong></div></div><span class="tag tg-amber">Pending</span></div>
+            <div style="margin-bottom:8px"><span class="lbl">Assign Parking Slot (optional)</span><input class="inp" type="text" placeholder="e.g. P-04, or leave blank if no parking" id="vis-slot-1" value="P-04"></div>
+            <div class="bkr-acts"><button class="btn btn-green btn-sm" onclick="approveVisitor(this,'Carlos Mendoza','Unit 12B','P-04')">✓ Approve + Send QR Pass</button><button class="btn btn-red btn-sm" onclick="openDeclineModal(this,'Ana Reyes (Visitor Request)','Carlos Mendoza · Apr 20')">✗ Decline</button></div>
+          </div>
+          <div class="bkr">
+            <div class="bkr-h"><div><div class="bkr-name">👤 Visitor — Jose Reyes (Unit 12B)</div><div class="bkr-det">Guest: Mark Dela Cruz · Apr 20 · 2PM–5PM · No parking</div></div><span class="tag tg-amber">Pending</span></div>
+            <div class="bkr-acts"><button class="btn btn-green btn-sm" onclick="approveVisitor(this,'Mark Dela Cruz','Unit 12B',null)">✓ Approve + Send QR Pass</button><button class="btn btn-red btn-sm" onclick="openDeclineModal(this,'Jose Reyes (Visitor Request)','Mark Dela Cruz · Apr 20')">✗ Decline</button></div>
+          </div>
+        </div><!-- /bkr-panel-vis -->
+
       </div>
 
       <!-- SERVICES -->
@@ -841,15 +860,15 @@ select.inp{cursor:pointer}
         <div class="svc-compact" id="r-quick-grid">
           <div class="svc-chip hero" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🛺</div><div class="svc-chip-lbl">Tricycle / E-Trike Service</div></div>
           <div class="svc-chip" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🏊</div><div class="svc-chip-lbl">Pool / Clubhouse Reservation</div></div>
-          <div class="svc-chip" onclick="rOpenDetail('rd-book')"><div class="svc-chip-ic">🔧</div><div class="svc-chip-lbl">Contact Repairman</div></div>
+          <div class="svc-chip" onclick="openForm('maintenance');rOpenDetail('rp-form-fill')"><div class="svc-chip-ic">🔧</div><div class="svc-chip-lbl">Contact Repairman</div></div>
           <div class="svc-chip" onclick="rNav('forms')"><div class="svc-chip-ic">📋</div><div class="svc-chip-lbl">Submit a Form Request</div></div>
         </div>
         <div class="sec"><span class="sec-t">🅿️ Parking &amp; Gate</span></div>
         <div class="svc-compact">
-          <div class="svc-chip" onclick="rNav('forms')"><div class="svc-chip-ic">🅿️</div><div class="svc-chip-lbl">Report Illegal Parking</div></div>
-          <div class="svc-chip" onclick="rNav('forms')"><div class="svc-chip-ic">🚗</div><div class="svc-chip-lbl">Request Guest Parking</div></div>
-          <div class="svc-chip" onclick="rNav('forms')"><div class="svc-chip-ic">🪪</div><div class="svc-chip-lbl">Request Gate Pass</div></div>
-          <div class="svc-chip" onclick="rNav('forms')"><div class="svc-chip-ic">👤</div><div class="svc-chip-lbl">Register a Visitor / Guest</div></div>
+          <div class="svc-chip" onclick="openForm('parking-report');rOpenDetail('rp-form-fill')"><div class="svc-chip-ic">🅿️</div><div class="svc-chip-lbl">Report Illegal Parking</div></div>
+          <div class="svc-chip" onclick="openForm('parking');rOpenDetail('rp-form-fill')"><div class="svc-chip-ic">🚗</div><div class="svc-chip-lbl">Request Guest Parking</div></div>
+          <div class="svc-chip" onclick="openForm('gatepass');rOpenDetail('rp-form-fill')"><div class="svc-chip-ic">🪪</div><div class="svc-chip-lbl">Request Gate Pass</div></div>
+          <div class="svc-chip" onclick="openForm('visitor');rOpenDetail('rp-form-fill')"><div class="svc-chip-ic">👤</div><div class="svc-chip-lbl">Register a Visitor / Guest</div></div>
         </div>
       </div>
 
@@ -888,11 +907,11 @@ select.inp{cursor:pointer}
           <div class="s3-chip hero" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🛺</div><div class="s3-lbl">Book Tricycle / E-Trike Service</div><div class="s3-sub">Schedule a ride</div></div>
           <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🏊</div><div class="s3-lbl">Pool / Clubhouse Reservation</div><div class="s3-sub">Reserve a slot</div></div>
           <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🏟️</div><div class="s3-lbl">Function Hall Booking</div><div class="s3-sub">Book for events</div></div>
-          <div class="s3-chip" onclick="rNav('forms')"><div class="s3-ic">🔧</div><div class="s3-lbl">Contact Repairman / Maintenance</div><div class="s3-sub">Report an issue</div></div>
-          <div class="s3-chip" onclick="rNav('forms')"><div class="s3-ic">🅿️</div><div class="s3-lbl">Report Illegal Parking</div><div class="s3-sub">File a concern</div></div>
-          <div class="s3-chip" onclick="rNav('forms')"><div class="s3-ic">🚗</div><div class="s3-lbl">Request Guest Parking Sticker</div><div class="s3-sub">For visitors</div></div>
-          <div class="s3-chip" onclick="rNav('forms')"><div class="s3-ic">🪪</div><div class="s3-lbl">Request Gate Pass</div><div class="s3-sub">For workers/deliveries</div></div>
-          <div class="s3-chip" onclick="rNav('forms')"><div class="s3-ic">👤</div><div class="s3-lbl">Register a Visitor / Guest</div><div class="s3-sub">Pre-register guests</div></div>
+          <div class="s3-chip" onclick="openForm('maintenance');rOpenDetail('rp-form-fill')"><div class="s3-ic">🔧</div><div class="s3-lbl">Contact Repairman / Maintenance</div><div class="s3-sub">Report an issue</div></div>
+          <div class="s3-chip" onclick="openForm('parking-report');rOpenDetail('rp-form-fill')"><div class="s3-ic">🅿️</div><div class="s3-lbl">Report Illegal Parking</div><div class="s3-sub">File a concern</div></div>
+          <div class="s3-chip" onclick="openForm('parking');rOpenDetail('rp-form-fill')"><div class="s3-ic">🚗</div><div class="s3-lbl">Request Guest Parking Sticker</div><div class="s3-sub">For visitors</div></div>
+          <div class="s3-chip" onclick="openForm('gatepass');rOpenDetail('rp-form-fill')"><div class="s3-ic">🪪</div><div class="s3-lbl">Request Gate Pass</div><div class="s3-sub">For workers/deliveries</div></div>
+          <div class="s3-chip" onclick="openForm('visitor');rOpenDetail('rp-form-fill')"><div class="s3-ic">👤</div><div class="s3-lbl">Register a Visitor / Guest</div><div class="s3-sub">Pre-register guests</div></div>
           <div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">🗑️</div><div class="s3-lbl">Garbage Schedule</div><div class="s3-sub">View pickup days</div></div>
         </div>
       </div>
@@ -975,13 +994,36 @@ select.inp{cursor:pointer}
           <div class="form-card" onclick="openForm('parking-report')"><div class="fc-ic">🅿️</div><div class="fc-title">Report Illegal Parking</div><div class="fc-desc">File a parking violation report</div></div>
           <div class="form-card" onclick="openForm('maintenance')"><div class="fc-ic">🔧</div><div class="fc-title">Maintenance Request</div><div class="fc-desc">Request repair work from HOA team</div></div>
         </div>
+        <!-- PREMIUM FEATURES -->
+        <div class="sec mt12"><span class="sec-t" style="display:flex;align-items:center;gap:6px">🔒 <span>Premium Features</span></span></div>
+        <div style="padding:0 14px;margin-bottom:6px">
+          <div style="background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:13px;padding:14px;position:relative;overflow:hidden">
+            <div style="position:absolute;right:-15px;top:-15px;width:80px;height:80px;background:rgba(255,255,255,.05);border-radius:50%"></div>
+            <div style="font-family:var(--font);font-weight:900;font-size:13px;color:#fff;letter-spacing:0.04em;margin-bottom:4px">✨ Unlock Premium HOA Tools</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:12px;line-height:1.5">Customize your letters, automate reports, and more — upgrade to CasaConnect Pro.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px">
+              <div style="background:rgba(255,255,255,.08);border-radius:9px;padding:9px 10px"><div style="font-size:14px;margin-bottom:3px">📝</div><div style="font-family:var(--font);font-weight:700;font-size:11px;color:#fff;letter-spacing:0.03em">Custom Letter Templates</div><div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:1px">Add your HOA letterhead & logo</div></div>
+              <div style="background:rgba(255,255,255,.08);border-radius:9px;padding:9px 10px"><div style="font-size:14px;margin-bottom:3px">📊</div><div style="font-family:var(--font);font-weight:700;font-size:11px;color:#fff;letter-spacing:0.03em">Monthly Reports</div><div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:1px">Auto-generated HOA summaries</div></div>
+              <div style="background:rgba(255,255,255,.08);border-radius:9px;padding:9px 10px"><div style="font-size:14px;margin-bottom:3px">➕</div><div style="font-family:var(--font);font-weight:700;font-size:11px;color:#fff;letter-spacing:0.03em">Unlimited Services</div><div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:1px">Add as many services as needed</div></div>
+              <div style="background:rgba(255,255,255,.08);border-radius:9px;padding:9px 10px"><div style="font-size:14px;margin-bottom:3px">📲</div><div style="font-family:var(--font);font-weight:700;font-size:11px;color:#fff;letter-spacing:0.03em">Bulk SMS Blasts</div><div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:1px">Send to all residents at once</div></div>
+            </div>
+            <button class="btn" style="background:var(--acc);color:#fff;width:100%;padding:11px;font-size:13px;letter-spacing:0.04em" onclick="toast('✨','CasaConnect Pro','Contact us at casaconnect@ph to upgrade your HOA account. Pricing starts at ₱999/month for up to 200 households.')">✨ Upgrade to Pro</button>
+          </div>
+        </div>
       </div>
 
       <!-- FORM FILL PAGE -->
       <div class="pg" id="rp-form-fill">
         <div class="subhdr"><div class="back-btn" onclick="rNav('forms')">←</div><div><div class="subhdr-title" id="form-fill-title">Visitor Registration</div><div class="subhdr-sub">Fill all fields, then generate your letter</div></div></div>
         <div id="form-fill-body" class="px mt12"></div>
-        <div class="px mt12"><button class="btn btn-acc" onclick="generateDocument()" id="generate-doc-btn">📄 Generate Formal Letter</button></div>
+        <div class="px mt12">
+          <button class="btn btn-acc" onclick="generateDocument()" id="generate-doc-btn">📄 Generate Formal Letter</button>
+          <div style="margin-top:8px;background:var(--bg);border:1.5px dashed var(--border);border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;opacity:.65" onclick="toast('🔒','Premium Feature','Custom letter templates with your HOA logo and letterhead are available on CasaConnect Pro. Upgrade to unlock.')">
+            <span style="font-size:20px">🔒</span>
+            <div><div style="font-family:var(--font);font-weight:700;font-size:12px;color:var(--text);letter-spacing:0.03em">Use Custom HOA Template</div><div style="font-size:11px;color:var(--muted)">Pro feature — add your logo, letterhead & signature</div></div>
+            <span style="font-size:11px;font-family:var(--font);font-weight:800;color:var(--amber);background:rgba(245,158,11,.12);padding:3px 8px;border-radius:20px;white-space:nowrap;margin-left:auto">PRO</span>
+          </div>
+        </div>
         <div id="doc-preview-area" style="display:none;margin-top:16px;padding-bottom:20px">
           <div class="sec"><span class="sec-t">📄 Generated Document</span></div>
           <div id="doc-preview-box" class="doc-preview"></div>
@@ -1077,6 +1119,17 @@ select.inp{cursor:pointer}
           <div class="ibox" style="background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.2)"><div class="ibox-ic">⚠️</div><p class="ibox-t">Walk-in visitors must <strong>leave a valid ID</strong> before entry.</p></div>
           <div class="px"><div class="fg"><span class="lbl">Visitor Full Name</span><input class="inp" type="text" placeholder="Full name" id="g-v-name"></div><div class="fg"><span class="lbl">Going to (Unit / Resident)</span><input class="inp" type="text" placeholder="e.g. Unit 12B — Jose Reyes" id="g-v-unit"></div><div class="fg"><span class="lbl">Purpose of Visit</span><input class="inp" type="text" placeholder="e.g. Personal visit, delivery…" id="g-v-purpose"></div><div class="fg"><span class="lbl">Vehicle Plate (optional)</span><input class="inp" type="text" placeholder="e.g. ABC 1234"></div><div class="fg"><span class="lbl">ID Left at Gate</span><select class="inp" id="g-v-id"><option>PhilSys / National ID</option><option>Driver's License</option><option>Passport</option><option>SSS / GSIS Card</option><option>Company ID</option></select></div><button class="btn btn-acc" onclick="logWalkIn()">✓ Log Walk-in Entry</button></div>
         </div>
+        <div class="sec mt12"><span class="sec-t">🔍 Scan Visitor QR Pass</span></div>
+        <div class="ibox"><div class="ibox-ic">📲</div><p class="ibox-t">Scan the visitor's QR code or enter their reference code to verify gate and parking authorization.</p></div>
+        <div style="padding:0 14px;margin-bottom:10px">
+          <div style="background:var(--p1);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="toast('🔍','QR Scanner','Point camera at the visitor QR code or gate pass.')"><div style="width:44px;height:44px;background:rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px">📷</div><div style="flex:1"><div style="font-family:var(--font);font-weight:800;font-size:14px;color:#fff;letter-spacing:0.03em">Scan Visitor QR Code</div><div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Tap to open camera scanner</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;margin:8px 0"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:11px;color:var(--muted)">or enter code</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
+          <div style="display:flex;gap:7px"><input class="inp" type="text" placeholder="Enter code e.g. VIS-7A3K or ABCD-EFGH" id="guard-qr-code" style="flex:1;font-family:var(--font);font-weight:700;letter-spacing:0.1em"><button class="btn btn-acc" style="padding:10px 14px;white-space:nowrap" onclick="verifyVisitorCode()">✓ Verify</button></div>
+        </div>
+        <div id="guard-verify-result" style="display:none;padding:0 14px;margin-bottom:10px"></div>
+        <div class="sec"><span class="sec-t">✅ Pre-Approved Visitors Today</span></div>
+        <div class="vli"><div class="vli-ic" style="background:rgba(0,184,151,.1)">🟢</div><div class="vli-b"><div class="vli-name">Mark Dela Cruz</div><div class="vli-dest">Unit 12B — Jose Reyes · Gate Pass Only</div><div class="vli-code">VIS-7A3K</div><div class="vli-time">Expected 2:00 PM – 5:00 PM · No parking</div></div><div style="flex-shrink:0"><button class="btn btn-green btn-sm" onclick="logEntry(this,'Mark Dela Cruz','Unit 12B')">✓ In</button></div></div>
+        <div class="vli"><div class="vli-ic" style="background:rgba(245,158,11,.1)">🟡</div><div class="vli-b"><div class="vli-name">Carlos Mendoza</div><div class="vli-dest">Unit 5A — Maria Santos · Gate + Parking</div><div class="vli-code">VIS-9BM2</div><div class="vli-time">Expected 10:00 AM – 12:00 PM · <strong>Slot P-04</strong></div></div><div style="flex-shrink:0"><button class="btn btn-amber btn-sm" onclick="toast('🅿️','Parking Slot P-04','Carlos Mendoza is approved for Gate Entry AND Parking Slot P-04. Please direct vehicle to the visitor parking area.')">View Slot</button></div></div>
         <div class="sec mt12"><span class="sec-t">📋 HOA Urgent Notices</span></div>
         <div class="uc" style="border-left-color:var(--red)"><div class="uc-ic" style="background:rgba(239,68,68,.1)">⚠️</div><div class="uc-b"><div class="uc-t">Water interruption tonight 10PM–2AM</div><div class="uc-p">Inform residents entering the gate.</div><div class="uc-f"><span class="uc-tm">Today</span><span class="tag tg-red">Urgent</span></div></div></div>
       </div>
@@ -1433,9 +1486,10 @@ function buildCalendar(cid,mode){
     const isAvailMode=mode==='avail';
     const sl=slots[d]||5;const isFull=isAvailMode&&sl===0;
     if(isAvailMode){
-      h+=`<div class="cal-day${isTd?' today':''}${isFull?' full':''}" onclick="calDayClick(${d},'${mode}')"><div class="cal-day-num">${d}</div><div class="cal-day-slots">${isFull?'Full':sl+'left'}</div></div>`;
+      const availCls=isFull?'full':sl>=4?'avail-high':sl>=2?'avail-med':'avail-low';
+      h+=`<div class="cal-day${isTd?' today':''} ${availCls}" onclick="calDayClick(${d},'${mode}')"><div class="cal-day-num">${d}</div><div class="cal-day-slots">${isFull?'Full':sl+' left'}</div></div>`;
     } else {
-      h+=`<div class="cal-day${isTd?' today':''}${hasEv?' has-event':''}" style="${hasEv&&!isTd?'background:rgba(0,184,151,.08)':''}" onclick="calDayClick(${d},'${mode}')"  ><div class="cal-day-num">${d}</div></div>`;
+      h+=`<div class="cal-day${isTd?' today':''}${hasEv?' has-event':''}" style="${hasEv&&!isTd?'background:rgba(245,158,11,.1);border-radius:7px':''}" onclick="calDayClick(${d},'${mode}')"><div class="cal-day-num" style="${hasEv&&!isTd?'color:var(--amber);font-weight:800':''}">${d}</div></div>`;
     }
   }
   h+=`</div></div>`;el.innerHTML=h;
@@ -1460,7 +1514,7 @@ const SEARCH_DATA=[
   {type:'update',label:'💧 Info · Apr 14',title:'Water Refill Station Location',body:'Available at the corner of Block 8, Monday–Friday 8AM–5PM.',color:'var(--blue)',action:''},
   {type:'service',label:'🛺 Booking',title:'Book Tricycle / E-Trike Service',body:'Schedule a ride — select date and time slot',action:"closeSearchOverlay();rOpenDetail('rd-book')"},
   {type:'service',label:'🏊 Booking',title:'Pool / Clubhouse Reservation',body:'Reserve a slot — check availability first',action:"closeSearchOverlay();rOpenDetail('rd-book')"},
-  {type:'service',label:'🔧 Request',title:'Contact Repairman / Maintenance',body:'Submit a repair request to HOA maintenance team',action:"closeSearchOverlay();rNav('forms')"},
+  {type:'service',label:'🔧 Request',title:'Contact Repairman / Maintenance',body:'Submit a repair request to HOA maintenance team',action:"closeSearchOverlay();openForm('parking-report');rOpenDetail('rp-form-fill')"},
   {type:'service',label:'🅿️ Report',title:'Report Illegal Parking',body:'File a parking violation report',action:"closeSearchOverlay();openForm('parking-report')"},
   {type:'service',label:'🚗 Request',title:'Request Guest Parking Sticker',body:'Apply for a visitor parking sticker',action:"closeSearchOverlay();openForm('parking')"},
   {type:'service',label:'💡 Info',title:'Water Meter Reading Schedule',body:'Reading done every 28th of the month by HOA team',action:''},
@@ -1492,7 +1546,7 @@ function doSearch(q){
 
 /* ── FORMAL FORMS ── */
 const FORMS={
-  visitor:{title:'Visitor / Guest Registration',fields:[{l:'Visitor Full Name',p:'Full name of your guest',id:'f-vis-name'},{l:'Visitor Relationship to You',p:'e.g. Family, Friend, Business',id:'f-vis-rel'},{l:'Visiting Date',p:'',type:'date',id:'f-vis-date'},{l:'Visiting Time',p:'e.g. 2:00 PM – 5:00 PM',id:'f-vis-time'},{l:'Purpose of Visit',p:'e.g. Personal visit, birthday',id:'f-vis-purpose'},{l:'Vehicle Plate (if any)',p:'Leave blank if walking',id:'f-vis-plate'}]},
+  visitor:{title:'Visitor / Guest Registration',fields:[{l:'Visitor Full Name',p:'Full name of your guest',id:'f-vis-name'},{l:'Visitor Relationship to You',p:'e.g. Family, Friend, Business',id:'f-vis-rel'},{l:'Visiting Date',p:'',type:'date',id:'f-vis-date'},{l:'Visiting Time',p:'e.g. 2:00 PM – 5:00 PM',id:'f-vis-time'},{l:'Purpose of Visit',p:'e.g. Personal visit, birthday',id:'f-vis-purpose'},{l:'Vehicle Plate (if any)',p:'Leave blank if on foot',id:'f-vis-plate'},{l:'Parking Needed?',p:'Yes — requesting parking slot / No — no vehicle',id:'f-vis-parking'},{l:'Expected Arrival',p:'e.g. 2:00 PM',id:'f-vis-arrival'},{l:'Expected Departure',p:'e.g. 5:00 PM',id:'f-vis-depart'}]},
   parking:{title:'Guest Parking Sticker Request',fields:[{l:'Vehicle Owner Name',p:'Full name',id:'f-pk-owner'},{l:'Vehicle Make & Model',p:'e.g. Toyota Vios 2020',id:'f-pk-car'},{l:'Plate Number',p:'e.g. ABC 1234',id:'f-pk-plate'},{l:'Duration Needed',p:'e.g. 1 day, 1 week',id:'f-pk-dur'},{l:'Reason / Purpose',p:'Why the vehicle needs to park inside',id:'f-pk-reason'}]},
   gatepass:{title:'Gate Pass Request',fields:[{l:'Name of Person / Company',p:'Person or service company name',id:'f-gp-name'},{l:'Type of Entry',p:'e.g. Delivery, Repair, Construction',id:'f-gp-type'},{l:'Valid Date(s)',p:'e.g. April 20–22, 2026',id:'f-gp-dates'},{l:'Entry Time',p:'e.g. 8:00 AM – 5:00 PM',id:'f-gp-time'},{l:'Description of Items / Work',p:'What will be brought in or done',id:'f-gp-items'},{l:'Requesting Resident',p:'Your name and unit number',id:'f-gp-resident'}]},
   concern:{title:'Concern / Complaint Letter',fields:[{l:'Subject / Title of Concern',p:'Brief description of the issue',id:'f-co-subject'},{l:'Full Description',p:'Describe in detail what happened',id:'f-co-body',area:true},{l:'Location / Area Affected',p:'e.g. Block 7, near Unit 12B',id:'f-co-loc'},{l:'Date / Time of Incident',p:'When did this happen?',id:'f-co-when'},{l:'Requested Action',p:'What do you want HOA to do?',id:'f-co-action'}]},
@@ -1514,7 +1568,7 @@ function generateDocument(){
   const today=new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'});
   const refNo='REF-'+Math.floor(Math.random()*90000+10000)+'-'+new Date().getFullYear();
   let docBody='';
-  if(S.currentForm==='visitor'){docBody=`<p>This is to certify that <strong class="doc-field">${vals['f-vis-name']}</strong>, a <strong class="doc-field">${vals['f-vis-rel']}</strong>, is hereby authorized to enter <strong>${S.sub}</strong> to visit <strong class="doc-field">Unit 12B — Jose Reyes</strong>.</p><br><p><strong>Date of Visit:</strong> <span class="doc-field">${vals['f-vis-date']}</span><br><strong>Time:</strong> <span class="doc-field">${vals['f-vis-time']}</span><br><strong>Purpose:</strong> <span class="doc-field">${vals['f-vis-purpose']}</span><br><strong>Vehicle Plate:</strong> <span class="doc-field">${vals['f-vis-plate']}</span></p><br><p>The undersigned resident takes full responsibility for the conduct of the said visitor while inside the subdivision premises.</p>`;}
+  if(S.currentForm==='visitor'){const visQrRef='VIS-'+genCode();docBody=`<p>This is to certify that <strong class="doc-field">${vals['f-vis-name']}</strong>, a <strong class="doc-field">${vals['f-vis-rel']}</strong>, is hereby authorized to enter <strong>${S.sub}</strong> to visit <strong class="doc-field">Unit 12B — Jose Reyes</strong>.</p><br><p><strong>Date of Visit:</strong> <span class="doc-field">${vals['f-vis-date']}</span><br><strong>Time:</strong> <span class="doc-field">${vals['f-vis-arrival']}</span> – <span class="doc-field">${vals['f-vis-depart']}</span><br><strong>Purpose:</strong> <span class="doc-field">${vals['f-vis-purpose']}</span><br><strong>Vehicle Plate:</strong> <span class="doc-field">${vals['f-vis-plate']||'N/A — On foot'}</span><br><strong>Parking Request:</strong> <span class="doc-field">${vals['f-vis-parking']||'Not requested'}</span></p><br><p>The undersigned resident takes full responsibility for the conduct of the said visitor while inside the subdivision premises.</p><br><div style="background:var(--bg);border-radius:8px;padding:10px 12px;margin-top:8px"><div style="font-family:var(--font);font-weight:800;font-size:12px;color:var(--p1);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px">📲 Visitor Gate Pass QR Code</div><div style="font-family:var(--font);font-weight:900;font-size:16px;color:var(--acc);letter-spacing:0.15em">${visQrRef}</div><div style="font-size:11px;color:var(--muted);margin-top:3px">This reference code will be converted to a QR pass upon HOA approval. The visitor must present this at the gate.</div></div>`;}
   else if(S.currentForm==='parking'){docBody=`<p>I, <strong>Jose Reyes</strong>, a resident of <strong>Unit 12B, ${S.sub}</strong>, am respectfully requesting a temporary guest parking pass for the following vehicle:</p><br><p><strong>Vehicle Owner:</strong> <span class="doc-field">${vals['f-pk-owner']}</span><br><strong>Make &amp; Model:</strong> <span class="doc-field">${vals['f-pk-car']}</span><br><strong>Plate Number:</strong> <span class="doc-field">${vals['f-pk-plate']}</span><br><strong>Duration:</strong> <span class="doc-field">${vals['f-pk-dur']}</span><br><strong>Reason:</strong> <span class="doc-field">${vals['f-pk-reason']}</span></p><br><p>I understand that this parking pass is subject to HOA rules and regulations and may be revoked at any time.</p>`;}
   else if(S.currentForm==='gatepass'){docBody=`<p>This serves as a formal request for a Gate Pass for the following person/service to enter <strong>${S.sub}</strong>:</p><br><p><strong>Name / Company:</strong> <span class="doc-field">${vals['f-gp-name']}</span><br><strong>Type of Entry:</strong> <span class="doc-field">${vals['f-gp-type']}</span><br><strong>Valid Dates:</strong> <span class="doc-field">${vals['f-gp-dates']}</span><br><strong>Time:</strong> <span class="doc-field">${vals['f-gp-time']}</span><br><strong>Items / Work:</strong> <span class="doc-field">${vals['f-gp-items']}</span></p><br><p>Requested by: <span class="doc-field">${vals['f-gp-resident']}</span></p><br><p>The requesting resident guarantees that the above individual/service provider has been authorized and will comply with all subdivision rules during the duration of their visit.</p>`;}
   else if(S.currentForm==='concern'){docBody=`<p>Dear HOA Board of Directors,<br><strong>${S.hoa}</strong>,<br>${S.sub}</p><br><p>I, <strong>Jose Reyes</strong> of <strong>Unit 12B, Block 7</strong>, am writing to formally bring to your attention the following concern:</p><br><p><strong>Subject:</strong> <span class="doc-field">${vals['f-co-subject']}</span></p><br><p>${vals['f-co-body']}</p><br><p><strong>Location:</strong> <span class="doc-field">${vals['f-co-loc']}</span><br><strong>Date/Time of Incident:</strong> <span class="doc-field">${vals['f-co-when']}</span></p><br><p>I am respectfully requesting the HOA to: <span class="doc-field">${vals['f-co-action']}</span></p><br><p>I trust that the HOA Board will give this matter the appropriate attention it deserves. Thank you.</p>`;}
@@ -1725,6 +1779,48 @@ function toast(icon,title,msg,sms){
   const s=document.getElementById('t-sms');
   if(sms){s.style.display='block';document.getElementById('t-sms-txt').textContent=sms;}else s.style.display='none';
   openModal('toast-modal');
+}
+
+/* ── BOOKING TABS ── */
+function bkrTab(t){
+  document.getElementById('bkr-tab-svc').classList.toggle('on',t==='svc');
+  document.getElementById('bkr-tab-vis').classList.toggle('on',t==='vis');
+  document.getElementById('bkr-panel-svc').style.display=t==='svc'?'':'none';
+  document.getElementById('bkr-panel-vis').style.display=t==='vis'?'':'none';
+}
+
+/* ── APPROVE VISITOR (sends QR pass SMS) ── */
+function approveVisitor(btn,visitorName,residentUnit,parkingSlot){
+  const slotInput=btn.closest('.bkr').querySelector('input[type=text]');
+  const slot=slotInput?slotInput.value:parkingSlot;
+  const qrCode='VIS-'+genCode();
+  const parkingTxt=slot?`Parking Slot: ${slot}.`:'No parking reserved.';
+  const sms=`CasaConnect: Your visitor request for ${visitorName} has been APPROVED. Gate Pass Code: ${qrCode}. ${parkingTxt} Please share this code with your visitor. – ${S.sub} HOA`;
+  const row=btn.closest('.bkr');
+  const tag=row.querySelector('.tag');
+  if(tag){tag.className='tag tg-green';tag.textContent='Approved';}
+  row.querySelectorAll('.btn').forEach(b=>{b.disabled=true;b.style.opacity='.35';});
+  toast('✅','Visitor Approved!',`${visitorName} approved for ${residentUnit}. QR Pass sent to resident via SMS.`,sms);
+}
+
+/* ── GUARD: VERIFY VISITOR CODE ── */
+function verifyVisitorCode(){
+  const code=document.getElementById('guard-qr-code').value.trim().toUpperCase();
+  if(!code){toast('⚠️','Enter code','Enter the visitor reference code.');return;}
+  const result=document.getElementById('guard-verify-result');
+  // Simulate verification
+  const approved=[
+    {code:'VIS-7A3K',name:'Mark Dela Cruz',unit:'Unit 12B',resident:'Jose Reyes',time:'2:00 PM – 5:00 PM',parking:null},
+    {code:'VIS-9BM2',name:'Carlos Mendoza',unit:'Unit 5A',resident:'Maria Santos',time:'10:00 AM – 12:00 PM',parking:'P-04'},
+  ];
+  const found=approved.find(v=>code.includes(v.code.replace('VIS-',''))||v.code===code);
+  if(found){
+    result.style.display='block';
+    result.innerHTML=`<div style="background:rgba(16,185,129,.08);border:1.5px solid rgba(16,185,129,.3);border-radius:11px;padding:13px"><div style="font-family:var(--font);font-weight:800;font-size:13px;color:var(--green);letter-spacing:0.04em;margin-bottom:7px">✅ VISITOR APPROVED</div><div style="font-family:var(--font);font-weight:700;font-size:14px;color:var(--text);margin-bottom:3px">${found.name}</div><div style="font-size:12px;color:var(--muted)">Visiting ${found.unit} — ${found.resident}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Time: ${found.time}</div>${found.parking?`<div style="margin-top:8px;background:rgba(245,158,11,.12);border-radius:8px;padding:8px 10px"><span style="font-family:var(--font);font-weight:800;font-size:12px;color:var(--amber)">🅿️ PARKING APPROVED · Slot ${found.parking}</span><div style="font-size:11px;color:var(--muted);margin-top:2px">Direct vehicle to visitor parking slot ${found.parking}</div></div>`:'<div style="margin-top:6px;font-size:11px;color:var(--muted)">🚶 No parking — visitor is on foot or parking not requested</div>'}<div style="margin-top:10px"><button class="btn btn-green" style="width:100%" onclick="logEntry(this,'${found.name}','${found.unit}')">✓ Allow Entry</button></div></div>`;
+  } else {
+    result.style.display='block';
+    result.innerHTML=`<div style="background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.25);border-radius:11px;padding:13px"><div style="font-family:var(--font);font-weight:800;font-size:13px;color:var(--red);letter-spacing:0.04em;margin-bottom:4px">❌ NOT FOUND / INVALID</div><div style="font-size:12px;color:var(--muted)">Code "${code}" is not in the approved visitor list. Contact HOA admin for assistance.</div></div>`;
+  }
 }
 
 /* ── INTERACTIVE ── */
