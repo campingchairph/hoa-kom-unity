@@ -164,7 +164,20 @@
           <div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill on" onclick="selPill(this)">⚠️ Urgent</div><div class="pill" onclick="selPill(this)">📋 Update</div><div class="pill" onclick="selPill(this)">📅 Event</div><div class="pill" onclick="selPill(this)">💵 Reminder</div></div></div>
           <div class="fg"><span class="lbl">Title</span><input class="inp" type="text" placeholder="Brief, clear title" id="a-ann-t"></div>
           <div class="fg"><span class="lbl">Details</span><textarea class="inp" placeholder="Full announcement…" style="min-height:90px" id="a-ann-b"></textarea></div>
-          <div class="fg"><span class="lbl">Target Blocks (blank = all)</span><input class="inp" type="text" placeholder="e.g. Block 5, 6, 7"></div>
+          <div class="fg">
+            <span class="lbl">Send To</span>
+            <div class="block-picker" id="admin-block-picker">
+              <div class="bp-all-row">
+                <label class="bp-check-item bp-all">
+                  <input type="checkbox" id="bp-all" onchange="bpToggleAll(this,'admin-block-picker')" checked>
+                  <span class="bp-check-box"></span>
+                  <span class="bp-check-lbl">📢 All Residents</span>
+                </label>
+              </div>
+              <div class="bp-divider"></div>
+              <div id="bp-groups-admin" class="bp-groups"></div>
+            </div>
+          </div>
           <div class="fg"><span class="lbl">Event Date (if applicable)</span><input class="inp" type="date"></div>
           <div class="fg"><span class="lbl">Photo (optional)</span>
             <div class="post-photo-preview" id="ann-photo-prev">
@@ -471,7 +484,7 @@
       <!-- UPDATES (date + category toggle) -->
       <div class="pg" id="rp-updates">
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">📋 All Updates</div></div></div>
-        <div class="view-toggle"><div class="vt-btn on" id="upd-view-date" onclick="updView('date')">📅 By Date</div><div class="vt-btn" id="upd-view-cat" onclick="updView('cat')">🗂 By Category</div></div>
+        <div class="view-toggle"><div class="vt-btn on" id="upd-view-date" onclick="updView('date')">📅 By Date</div><div class="vt-btn" id="upd-view-cat" onclick="updView('cat')">🗂 By Category</div><div class="vt-btn" id="upd-view-block" onclick="updView('block')">🏠 My Block</div></div>
 
         <!-- Date view -->
         <div id="upd-date-panel">
@@ -494,9 +507,21 @@
           <div class="cat-card" onclick="openCatDrillIn('utilities')"><div class="cat-ic" style="background:rgba(245,158,11,.1)">💧</div><div class="cat-body"><div class="cat-title">Utilities &amp; Garbage</div><div class="cat-sub">Water, electricity, garbage schedule</div></div><div class="cat-count">2</div></div>
           <div class="cat-card" onclick="openCatDrillIn('reminders')"><div class="cat-ic" style="background:rgba(15,33,55,.07)">💵</div><div class="cat-body"><div class="cat-title">Dues &amp; Reminders</div><div class="cat-sub">Monthly dues, fees, payments</div></div><div class="cat-count">1</div></div>
         </div>
-      </div>
 
-      <!-- SERVICES page -->
+        <!-- My Block view -->
+        <div id="upd-block-panel" style="display:none">
+          <div style="padding:12px 14px 4px;display:flex;align-items:center;gap:8px">
+            <div style="background:rgba(0,184,151,.1);border-radius:8px;padding:6px 10px;font-family:var(--font);font-weight:700;font-size:12px;color:var(--acc);letter-spacing:0.03em" id="upd-block-badge">📍 Phase 2 · Block 7</div>
+            <div style="font-size:11px;color:var(--muted)">Posts sent to your block only</div>
+          </div>
+          <div id="upd-block-list">
+            <div class="uc" style="border-left-color:var(--amber)"><div class="uc-ic" style="background:rgba(245,158,11,.1)">🚨</div><div class="uc-b"><div class="uc-t">Stray dog near Block 7 Gate B</div><div class="uc-p">Please be careful exiting through Gate B this evening.</div><div class="uc-f"><span class="uc-tm">Today · 3:00 PM</span><span class="tag tg-amber">Alert · Block 7</span></div></div></div>
+            <div class="uc" style="border-left-color:var(--acc)"><div class="uc-ic" style="background:rgba(0,184,151,.1)">📋</div><div class="uc-b"><div class="uc-t">Street light repair — Block 7 Lamp Post 3</div><div class="uc-p">Scheduled repair this Friday 9AM. Expect reduced lighting Wednesday night.</div><div class="uc-f"><span class="uc-tm">Apr 16</span><span class="tag tg-teal">Info · Block 7</span></div></div></div>
+            <div class="uc" style="border-left-color:var(--red)"><div class="uc-ic" style="background:rgba(239,68,68,.1)">⚠️</div><div class="uc-b"><div class="uc-t">Water interruption tonight 10PM–2AM</div><div class="uc-p">Blocks 5–9 affected. Scheduled maintenance on main water line.</div><div class="uc-f"><span class="uc-tm">Today · 8:00 AM</span><span class="tag tg-red">Urgent · All Blocks</span></div></div></div>
+          </div>
+          <div style="padding:10px 14px;font-size:12px;color:var(--muted);text-align:center">Only showing announcements sent to Phase 2 · Block 7</div>
+        </div>
+      </div>
       <div class="pg" id="rp-services">
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">🛎️ All Services</div><div class="subhdr-sub">Tap a service to book or request</div></div></div>
         <div class="svc-3col mt12" id="r-svc-grid">
@@ -633,19 +658,44 @@
       </div>
 
       <!-- LEADER PAGES -->
-      <div class="pg" id="rp-post"><div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">📢 Post to My Block</div><div class="subhdr-sub">Block 7 &amp; 8 only</div></div></div><div class="px mt12"><div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill on" onclick="selPill(this)">🚨 Alert</div><div class="pill" onclick="selPill(this)">📋 Info</div><div class="pill" onclick="selPill(this)">🎉 Event</div><div class="pill" onclick="selPill(this)">📌 Reminder</div></div></div><div class="fg"><span class="lbl">Title</span><input class="inp" type="text" placeholder="Brief title…" id="l-post-t"></div><div class="fg"><span class="lbl">Message</span><textarea class="inp" placeholder="Your message to Block 7 &amp; 8…" style="min-height:90px" id="l-post-b"></textarea></div><div class="fg"><span class="lbl">Photo (optional)</span>
-              <div class="post-photo-preview" id="l-photo-prev">
-                <img id="l-photo-prev-img" src="" alt="">
-                <button class="post-photo-remove" onclick="clearPostPhoto('l-photo-prev','l-photo-prev-img','l-photo-inp')">✕</button>
+      <div class="pg" id="rp-post">
+        <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">📢 Post to My Block</div><div class="subhdr-sub" id="l-post-subhdr-sub">My assigned blocks</div></div></div>
+        <div class="px mt12">
+          <div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill on" onclick="selPill(this)">🚨 Alert</div><div class="pill" onclick="selPill(this)">📋 Info</div><div class="pill" onclick="selPill(this)">🎉 Event</div><div class="pill" onclick="selPill(this)">📌 Reminder</div></div></div>
+          <div class="fg"><span class="lbl">Title</span><input class="inp" type="text" placeholder="Brief title…" id="l-post-t"></div>
+          <div class="fg"><span class="lbl">Message</span><textarea class="inp" placeholder="Your message…" style="min-height:90px" id="l-post-b"></textarea></div>
+          <div class="fg">
+            <span class="lbl">Send To</span>
+            <div class="block-picker" id="leader-block-picker">
+              <div class="bp-all-row">
+                <label class="bp-check-item bp-all">
+                  <input type="checkbox" id="bp-leader-all" onchange="bpToggleAll(this,'leader-block-picker')" checked>
+                  <span class="bp-check-box"></span>
+                  <span class="bp-check-lbl">📢 All My Blocks</span>
+                </label>
               </div>
-              <div class="post-photo-upload" onclick="pickPostPhoto('l-photo-inp')">
-                <div class="ppu-ic">📷</div>
-                <div class="ppu-t">Add Photo</div>
-                <div class="ppu-s">JPG, PNG — shown on post card</div>
-              </div>
-              <input type="file" id="l-photo-inp" accept="image/*" style="display:none" onchange="loadPostPhoto(this,'l-photo-prev','l-photo-prev-img')">
+              <div class="bp-divider"></div>
+              <div id="bp-groups-leader" class="bp-groups"></div>
             </div>
-<div class="tog-row" onclick="this.querySelector('.tog').classList.toggle('on')"><div class="tog-l"><span class="tog-ic">📲</span><div><div class="tog-t">Also send SMS to block residents</div></div></div><div class="tog on"></div></div><button class="btn btn-acc" onclick="leaderPost()">📢 Post to My Block</button></div><div class="sec mt16"><span class="sec-t">My Block Posts</span></div><div id="l-posts"><div class="post-card" style="border-left-color:var(--amber)"><div class="post-head"><span class="post-title">🚨 Stray dog near Block 7 Gate B</span><span class="tag tg-amber">Alert</span></div><div class="post-body">Please be careful exiting through Gate B.</div><div class="post-foot"><span class="post-tm">Today · 3:00 PM</span><span class="post-del" onclick="removePost(this)">Delete</span></div></div></div></div>
+          </div>
+          <div class="fg"><span class="lbl">Photo (optional)</span>
+            <div class="post-photo-preview" id="l-photo-prev">
+              <img id="l-photo-prev-img" src="" alt="">
+              <button class="post-photo-remove" onclick="clearPostPhoto('l-photo-prev','l-photo-prev-img','l-photo-inp')">✕</button>
+            </div>
+            <div class="post-photo-upload" onclick="pickPostPhoto('l-photo-inp')">
+              <div class="ppu-ic">📷</div><div class="ppu-t">Add Photo</div><div class="ppu-s">JPG, PNG — shown on post card</div>
+            </div>
+            <input type="file" id="l-photo-inp" accept="image/*" style="display:none" onchange="loadPostPhoto(this,'l-photo-prev','l-photo-prev-img')">
+          </div>
+          <div class="tog-row" onclick="this.querySelector('.tog').classList.toggle('on')"><div class="tog-l"><span class="tog-ic">📲</span><div><div class="tog-t">Also send SMS to block residents</div></div></div><div class="tog on"></div></div>
+          <button class="btn btn-acc" onclick="leaderPost()">📢 Post to My Block</button>
+        </div>
+        <div class="sec mt16"><span class="sec-t">My Block Posts</span></div>
+        <div id="l-posts">
+          <div class="post-card" style="border-left-color:var(--amber)"><div class="post-head"><span class="post-title">🚨 Stray dog near Block 7 Gate B</span><span class="tag tg-amber">Alert</span></div><div class="post-body">Please be careful exiting through Gate B.</div><div class="post-foot"><span class="post-tm">Today · 3:00 PM</span><span class="post-del" onclick="removePost(this)">Delete</span></div></div>
+        </div>
+      </div>
       <div class="pg" id="rp-myblock"><div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">🏠 My Block Residents</div><div class="subhdr-sub">Block 7 &amp; 8</div></div></div><div class="srch"><span>🔍</span><input type="text" placeholder="Search resident or unit…"></div><div class="mr"><div class="mr-av">👤</div><div class="mr-info"><div class="mr-name">Jose Reyes</div><div class="mr-meta">Unit 12B · Block 7</div></div><div class="cc-acts"><a href="tel:+639170000010" class="cc-btn cc-call">📞</a><a href="sms:+639170000010" class="cc-btn cc-sms">💬</a></div></div><div class="mr"><div class="mr-av">👤</div><div class="mr-info"><div class="mr-name">Luisa Gomez</div><div class="mr-meta">Unit 11A · Block 7</div></div><div class="cc-acts"><a href="tel:+639170000011" class="cc-btn cc-call">📞</a></div></div></div>
     </div>
 
