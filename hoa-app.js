@@ -16,6 +16,9 @@ let _mt=setInterval(()=>{if(miniIdx<3)miniGoTo(miniIdx+1);else clearInterval(_mt
   t.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40){clearInterval(_mt);miniGoTo(miniIdx+(dx<0?1:-1));}},{passive:true});
 })();
 
+/* ── GREETING ── */
+function getGreeting(){const h=new Date().getHours();return h<12?'Good morning':h<18?'Good afternoon':'Good evening';}
+
 /* ── SCREEN NAV ── */
 function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
 
@@ -50,9 +53,7 @@ function fmtCode(el){let v=el.value.replace(/[^A-Z0-9a-z]/gi,'').toUpperCase().s
 
 /* ── SPLASH ── */
 function setSplash(role,name,addr,roleLabel){
-  const h=new Date().getHours();
-  const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  document.getElementById('splash-hello').textContent=greet;
+  document.getElementById('splash-hello').textContent=getGreeting();
   document.getElementById('splash-name').textContent=name;
   document.getElementById('splash-sub').textContent=S.sub;
   document.getElementById('splash-role').textContent=roleLabel+' · '+(addr||S.sub);
@@ -73,7 +74,7 @@ function enterDashboard(){
     document.getElementById('r-other-leaders').style.display='block';
     document.getElementById('r-av').style.background='var(--purple)';
     document.getElementById('r-av').textContent='RC';
-    document.getElementById('r-title-lbl').textContent='Good morning, Roberto';
+    document.getElementById('r-title-lbl').textContent=getGreeting()+', Roberto';
     addLeaderTabs();
   } else if(S.role==='resident'){
     document.getElementById('leader-dash-panel').style.display='none';
@@ -82,7 +83,7 @@ function enterDashboard(){
     document.getElementById('r-other-leaders').style.display='none';
     document.getElementById('r-av').style.background='var(--acc)';
     document.getElementById('r-av').textContent='JR';
-    document.getElementById('r-title-lbl').textContent='Good morning, Jose';
+    document.getElementById('r-title-lbl').textContent=getGreeting()+', Jose';
     S.name='Jose';
     removeLeaderTabs();
     const smBtn=document.getElementById('r-simple-btn');if(smBtn)smBtn.style.display='';
@@ -147,8 +148,10 @@ function aNav(p){
 function updView(v){
   document.getElementById('upd-view-date').classList.toggle('on',v==='date');
   document.getElementById('upd-view-cat').classList.toggle('on',v==='cat');
+  document.getElementById('upd-view-block').classList.toggle('on',v==='block');
   document.getElementById('upd-date-panel').style.display=v==='date'?'':'none';
   document.getElementById('upd-cat-panel').style.display=v==='cat'?'':'none';
+  document.getElementById('upd-block-panel').style.display=v==='block'?'':'none';
 }
 function openCatDrillIn(cat){
   const catData={
@@ -448,24 +451,30 @@ function postAnn(){const imgEl=document.getElementById("ann-photo-prev-img");con
   const pill=document.querySelector('#ap-post .pill.on')?.textContent||'📋 Update';
   const colors={'Urgent':'var(--red)','Update':'var(--acc)','Event':'var(--purple)','Reminder':'var(--amber)'};
   const col=Object.entries(colors).find(([k])=>pill.includes(k))?.[1]||'var(--acc)';
+  const targets=bpGetSelected('admin-block-picker');
+  const targetLbl=targets.length===0?'All Residents':targets.join(', ');
   const d=document.createElement('div');d.className='post-card';d.style.borderLeftColor=col;
-  d.innerHTML=`${imgSrc?"<img class=\"post-card-img\" src=\""+imgSrc+"\">":""}<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-navy">${pill.substring(2).trim()}</span></div><div class="post-body">${b||"No details."}</div><div class="post-foot"><span class="post-tm">Just now · All blocks</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
+  d.dataset.targets=JSON.stringify(targets);
+  d.innerHTML=`${imgSrc?"<img class=\"post-card-img\" src=\""+imgSrc+"\">":""}<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-navy">${pill.substring(2).trim()}</span></div><div class="post-body">${b||"No details."}</div><div class="post-foot"><span class="post-tm">Just now · ${targetLbl}</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
   document.getElementById('a-all-posts').prepend(d);
   document.getElementById('a-ann-t').value='';document.getElementById('a-ann-b').value='';
   clearPostPhoto('ann-photo-prev','ann-photo-prev-img','ann-photo-inp');
-  toast('📢','Published!',`"${t}" is now live.`,`CasaConnect ALERT: ${t}. Check the app for details. – ${S.sub} HOA`);
+  toast('📢','Published!',`"${t}" sent to: ${targetLbl}.`,`CasaConnect ALERT: ${t}. Check the app for details. – ${S.sub} HOA`);
 }
 function leaderPost(){
   const t=document.getElementById('l-post-t').value||'Notice';const b=document.getElementById('l-post-b').value||'';
   const pill=document.querySelector('#rp-post .pill.on')?.textContent||'📌 Reminder';
   const imgEl=document.getElementById('l-photo-prev-img');
   const imgSrc=imgEl&&imgEl.src&&!imgEl.src.endsWith('hoa-app.js')?imgEl.src:'';
+  const targets=bpGetSelected('leader-block-picker');
+  const targetLbl=targets.length===0?'All My Blocks':targets.join(', ');
   const d=document.createElement('div');d.className='post-card';d.style.borderLeftColor='var(--amber)';
-  d.innerHTML=`${imgSrc?`<img class="post-card-img" src="${imgSrc}">`:''}<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-amber">Block Post</span></div><div class="post-body">${b}</div><div class="post-foot"><span class="post-tm">Just now · Block 7 & 8</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
+  d.dataset.targets=JSON.stringify(targets);
+  d.innerHTML=`${imgSrc?`<img class="post-card-img" src="${imgSrc}">`:''}<div class="post-head"><span class="post-title">${pill.substring(0,2)} ${t}</span><span class="tag tg-amber">Block Post</span></div><div class="post-body">${b}</div><div class="post-foot"><span class="post-tm">Just now · ${targetLbl}</span><span class="post-del" onclick="removePost(this)">Delete</span></div>`;
   document.getElementById('l-posts').prepend(d);
   document.getElementById('l-post-t').value='';document.getElementById('l-post-b').value='';
   clearPostPhoto('l-photo-prev','l-photo-prev-img','l-photo-inp');
-  toast('📢','Posted!',`Block post "${t}" sent.`);rNav('home');
+  toast('📢','Posted!',`Block post "${t}" sent to: ${targetLbl}.`);rNav('home');
 }
 function pickPostPhoto(inputId){document.getElementById(inputId).click();}
 function loadPostPhoto(inp,prevWrapperId,prevImgId){
@@ -635,6 +644,7 @@ Examples: Phase 3, Block 5, Tower A, Floor 2`);
   const sel=document.getElementById('qa-group');
   if(sel){const opt=document.createElement('option');opt.value=newId;opt.textContent=name.trim();sel.appendChild(opt);}
   toast('✅','Group Added!',`"${name.trim()}" added to your HOA structure. You can now assign members to this group.`);
+  refreshPickersFromTree();
 }
 function quickAddMember(){
   const nm=document.getElementById('qa-name').value;
@@ -687,7 +697,7 @@ let _smPendingFn='';
 function isSimpleMode(){return S.role==='resident'&&localStorage.getItem('hoa_simple')==='1';}
 
 function enterDashboardSimple(){
-  document.getElementById('sm-hello').textContent='Hello, '+S.name+'!';
+  document.getElementById('sm-hello').textContent=getGreeting()+', '+S.name+'!';
   document.getElementById('sm-sub').textContent=S.sub;
   showScr('scr-simple');
 }
@@ -764,4 +774,90 @@ function smDoVisitor(){
 }
 function smDoRepair(){
   toast('🔧','Request Submitted!','Your repair request has been sent to the HOA maintenance team.\n\nThey will contact you to arrange a visit.','CasaConnect: Repair request from Jose Reyes. ⚠️ Submitted via Simple Mode — please call resident to confirm.');
+}
+
+/* ════════════════════════════════
+   BLOCK PICKER
+════════════════════════════════ */
+
+// Central store of HOA groups (populated from hoa-tree + dynamically added nodes)
+const HOA_GROUPS=[
+  {id:'phase1',label:'Phase 1',depth:1,children:[
+    {id:'p1b1',label:'Block 1',depth:2,children:[]},
+    {id:'p1b2',label:'Block 2',depth:2,children:[]},
+  ]},
+  {id:'phase2',label:'Phase 2',depth:1,children:[]},
+];
+
+// Render group checkboxes into a picker container
+function bpRender(containerId,groups,allCheckId){
+  const el=document.getElementById(containerId);if(!el)return;
+  el.innerHTML='';
+  function renderNode(node,prefix){
+    const fullLabel=prefix?`${prefix} › ${node.label}`:node.label;
+    const hdr=document.createElement('div');
+    hdr.className='bp-group-hdr';
+    hdr.innerHTML=`<span class="bp-group-hdr-ic">${node.depth<=1?'🏘️':'🏠'}</span>${node.label}`;
+    el.appendChild(hdr);
+    // checkbox for this node itself
+    const item=document.createElement('label');
+    item.className='bp-check-item';
+    item.innerHTML=`<input type="checkbox" value="${node.id}" data-label="${fullLabel}" onchange="bpOnChange('${allCheckId}','${containerId}')"><span class="bp-check-box"></span><span class="bp-check-lbl">${fullLabel}</span>`;
+    el.appendChild(item);
+    // render children
+    if(node.children&&node.children.length){
+      node.children.forEach(ch=>renderNode(ch,node.label));
+    }
+  }
+  groups.forEach(g=>renderNode(g,''));
+}
+
+function bpOnChange(allCheckId,containerId){
+  // If any individual is unchecked, uncheck "All"
+  const allCb=document.getElementById(allCheckId);
+  const checks=document.querySelectorAll(`#${containerId} .bp-groups input[type=checkbox]`);
+  const anyUnchecked=[...checks].some(c=>!c.checked);
+  if(allCb)allCb.checked=!anyUnchecked;
+}
+
+function bpToggleAll(allCb,pickerId){
+  const checks=document.querySelectorAll(`#${pickerId} .bp-groups input[type=checkbox]`);
+  checks.forEach(c=>c.checked=allCb.checked);
+}
+
+function bpGetSelected(pickerId){
+  const allCb=document.querySelector(`#${pickerId} .bp-all-row input`);
+  if(allCb&&allCb.checked)return[]; // empty = all
+  const checks=document.querySelectorAll(`#${pickerId} .bp-groups input[type=checkbox]:checked`);
+  return [...checks].map(c=>c.dataset.label);
+}
+
+// Init pickers when app loads
+function initBlockPickers(){
+  bpRender('bp-groups-admin',HOA_GROUPS,'bp-all');
+  // Leader only sees their own blocks (Phase 2 in demo)
+  const leaderGroups=HOA_GROUPS.filter(g=>g.id==='phase2'||g.children.length===0?false:true);
+  bpRender('bp-groups-leader',HOA_GROUPS,'bp-leader-all');
+}
+
+// Call after HOA structure loads
+document.addEventListener('DOMContentLoaded',initBlockPickers);
+
+// When a new group is added via openAddGroup, also push to HOA_GROUPS and re-render pickers
+const _origOpenAddGroup=typeof openAddGroup==='function'?openAddGroup:null;
+function refreshPickersFromTree(){
+  // Re-read tree DOM to build updated groups list (simple: just add new leaf nodes)
+  const allNodes=document.querySelectorAll('#hoa-tree .hoa-node');
+  HOA_GROUPS.length=0;
+  // Parse top-level children of root
+  const rootChildren=document.querySelectorAll('[data-id="root"] > .hoa-children > .hoa-node');
+  rootChildren.forEach(node=>{
+    const id=node.dataset.id;const depth=parseInt(node.dataset.depth||1);
+    const label=node.querySelector('.hoa-node-name')?.textContent||id;
+    const childNodes=node.querySelectorAll(':scope > .hoa-children > .hoa-node');
+    const children=[...childNodes].map(ch=>({id:ch.dataset.id,label:ch.querySelector('.hoa-node-name')?.textContent||ch.dataset.id,depth:parseInt(ch.dataset.depth||2),children:[]}));
+    HOA_GROUPS.push({id,label,depth,children});
+  });
+  bpRender('bp-groups-admin',HOA_GROUPS,'bp-all');
+  bpRender('bp-groups-leader',HOA_GROUPS,'bp-leader-all');
 }
