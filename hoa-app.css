@@ -588,3 +588,21 @@ select.inp{cursor:pointer}
 .sm-confirm-no{width:100%;max-width:320px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);border-radius:14px;padding:16px;font-family:var(--font);font-weight:700;font-size:16px;color:rgba(255,255,255,.7);cursor:pointer}
 /* Simple mode tag on admin side */
 .simple-tag{display:inline-block;background:rgba(245,158,11,.15);border:1.5px solid rgba(245,158,11,.4);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:800;color:var(--amber);letter-spacing:0.05em;text-transform:uppercase;margin-left:6px}
+
+/* ── BLOCK PICKER ── */
+.block-picker{background:var(--bg);border:1.5px solid var(--border);border-radius:11px;overflow:hidden}
+.bp-all-row{padding:10px 12px}
+.bp-divider{height:1px;background:var(--border)}
+.bp-groups{padding:8px 12px 10px;display:flex;flex-direction:column;gap:4px}
+.bp-group-hdr{font-family:var(--font);font-weight:800;font-size:11px;color:var(--muted);letter-spacing:0.07em;text-transform:uppercase;padding:6px 0 4px;display:flex;align-items:center;gap:6px}
+.bp-group-hdr-ic{font-size:13px}
+.bp-check-item{display:flex;align-items:center;gap:9px;padding:7px 6px;border-radius:8px;cursor:pointer;transition:background .12s;user-select:none}
+.bp-check-item:active{background:rgba(0,184,151,.06)}
+.bp-check-item input[type=checkbox]{display:none}
+.bp-check-box{width:20px;height:20px;border:2px solid var(--border);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:12px}
+.bp-check-item input:checked ~ .bp-check-box{background:var(--acc);border-color:var(--acc);color:#fff}
+.bp-check-item input:checked ~ .bp-check-box::after{content:'✓'}
+.bp-check-lbl{font-family:var(--font);font-weight:700;font-size:13px;color:var(--text);letter-spacing:0.02em}
+.bp-all .bp-check-lbl{font-size:14px;color:var(--p1)}
+.bp-check-sub{font-size:11px;color:var(--muted);margin-left:29px;margin-top:-3px;padding-bottom:3px}
+.bp-selected-summary{font-size:11px;color:var(--acc);font-weight:700;margin-top:6px;padding:0 4px}
