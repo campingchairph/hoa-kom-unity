@@ -639,7 +639,7 @@
           <div class="sec"><span class="sec-t">📄 Generated Document</span></div>
           <div id="doc-preview-box" class="doc-preview"></div>
           <div class="px" style="display:flex;gap:8px">
-            <button class="btn btn-p1" style="flex:1" onclick="toast('📲','Submitted!','Your request has been sent to HOA Admin for review and signature.')">📤 Submit to HOA</button>
+            <button class="btn btn-p1" style="flex:1" onclick="submitFormRequest()">📤 Review &amp; Submit</button>
             <button class="btn btn-ghost" style="flex:1" onclick="toast('💾','Saved!','Document saved. You can screenshot or share from here.')">💾 Save Copy</button>
           </div>
         </div>
@@ -654,7 +654,7 @@
         <div class="sec mt12"><span class="sec-t">Available Time Slots</span></div>
         <div class="px"><div class="slot-grid"><div class="slot taken">6:00 AM</div><div class="slot taken">7:00 AM</div><div class="slot">8:00 AM</div><div class="slot on">9:00 AM</div><div class="slot">10:00 AM</div><div class="slot">11:00 AM</div><div class="slot">1:00 PM</div><div class="slot taken">2:00 PM</div><div class="slot">3:00 PM</div></div></div>
         <div class="ibox mt12"><div class="ibox-ic">ℹ️</div><p class="ibox-t">One booking per household per day. <strong>Strikethrough slots</strong> are already taken.</p></div>
-        <div class="px mt12"><button class="btn btn-acc" onclick="toast('🎉','Booking Sent!','Your request is pending TODA approval. You will receive an SMS once confirmed.','CasaConnect: Tricycle booking Sat Apr 19, 9AM received. Pending TODA approval. – Sunset Village HOA')">✓ Submit Booking</button></div>
+        <div class="px mt12"><button class="btn btn-acc" onclick="submitBooking()">✓ Review &amp; Confirm Booking</button></div>
       </div>
 
       <!-- LEADER PAGES -->
@@ -1069,7 +1069,39 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
   </div>
 </div>
 
-<script src="hoa-app.js"></script>
+<!-- ════════════════════════════════
+     BOOKING CONFIRMATION OVERLAY
+════════════════════════════════ -->
+<div class="bconf-overlay" id="bconf-overlay">
+  <div class="bconf-hdr">
+    <div class="bconf-back" onclick="bconfClose()">← Edit</div>
+    <div class="bconf-ic" id="bconf-ic">🛺</div>
+    <div class="bconf-title" id="bconf-title">Confirm Your Booking</div>
+    <div class="bconf-sub" id="bconf-sub">Please review your details before submitting</div>
+  </div>
+  <div class="bconf-body">
+    <div class="bconf-sec">Booking Details</div>
+    <div class="bconf-card" id="bconf-rows"></div>
+    <div class="bconf-simple-notice" id="bconf-simple-notice" style="display:none">
+      <div class="bconf-simple-notice-ic">📱</div>
+      <div class="bconf-simple-notice-b">
+        <div class="bconf-simple-notice-t">Simple Mode Submission</div>
+        <div class="bconf-simple-notice-s">This request was made using Simple Mode. The HOA office will be notified to call and confirm with you directly.</div>
+      </div>
+    </div>
+    <div class="bconf-sec">What Happens Next</div>
+    <div class="bconf-card">
+      <div class="bconf-row"><div class="bconf-row-ic">1️⃣</div><div class="bconf-row-b"><div class="bconf-row-lbl">Submitted</div><div class="bconf-row-val">Your request goes to the HOA / TODA office</div></div></div>
+      <div class="bconf-row"><div class="bconf-row-ic">2️⃣</div><div class="bconf-row-b"><div class="bconf-row-lbl">Review</div><div class="bconf-row-val">Staff reviews and approves your request</div></div></div>
+      <div class="bconf-row"><div class="bconf-row-ic">3️⃣</div><div class="bconf-row-b"><div class="bconf-row-lbl">Confirmation</div><div class="bconf-row-val" id="bconf-next-step">You will receive an SMS once confirmed</div></div></div>
+    </div>
+  </div>
+  <div class="bconf-footer">
+    <button class="bconf-submit" id="bconf-submit-btn" onclick="bconfProceed()">✓ Submit Request</button>
+    <button class="bconf-cancel" onclick="bconfClose()">← Go back and edit</button>
+  </div>
+</div>
+
 <script src="hoa-app.js"></script>
 </body>
 </html>
