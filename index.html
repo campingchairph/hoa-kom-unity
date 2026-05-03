@@ -608,9 +608,9 @@
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">📋 Submit a Request</div><div class="subhdr-sub">Fill out and generate a formal letter</div></div></div>
         <div class="sec mt12"><span class="sec-t">Choose a Form</span></div>
         <div class="form-card-grid">
-          <div class="form-card" onclick="openForm('visitor')"><div class="fc-ic">👤</div><div class="fc-title">Visitor / Guest Registration</div><div class="fc-desc">Pre-register guests before arrival</div></div>
-          <div class="form-card" onclick="openForm('parking')"><div class="fc-ic">🚗</div><div class="fc-title">Guest Parking Request</div><div class="fc-desc">Request sticker for visitor vehicle</div></div>
-          <div class="form-card" onclick="openForm('gatepass')"><div class="fc-ic">🪪</div><div class="fc-title">Gate Pass Request</div><div class="fc-desc">For workers, deliveries, service vehicles</div></div>
+          <div class="form-card" onclick="openForm('visitor')"><div class="fc-ic">👤</div><div class="fc-title">Register a Visitor / Guest</div><div class="fc-desc">Pre-register guests, include parking if needed</div></div>
+          <div class="form-card" onclick="openForm('gatepass')"><div class="fc-ic">🪪</div><div class="fc-title">Gate Pass for Service / Delivery</div><div class="fc-desc">For repairmen, appliance delivery, third-party services — not for visitors</div></div>
+          <div class="form-card" onclick="openForm('resident-parking')"><div class="fc-ic">🚗</div><div class="fc-title">Special Parking Request</div><div class="fc-desc">For residents needing a temporary non-permanent parking slot</div></div>
           <div class="form-card" onclick="openForm('concern')"><div class="fc-ic">📝</div><div class="fc-title">Concern / Complaint Letter</div><div class="fc-desc">Formal letter to HOA Board</div></div>
           <div class="form-card" onclick="openForm('parking-report')"><div class="fc-ic">🅿️</div><div class="fc-title">Report Illegal Parking</div><div class="fc-desc">File a parking violation report</div></div>
           <div class="form-card" onclick="openForm('maintenance')"><div class="fc-ic">🔧</div><div class="fc-title">Maintenance Request</div><div class="fc-desc">Request repair work from HOA team</div></div>
@@ -833,37 +833,135 @@
 ════════════════════════════════ -->
 <div class="scr" id="scr-guard">
   <div class="app-shell">
-    <div class="topbar"><div class="tb-l"><div class="tb-sub" id="g-sub-lbl">Sunset Village Phase 2</div><div class="tb-title">Guardhouse Station 1</div></div><div class="tb-r"><div class="role-badge" style="background:rgba(239,68,68,.25);color:#fca5a5">GUARD</div><div class="tb-ic" onclick="openNotif()"><span>🔔</span><div class="tb-dot"></div></div></div></div>
+    <div class="topbar"><div class="tb-l"><div class="tb-sub" id="g-sub-lbl">Sunset Village Phase 2</div><div class="tb-title" id="g-title-lbl">Guardhouse Station 1</div></div><div class="tb-r"><div class="role-badge" style="background:rgba(239,68,68,.25);color:#fca5a5">GUARD</div><div class="tb-ic" onclick="openNotif()"><span>🔔</span><div class="tb-dot"></div></div></div></div>
     <div class="page-scroll">
-      <div class="pg on" id="gp-main">
-        <div class="sec" style="padding-top:14px"><span class="sec-t">🚨 Emergency</span></div>
-        <div class="guard-action" onclick="window.location='tel:+639170000001'"><div class="ga-ic" style="background:rgba(15,33,55,.07)">🏛️</div><div style="flex:1"><div class="ga-title">Call HOA Admin</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Report incidents or urgent issues</div></div><span style="font-size:18px;color:var(--muted)">›</span></div>
-        <div class="guard-action" onclick="window.location='tel:911'"><div class="ga-ic" style="background:rgba(239,68,68,.1)">🚨</div><div style="flex:1"><div class="ga-title">Emergency Services (911)</div><div style="font-size:11px;color:var(--muted);margin-top:1px">Police, Fire, Ambulance</div></div><span style="font-size:18px;color:var(--muted)">›</span></div>
-        <div class="sec"><span class="sec-t">🪪 Visitor Management</span></div>
-        <div class="vtabs"><div class="vtab on" id="vtab-exp" onclick="switchVTab('exp')">📋 Expected Visitors</div><div class="vtab" id="vtab-walk" onclick="switchVTab('walk')">🚶 Walk-In</div></div>
-        <div id="vpanel-exp">
-          <div class="ibox"><div class="ibox-ic">ℹ️</div><p class="ibox-t">Verify ID and confirm <strong>secret code</strong> to let expected visitors in.</p></div>
-          <div class="vli"><div class="vli-ic" style="background:rgba(0,184,151,.1)">👤</div><div class="vli-b"><div class="vli-name">Mark Dela Cruz</div><div class="vli-dest">Visiting Unit 12B — Jose Reyes</div><div class="vli-code">VIS-7A3K</div><div class="vli-time">Expected today · 2:00 PM – 5:00 PM</div></div><div style="flex-shrink:0"><button class="btn btn-green btn-sm" onclick="logEntry(this,'Mark Dela Cruz','Unit 12B')">✓ In</button></div></div>
-          <div class="vli"><div class="vli-ic" style="background:rgba(0,184,151,.1)">👤</div><div class="vli-b"><div class="vli-name">Rowena Santos</div><div class="vli-dest">Visiting Unit 5A — Maria Santos</div><div class="vli-code">VIS-9BM2</div><div class="vli-time">Expected today · 10:00 AM – 12:00 PM</div></div><div style="flex-shrink:0"><button class="btn btn-green btn-sm" onclick="logEntry(this,'Rowena Santos','Unit 5A')">✓ In</button></div></div>
+
+      <!-- HOME HUB -->
+      <div class="g-sub-pg on" id="gp-home">
+        <!-- Emergency strip -->
+        <div class="g-emerg-strip"><div style="font-size:28px">🚨</div><div style="flex:1"><div class="g-emerg-strip-t">Emergency Hotlines</div><div class="g-emerg-strip-s">Tap a button to call immediately</div></div></div>
+        <div class="g-emerg-btns">
+          <div class="g-emerg-btn" onclick="window.location='tel:911'"><div class="g-emerg-btn-ic">🚑</div><div class="g-emerg-btn-lbl">Emergency</div><div class="g-emerg-btn-num">911</div></div>
+          <div class="g-emerg-btn" onclick="window.location='tel:+639170000001'"><div class="g-emerg-btn-ic">🏛️</div><div class="g-emerg-btn-lbl">HOA Admin</div><div class="g-emerg-btn-num">+63 917 000 0001</div></div>
+          <div class="g-emerg-btn" onclick="window.location='tel:+639170000009'"><div class="g-emerg-btn-ic">👮</div><div class="g-emerg-btn-lbl">Security HQ</div><div class="g-emerg-btn-num">+63 917 000 0009</div></div>
+          <div class="g-emerg-btn" onclick="window.location='tel:+639170000010'"><div class="g-emerg-btn-ic">🔥</div><div class="g-emerg-btn-lbl">BFP / Fire</div><div class="g-emerg-btn-num">+63 917 000 0010</div></div>
         </div>
-        <div id="vpanel-walk" style="display:none">
-          <div class="ibox" style="background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.2)"><div class="ibox-ic">⚠️</div><p class="ibox-t">Walk-in visitors must <strong>leave a valid ID</strong> before entry.</p></div>
-          <div class="px"><div class="fg"><span class="lbl">Visitor Full Name</span><input class="inp" type="text" placeholder="Full name" id="g-v-name"></div><div class="fg"><span class="lbl">Going to (Unit / Resident)</span><input class="inp" type="text" placeholder="e.g. Unit 12B — Jose Reyes" id="g-v-unit"></div><div class="fg"><span class="lbl">Purpose of Visit</span><input class="inp" type="text" placeholder="e.g. Personal visit, delivery…" id="g-v-purpose"></div><div class="fg"><span class="lbl">Vehicle Plate (optional)</span><input class="inp" type="text" placeholder="e.g. ABC 1234"></div><div class="fg"><span class="lbl">ID Left at Gate</span><select class="inp" id="g-v-id"><option>PhilSys / National ID</option><option>Driver's License</option><option>Passport</option><option>SSS / GSIS Card</option><option>Company ID</option></select></div><button class="btn btn-acc" onclick="logWalkIn()">✓ Log Walk-in Entry</button></div>
+        <!-- Hub grid -->
+        <div class="guard-hub-grid">
+          <div class="ghub-card accent" onclick="gNav('visitors')">
+            <div class="ghub-card-ic">🪪</div>
+            <div class="ghub-card-t">Visitor Management</div>
+            <div class="ghub-card-s">Expected, walk-ins & pre-approved</div>
+            <div class="ghub-badge">3 expected today</div>
+          </div>
+          <div class="ghub-card" onclick="gNav('scan')">
+            <div class="ghub-card-ic">📷</div>
+            <div class="ghub-card-t">Scan / Verify QR</div>
+            <div class="ghub-card-s">Check visitor gate pass</div>
+          </div>
+          <div class="ghub-card" onclick="gNav('approvals')">
+            <div class="ghub-card-ic">✅</div>
+            <div class="ghub-card-t">Pending Approvals</div>
+            <div class="ghub-card-s">Requests awaiting your action</div>
+            <div class="ghub-badge red">2 pending</div>
+          </div>
+          <div class="ghub-card" onclick="gNav('notices')">
+            <div class="ghub-card-ic">📢</div>
+            <div class="ghub-card-t">HOA Notices</div>
+            <div class="ghub-card-s">Urgent alerts for your shift</div>
+            <div class="ghub-badge">1 urgent</div>
+          </div>
         </div>
-        <div class="sec mt12"><span class="sec-t">🔍 Scan Visitor QR Pass</span></div>
-        <div class="ibox"><div class="ibox-ic">📲</div><p class="ibox-t">Scan the visitor's QR code or enter their reference code to verify gate and parking authorization.</p></div>
-        <div style="padding:0 14px;margin-bottom:10px">
-          <div style="background:var(--p1);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="toast('🔍','QR Scanner','Point camera at the visitor QR code or gate pass.')"><div style="width:44px;height:44px;background:rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px">📷</div><div style="flex:1"><div style="font-family:var(--font);font-weight:800;font-size:14px;color:#fff;letter-spacing:0.03em">Scan Visitor QR Code</div><div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Tap to open camera scanner</div></div></div>
-          <div style="display:flex;align-items:center;gap:8px;margin:8px 0"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:11px;color:var(--muted)">or enter code</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
-          <div style="display:flex;flex-direction:column;gap:8px"><input class="inp" type="text" placeholder="Enter code e.g. VIS-7A3K or ABCD-EFGH" id="guard-qr-code" style="width:100%;font-family:var(--font);font-weight:700;letter-spacing:0.1em;font-size:17px;padding:14px 12px"><button class="btn btn-acc" onclick="verifyVisitorCode()">✓ Verify</button></div>
-        </div>
-        <div id="guard-verify-result" style="display:none;padding:0 14px;margin-bottom:10px"></div>
-        <div class="sec"><span class="sec-t">✅ Pre-Approved Visitors Today</span></div>
-        <div class="vli"><div class="vli-ic" style="background:rgba(0,184,151,.1)">🟢</div><div class="vli-b"><div class="vli-name">Mark Dela Cruz</div><div class="vli-dest">Unit 12B — Jose Reyes · Gate Pass Only</div><div class="vli-code">VIS-7A3K</div><div class="vli-time">Expected 2:00 PM – 5:00 PM · No parking</div></div><div style="flex-shrink:0"><button class="btn btn-green btn-sm" onclick="logEntry(this,'Mark Dela Cruz','Unit 12B')">✓ In</button></div></div>
-        <div class="vli"><div class="vli-ic" style="background:rgba(245,158,11,.1)">🟡</div><div class="vli-b"><div class="vli-name">Carlos Mendoza</div><div class="vli-dest">Unit 5A — Maria Santos · Gate + Parking</div><div class="vli-code">VIS-9BM2</div><div class="vli-time">Expected 10:00 AM – 12:00 PM · <strong>Slot P-04</strong></div></div><div style="flex-shrink:0"><button class="btn btn-amber btn-sm" onclick="toast('🅿️','Parking Slot P-04','Carlos Mendoza is approved for Gate Entry AND Parking Slot P-04. Please direct vehicle to the visitor parking area.')">View Slot</button></div></div>
-        <div class="sec mt12"><span class="sec-t">📋 HOA Urgent Notices</span></div>
-        <div class="uc" style="border-left-color:var(--red)"><div class="uc-ic" style="background:rgba(239,68,68,.1)">⚠️</div><div class="uc-b"><div class="uc-t">Water interruption tonight 10PM–2AM</div><div class="uc-p">Inform residents entering the gate.</div><div class="uc-f"><span class="uc-tm">Today</span><span class="tag tg-red">Urgent</span></div></div></div>
       </div>
+
+      <!-- VISITOR MANAGEMENT -->
+      <div class="g-sub-pg" id="gp-visitors">
+        <div class="subhdr"><div class="back-btn" onclick="gNav('home')">←</div><div><div class="subhdr-title">🪪 Visitor Management</div></div></div>
+        <div class="vis-tab-row">
+          <div class="vis-tab on" id="gvt-expected" onclick="gVisTab('expected')">📋 Expected</div>
+          <div class="vis-tab" id="gvt-inside" onclick="gVisTab('inside')">✅ Inside</div>
+          <div class="vis-tab" id="gvt-walkin" onclick="gVisTab('walkin')">🚶 Walk-in</div>
+        </div>
+
+        <!-- EXPECTED TAB -->
+        <div id="gvp-expected" style="padding:0 14px 80px">
+          <div class="ibox"><div class="ibox-ic">ℹ️</div><p class="ibox-t">Confirm visitor code before allowing entry. Tap <strong>✓ In</strong> to log them as inside.</p></div>
+          <div style="overflow-x:auto"><table class="vis-table">
+            <thead><tr><th>Visitor</th><th>Going to</th><th>Time</th><th>Parking</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><div style="font-weight:700;color:var(--text)">Mark Dela Cruz</div><div style="font-size:10px;color:var(--muted)">VIS-7A3K</div></td><td><div style="font-weight:600">Unit 12B</div><div style="font-size:10px;color:var(--muted)">Jose Reyes</div></td><td style="white-space:nowrap;color:var(--muted);font-size:11px">2:00–5:00 PM</td><td><span class="vtag vtag-out">None</span></td><td><button class="btn btn-green btn-sm" onclick="logEntry(this,'Mark Dela Cruz','Unit 12B')">✓ In</button></td></tr>
+              <tr><td><div style="font-weight:700;color:var(--text)">Rowena Santos</div><div style="font-size:10px;color:var(--muted)">VIS-9BM2</div></td><td><div style="font-weight:600">Unit 5A</div><div style="font-size:10px;color:var(--muted)">Maria Santos</div></td><td style="white-space:nowrap;color:var(--muted);font-size:11px">10AM–12PM</td><td><span class="vtag vtag-wait">P-04</span></td><td><button class="btn btn-green btn-sm" onclick="logEntry(this,'Rowena Santos','Unit 5A')">✓ In</button></td></tr>
+              <tr><td><div style="font-weight:700;color:var(--text)">Carlos Mendoza</div><div style="font-size:10px;color:var(--muted)">VIS-3CX1</div></td><td><div style="font-weight:600">Unit 7D</div><div style="font-size:10px;color:var(--muted)">Danny Aquino</div></td><td style="white-space:nowrap;color:var(--muted);font-size:11px">3:00–6:00 PM</td><td><span class="vtag vtag-out">None</span></td><td><button class="btn btn-green btn-sm" onclick="logEntry(this,'Carlos Mendoza','Unit 7D')">✓ In</button></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <!-- INSIDE TAB -->
+        <div id="gvp-inside" style="display:none;padding:0 14px 80px">
+          <div style="overflow-x:auto"><table class="vis-table">
+            <thead><tr><th>Visitor</th><th>Going to</th><th>Time In</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><div style="font-weight:700;color:var(--text)">Pedro Bautista</div><div style="font-size:10px;color:var(--muted)">VIS-4DF8</div></td><td><div style="font-weight:600">Unit 3B</div><div style="font-size:10px;color:var(--muted)">Nelia Ramos</div></td><td style="white-space:nowrap;color:var(--muted);font-size:11px">9:14 AM</td><td><span class="vtag vtag-in">Inside</span></td><td><button class="btn btn-sm" style="background:rgba(239,68,68,.1);color:var(--red);border:none" onclick="toast('👋','Exit Logged','Pedro Bautista logged out at '+new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'}))">✓ Out</button></td></tr>
+            </tbody>
+          </table></div>
+          <div style="padding:12px;text-align:center;font-size:12px;color:var(--muted)">1 visitor currently inside</div>
+        </div>
+
+        <!-- WALK-IN TAB -->
+        <div id="gvp-walkin" style="display:none">
+          <div class="ibox" style="background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.2);margin:0 14px"><div class="ibox-ic">⚠️</div><p class="ibox-t">Walk-in visitors must <strong>leave a valid ID</strong> at the gate before entry.</p></div>
+          <div class="px mt12">
+            <div class="fg"><span class="lbl">Visitor Full Name</span><input class="inp" type="text" placeholder="Full name" id="g-v-name"></div>
+            <div class="fg"><span class="lbl">Going to (Unit / Resident)</span><input class="inp" type="text" placeholder="e.g. Unit 12B — Jose Reyes" id="g-v-unit"></div>
+            <div class="fg"><span class="lbl">Purpose of Visit</span><input class="inp" type="text" placeholder="e.g. Personal visit, delivery…" id="g-v-purpose"></div>
+            <div class="fg"><span class="lbl">Vehicle Plate (optional)</span><input class="inp" type="text" placeholder="e.g. ABC 1234"></div>
+            <div class="fg"><span class="lbl">ID Left at Gate</span><select class="inp" id="g-v-id"><option>PhilSys / National ID</option><option>Driver's License</option><option>Passport</option><option>SSS / GSIS Card</option><option>Company ID</option></select></div>
+            <button class="btn btn-acc" onclick="logWalkIn()">✓ Log Walk-in Entry</button>
+          </div>
+          <!-- Recent walk-ins this week -->
+          <div class="sec mt12" style="padding:0 14px"><span class="sec-t">This Week's Walk-ins</span></div>
+          <div style="overflow-x:auto;padding:0 14px 80px"><table class="vis-table">
+            <thead><tr><th>Name</th><th>Unit Visited</th><th>Date</th><th>ID</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:700">Pedro Bautista</td><td>Unit 3B</td><td style="font-size:11px;color:var(--muted)">May 3 · 9AM</td><td style="font-size:11px">PhilSys</td><td><span class="vtag vtag-in">Inside</span></td></tr>
+              <tr><td style="font-weight:700">Ana Villanueva</td><td>Unit 8C</td><td style="font-size:11px;color:var(--muted)">May 2 · 2PM</td><td style="font-size:11px">License</td><td><span class="vtag vtag-out">Left</span></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- SCAN / VERIFY -->
+      <div class="g-sub-pg" id="gp-scan">
+        <div class="subhdr"><div class="back-btn" onclick="gNav('home')">←</div><div><div class="subhdr-title">📷 Scan / Verify QR</div></div></div>
+        <div class="px mt12">
+          <div style="background:var(--p1);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:12px" onclick="toast('🔍','QR Scanner','Point camera at the visitor QR code or gate pass.')"><div style="width:48px;height:48px;background:rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px">📷</div><div style="flex:1"><div style="font-family:var(--font);font-weight:800;font-size:15px;color:#fff;letter-spacing:0.03em">Scan Visitor QR Code</div><div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:2px">Tap to open camera scanner</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:11px;color:var(--muted)">or enter code manually</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
+          <div class="fg"><span class="lbl">Reference Code</span><input class="inp" type="text" placeholder="e.g. VIS-7A3K or ABCD-EFGH" id="guard-qr-code" style="font-family:var(--font);font-weight:700;letter-spacing:0.1em;font-size:17px;padding:14px 12px"></div>
+          <button class="btn btn-acc" onclick="verifyVisitorCode()">✓ Verify Code</button>
+          <div id="guard-verify-result" style="display:none;margin-top:12px"></div>
+        </div>
+      </div>
+
+      <!-- PENDING APPROVALS -->
+      <div class="g-sub-pg" id="gp-approvals">
+        <div class="subhdr"><div class="back-btn" onclick="gNav('home')">←</div><div><div class="subhdr-title">✅ Pending Approvals</div><div class="subhdr-sub">Visitor requests from residents</div></div></div>
+        <div class="px mt12">
+          <div class="vli"><div class="vli-ic" style="background:rgba(245,158,11,.1)">🟡</div><div class="vli-b"><div class="vli-name">Mark Dela Cruz</div><div class="vli-dest">Requested by Jose Reyes — Unit 12B</div><div class="vli-code">Gate only · May 4, 2:00–5:00 PM</div><div class="vli-time">Submitted: Today 8:12 AM</div></div></div>
+          <div style="display:flex;gap:8px;margin:-6px 0 14px"><button class="btn btn-green btn-sm" style="flex:1" onclick="toast('✅','Approved','Mark Dela Cruz visit approved. Resident notified.')">✓ Approve</button><button class="btn btn-sm" style="flex:1;background:rgba(239,68,68,.08);color:var(--red);border:none" onclick="toast('❌','Declined','Visit request declined. Resident notified.')">✕ Decline</button></div>
+          <div class="vli"><div class="vli-ic" style="background:rgba(245,158,11,.1)">🟡</div><div class="vli-b"><div class="vli-name">Ana Villanueva</div><div class="vli-dest">Requested by Carmen Robles — Unit 7D</div><div class="vli-code">Gate + Parking · May 4, 10AM–1PM</div><div class="vli-time">Submitted: Today 9:44 AM</div></div></div>
+          <div style="display:flex;gap:8px;margin:-6px 0 14px"><button class="btn btn-green btn-sm" style="flex:1" onclick="toast('✅','Approved','Ana Villanueva visit + parking approved. Slot P-02 assigned.')">✓ Approve</button><button class="btn btn-sm" style="flex:1;background:rgba(239,68,68,.08);color:var(--red);border:none" onclick="toast('❌','Declined','Visit request declined.')">✕ Decline</button></div>
+        </div>
+      </div>
+
+      <!-- NOTICES -->
+      <div class="g-sub-pg" id="gp-notices">
+        <div class="subhdr"><div class="back-btn" onclick="gNav('home')">←</div><div><div class="subhdr-title">📢 HOA Notices</div><div class="subhdr-sub">For your shift</div></div></div>
+        <div class="px mt12">
+          <div class="uc" style="border-left-color:var(--red)"><div class="uc-ic" style="background:rgba(239,68,68,.1)">⚠️</div><div class="uc-b"><div class="uc-t">Water interruption tonight 10PM–2AM</div><div class="uc-p">Inform residents entering the gate. Blocks 5–9 affected.</div><div class="uc-f"><span class="uc-tm">Today 8:00 AM</span><span class="tag tg-red">Urgent</span></div></div></div>
+          <div class="uc" style="border-left-color:var(--acc)"><div class="uc-ic" style="background:rgba(0,184,151,.1)">📅</div><div class="uc-b"><div class="uc-t">General Assembly — April 25, 5:30 PM</div><div class="uc-p">Direct residents and guests toward the Main Clubhouse.</div><div class="uc-f"><span class="uc-tm">Yesterday</span></div></div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
