@@ -133,8 +133,15 @@ function rNav(p){
   document.getElementById('rbn-'+p)?.classList.add('on');
   if(p==='calendar'){showCalView(null);}
 }
-function rOpenDetail(id){document.querySelectorAll('#scr-resident .pg').forEach(x=>x.classList.remove('on'));document.getElementById(id)?.classList.add('on');}
-function rCloseDetail(){rNav('home');}
+function rOpenDetail(id,from){
+  const cur=document.querySelector('#scr-resident .pg.on');
+  S.prevPage=from||(cur?cur.id.replace('rp-','').replace('rd-',''):'home');
+  document.querySelectorAll('#scr-resident .pg').forEach(x=>x.classList.remove('on'));
+  document.getElementById(id)?.classList.add('on');
+}
+function rCloseDetail(){
+  const back=S.prevPage||'home';S.prevPage=null;rNav(back);
+}
 
 /* ── ADMIN NAV ── */
 function aNav(p){
@@ -315,14 +322,14 @@ const FORMS={
   'parking-report':{title:'Illegal Parking Report',fields:[{l:'Vehicle Plate Number',p:'e.g. ABC 1234',id:'f-pr-plate'},{l:'Vehicle Description',p:'Color, make, model',id:'f-pr-desc'},{l:'Location of Vehicle',p:'e.g. In front of Unit 7D',id:'f-pr-loc'},{l:'Since When Parked',p:'e.g. Since this morning, April 18',id:'f-pr-since'},{l:'Your Unit Number',p:'For reference',id:'f-pr-unit'}]},
   maintenance:{title:'Maintenance Request',fields:[{l:'Type of Repair Needed',p:'e.g. Plumbing, Electrical, Painting',id:'f-mx-type'},{l:'Location / Area',p:'e.g. Unit 12B bathroom, Block 7 alley',id:'f-mx-loc'},{l:'Description of Problem',p:'Describe what needs to be fixed',id:'f-mx-desc',area:true},{l:'Urgency Level',p:'e.g. Urgent, Can wait, Scheduled',id:'f-mx-urgency'},{l:'Preferred Schedule',p:'e.g. Weekdays AM, ASAP',id:'f-mx-sched'}]}
 };
-function openForm(formKey){
+function openForm(formKey,from){
   const f=FORMS[formKey];if(!f)return;
   S.currentForm=formKey;
   document.getElementById('form-fill-title').textContent=f.title;
   const body=document.getElementById('form-fill-body');
   body.innerHTML=f.fields.map(fld=>`<div class="fg"><span class="lbl">${fld.l}</span>${fld.area?`<textarea class="inp" placeholder="${fld.p}" id="${fld.id}" style="min-height:75px"></textarea>`:`<input class="inp" type="${fld.type||'text'}" placeholder="${fld.p}" id="${fld.id}">`}</div>`).join('');
   document.getElementById('doc-preview-area').style.display='none';
-  rOpenDetail('rp-form-fill');
+  rOpenDetail('rp-form-fill',from||S.prevPage||'forms');
 }
 function generateDocument(){
   const f=FORMS[S.currentForm];if(!f)return;
@@ -935,7 +942,38 @@ function submitBooking(){
   });
 }
 
-/* ── FORM / REQUEST ── */
+function submitBookingFor(type){
+  const cfg={
+    pool:{ic:'🏊',label:'Pool / Clubhouse',nextStep:'HOA staff will confirm your slot via SMS'},
+    hall:{ic:'🏟️',label:'Function Hall',nextStep:'HOA Admin will contact you to arrange the deposit and confirm'}
+  }[type];
+  const pageId='rd-'+type;
+  const dateEl=document.querySelector('#'+pageId+' .dc.on');
+  const slotEl=document.querySelector('#'+pageId+' .slot.on:not(.taken)');
+  if(!dateEl){toast('⚠️','Select a Date','Please choose a date before continuing.');return;}
+  if(!slotEl){toast('⚠️','Select a Slot','Please choose an available slot.');return;}
+  const day=dateEl.querySelector('.dc-d').textContent;
+  const num=dateEl.querySelector('.dc-n').textContent;
+  const slot=slotEl.textContent;
+  const smsTag=isSimpleMode()?'\n\n⚠️ Submitted via Simple Mode — please call resident to confirm.':'';
+  bconfOpen({
+    ic:cfg.ic,
+    title:`Confirm ${cfg.label} Booking`,
+    rows:[
+      {ic:'👤',label:'Resident',value:'Jose Reyes — Unit 12B, Block 7'},
+      {ic:'📅',label:'Date',value:`${day}, April ${num}, 2026`},
+      {ic:'🕐',label:'Slot',value:slot},
+      {ic:'📍',label:'Facility',value:cfg.label+' — Sunset Village HOA'},
+    ],
+    nextStep:cfg.nextStep,
+    onProceed:()=>{
+      toast('🎉','Booking Submitted!',`Your ${cfg.label} booking for ${day} April ${num} (${slot}) has been submitted.`,
+        `CasaConnect: ${cfg.label} booking ${day} Apr ${num} from Jose Reyes.${smsTag}`);
+      rCloseDetail();
+    }
+  });
+}
+
 function submitFormRequest(){
   const f=FORMS[S.currentForm];if(!f)return;
   const vals={};
