@@ -606,3 +606,32 @@ select.inp{cursor:pointer}
 .bp-all .bp-check-lbl{font-size:14px;color:var(--p1)}
 .bp-check-sub{font-size:11px;color:var(--muted);margin-left:29px;margin-top:-3px;padding-bottom:3px}
 .bp-selected-summary{font-size:11px;color:var(--acc);font-weight:700;margin-top:6px;padding:0 4px}
+
+/* ════════════════════════════════
+   BOOKING CONFIRMATION SCREEN
+════════════════════════════════ */
+.bconf-overlay{position:fixed;inset:0;background:var(--bg);z-index:8000;display:none;flex-direction:column;overflow-y:auto}
+.bconf-overlay.on{display:flex}
+.bconf-hdr{background:var(--p1);padding:52px 20px 28px;text-align:center;position:relative}
+.bconf-back{position:absolute;top:48px;left:16px;color:rgba(255,255,255,.6);font-size:14px;font-weight:700;cursor:pointer;padding:4px 8px}
+.bconf-ic{font-size:52px;margin-bottom:10px}
+.bconf-title{font-family:var(--font);font-weight:900;font-size:22px;color:#fff;letter-spacing:0.03em;line-height:1.2}
+.bconf-sub{font-size:13px;color:rgba(255,255,255,.55);margin-top:5px}
+.bconf-body{flex:1;padding:20px 16px 120px}
+.bconf-sec{font-family:var(--font);font-weight:800;font-size:11px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin:18px 0 8px}
+.bconf-card{background:#fff;border-radius:14px;box-shadow:var(--sh);overflow:hidden;margin-bottom:12px}
+.bconf-row{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border-bottom:1px solid var(--bg)}
+.bconf-row:last-child{border-bottom:none}
+.bconf-row-ic{font-size:18px;flex-shrink:0;margin-top:1px}
+.bconf-row-b{flex:1}
+.bconf-row-lbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
+.bconf-row-val{font-family:var(--font);font-weight:700;font-size:15px;color:var(--text);line-height:1.3}
+.bconf-simple-notice{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.06));border:1.5px solid rgba(245,158,11,.35);border-radius:12px;padding:13px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.bconf-simple-notice-ic{font-size:20px;flex-shrink:0}
+.bconf-simple-notice-b{flex:1}
+.bconf-simple-notice-t{font-family:var(--font);font-weight:800;font-size:13px;color:var(--amber);letter-spacing:0.02em;margin-bottom:3px}
+.bconf-simple-notice-s{font-size:12px;color:var(--muted);line-height:1.5}
+.bconf-footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;z-index:8001}
+.bconf-submit{width:100%;background:var(--acc);border:none;border-radius:14px;padding:16px;font-family:var(--font);font-weight:900;font-size:17px;letter-spacing:0.03em;color:#fff;cursor:pointer}
+.bconf-submit:active{background:var(--p2)}
+.bconf-cancel{width:100%;background:transparent;border:2px solid var(--border);border-radius:14px;padding:13px;font-family:var(--font);font-weight:700;font-size:15px;color:var(--muted);cursor:pointer}
