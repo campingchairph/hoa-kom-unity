@@ -762,18 +762,24 @@ function smOpenAnn(detailId){
   rOpenDetail(detailId);
 }
 
-/* Simple mode action handlers — submit with simple_mode tag */
+/* Simple mode action handlers */
 function smDoBook(){
-  toast('🛺','Booking Sent!','Your tricycle booking has been submitted.\n\nOur TODA office will call you shortly to confirm.','CasaConnect: Trike booking received from Jose Reyes. ⚠️ Submitted via Simple Mode — please call resident to confirm.');
+  showScr('scr-resident');rOpenDetail('rd-book');
+  // Small delay so screen transition completes, then open confirmation
 }
 function smDoPoolBook(){
-  toast('🏊','Request Sent!','Your pool reservation request has been submitted.\n\nThe HOA office will call you to confirm.','CasaConnect: Pool reservation from Jose Reyes. ⚠️ Submitted via Simple Mode — please call resident to confirm.');
+  bconfOpen({ic:'🏊',title:'Confirm Pool Reservation',
+    rows:[{ic:'👤',label:'Resident',value:'Jose Reyes — Unit 12B, Block 7'},{ic:'🏊',label:'Facility',value:'Swimming Pool / Clubhouse'},{ic:'📅',label:'Date',value:'To be selected'}],
+    nextStep:'HOA Admin will call you to confirm the time slot',
+    onProceed:()=>toast('🏊','Request Sent!','Your pool reservation request has been submitted. The HOA office will call you to confirm.',
+      'CasaConnect: Pool reservation from Jose Reyes.\n\n⚠️ Submitted via Simple Mode — please call resident to confirm.')
+  });
 }
 function smDoVisitor(){
-  toast('👤','Visitor Registered!','The guardhouse has been notified.\n\nThe HOA office will call you to confirm the details.','CasaConnect: Visitor registration from Jose Reyes. ⚠️ Submitted via Simple Mode — please call resident to confirm.');
+  showScr('scr-resident');openForm('visitor');
 }
 function smDoRepair(){
-  toast('🔧','Request Submitted!','Your repair request has been sent to the HOA maintenance team.\n\nThey will contact you to arrange a visit.','CasaConnect: Repair request from Jose Reyes. ⚠️ Submitted via Simple Mode — please call resident to confirm.');
+  showScr('scr-resident');openForm('maintenance');
 }
 
 /* ════════════════════════════════
@@ -860,4 +866,89 @@ function refreshPickersFromTree(){
   });
   bpRender('bp-groups-admin',HOA_GROUPS,'bp-all');
   bpRender('bp-groups-leader',HOA_GROUPS,'bp-leader-all');
+}
+
+/* ════════════════════════════════
+   BOOKING / REQUEST CONFIRMATION
+════════════════════════════════ */
+let _bconfOnProceed=null;
+
+function bconfOpen({ic,title,sub,rows,nextStep,onProceed}){
+  document.getElementById('bconf-ic').textContent=ic;
+  document.getElementById('bconf-title').textContent=title;
+  document.getElementById('bconf-sub').textContent=sub||'Please review your details before submitting';
+  if(nextStep)document.getElementById('bconf-next-step').textContent=nextStep;
+  // Build summary rows
+  const rc=document.getElementById('bconf-rows');
+  rc.innerHTML=rows.map(r=>`<div class="bconf-row"><div class="bconf-row-ic">${r.ic}</div><div class="bconf-row-b"><div class="bconf-row-lbl">${r.label}</div><div class="bconf-row-val">${r.value}</div></div></div>`).join('');
+  // Simple mode notice
+  const sn=document.getElementById('bconf-simple-notice');
+  sn.style.display=isSimpleMode()?'flex':'none';
+  _bconfOnProceed=onProceed;
+  document.getElementById('bconf-overlay').classList.add('on');
+  window.scrollTo(0,0);
+}
+function bconfClose(){
+  document.getElementById('bconf-overlay').classList.remove('on');
+  _bconfOnProceed=null;
+}
+function bconfProceed(){
+  document.getElementById('bconf-overlay').classList.remove('on');
+  if(_bconfOnProceed)_bconfOnProceed();
+  _bconfOnProceed=null;
+}
+
+/* ── TRIKE BOOKING ── */
+function submitBooking(){
+  const dateEl=document.querySelector('#rd-book .dc.on');
+  const slotEl=document.querySelector('#rd-book .slot.on:not(.taken)');
+  if(!dateEl){toast('⚠️','Select a Date','Please choose a date before continuing.');return;}
+  if(!slotEl){toast('⚠️','Select a Time Slot','Please choose an available time slot.');return;}
+  const day=dateEl.querySelector('.dc-d').textContent;
+  const num=dateEl.querySelector('.dc-n').textContent;
+  const slot=slotEl.textContent;
+  const simpleTag=isSimpleMode()?' · Simple Mode':''
+  bconfOpen({
+    ic:'🛺',
+    title:'Confirm Tricycle Booking',
+    rows:[
+      {ic:'👤',label:'Resident',value:'Jose Reyes — Unit 12B, Block 7'},
+      {ic:'📅',label:'Date',value:`${day}, April ${num}, 2026`},
+      {ic:'🕐',label:'Time Slot',value:slot},
+      {ic:'📍',label:'Service',value:'Tricycle / E-Trike — Sunset Village HOA'},
+    ],
+    nextStep:'You will receive an SMS once TODA confirms your booking',
+    onProceed:()=>{
+      const smsTag=isSimpleMode()?'\n\n⚠️ Submitted via Simple Mode — please call resident to confirm.':'';
+      toast('🎉','Booking Submitted!',`Your tricycle booking for ${day} April ${num} at ${slot} has been sent to TODA for approval.`,
+        `CasaConnect: Trike booking ${day} Apr ${num}, ${slot} from Jose Reyes${simpleTag}.${smsTag}`);
+      rCloseDetail();
+    }
+  });
+}
+
+/* ── FORM / REQUEST ── */
+function submitFormRequest(){
+  const f=FORMS[S.currentForm];if(!f)return;
+  const vals={};
+  f.fields.forEach(fld=>{const el=document.getElementById(fld.id);if(el)vals[fld.id]=el.value||'[Not provided]';});
+  // Build summary rows from first 3 filled fields
+  const rows=f.fields.slice(0,4).map(fld=>({
+    ic:'📋',
+    label:fld.l,
+    value:vals[fld.id]||'—'
+  }));
+  rows.unshift({ic:'👤',label:'Submitted By',value:'Jose Reyes — Unit 12B, Block 7'});
+  const smsTag=isSimpleMode()?'\n\n⚠️ Submitted via Simple Mode — please call resident to confirm.':'';
+  bconfOpen({
+    ic:'📄',
+    title:`Confirm: ${f.title}`,
+    sub:'Please review before submitting to HOA Admin',
+    rows,
+    nextStep:'HOA Admin will review and contact you within 24–48 hours',
+    onProceed:()=>{
+      toast('📲','Submitted to HOA!',`Your ${f.title} has been sent to HOA Admin for review. They will contact you within 24–48 hours.`,
+        `CasaConnect: New request — ${f.title} from Jose Reyes, Unit 12B.${smsTag}`);
+    }
+  });
 }
