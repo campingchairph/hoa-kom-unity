@@ -615,12 +615,7 @@
           <div class="form-card" onclick="openForm('parking-report')"><div class="fc-ic">🅿️</div><div class="fc-title">Report Illegal Parking</div><div class="fc-desc">File a parking violation report</div></div>
           <div class="form-card" onclick="openForm('maintenance')"><div class="fc-ic">🔧</div><div class="fc-title">Maintenance Request</div><div class="fc-desc">Request repair work from HOA team</div></div>
         </div>
-        <!-- SUGGEST FEATURES (resident nudge) -->
-        <div style="margin:8px 14px 6px;background:linear-gradient(135deg,rgba(0,184,151,.07),rgba(0,184,151,.03));border:1.5px solid rgba(0,184,151,.18);border-radius:12px;padding:13px 14px">
-          <div style="font-family:var(--font);font-weight:800;font-size:13px;color:var(--text);letter-spacing:0.03em;margin-bottom:4px">💡 Want more from CasaConnect?</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px">Let your HOA admin know you'd love features like bulk SMS alerts, auto-generated monthly reports, custom parking maps, or more booking services.</div>
-          <button class="btn btn-acc" style="font-size:12px;padding:9px" id="suggest-feature-btn" onclick="toast('📨','Suggestion Sent!','Your suggestion has been sent to your HOA admin. They will review and decide if the feature should be activated.')">📨 Suggest a Feature to Admin</button>
-        </div>
+
       </div>
 
       <!-- FORM FILL PAGE -->      <!-- FORM FILL PAGE -->
@@ -629,11 +624,6 @@
         <div id="form-fill-body" class="px mt12"></div>
         <div class="px mt12">
           <button class="btn btn-acc" onclick="generateDocument()" id="generate-doc-btn">📄 Generate Formal Letter</button>
-          <div style="margin-top:8px;background:var(--bg);border:1.5px dashed var(--border);border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;opacity:.65" onclick="toast('🔒','Premium Feature','Custom letter templates with your HOA logo and letterhead are available on CasaConnect Pro. Upgrade to unlock.')">
-            <span style="font-size:20px">🔒</span>
-            <div><div style="font-family:var(--font);font-weight:700;font-size:12px;color:var(--text);letter-spacing:0.03em">Use Custom HOA Template</div><div style="font-size:11px;color:var(--muted)">Pro feature — add your logo, letterhead & signature</div></div>
-            <span style="font-size:11px;font-family:var(--font);font-weight:800;color:var(--amber);background:rgba(245,158,11,.12);padding:3px 8px;border-radius:20px;white-space:nowrap;margin-left:auto">PRO</span>
-          </div>
         </div>
         <div id="doc-preview-area" style="display:none;margin-top:16px;padding-bottom:20px">
           <div class="sec"><span class="sec-t">📄 Generated Document</span></div>
