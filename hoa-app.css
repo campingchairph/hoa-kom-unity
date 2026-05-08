@@ -795,3 +795,29 @@ select.inp{cursor:pointer}
 .tpl-tpl-name{font-family:var(--font);font-weight:800;font-size:14px;color:var(--text);letter-spacing:0.02em}
 .tpl-tpl-meta{font-size:11px;color:var(--muted);margin-top:2px}
 .tpl-tpl-btns{display:flex;gap:6px}
+
+/* ════════════════════════════════
+   HOA TREE SHAPE DEFINER
+════════════════════════════════ */
+.tree-shape-wrap{background:#fff;border-radius:14px;box-shadow:var(--sh);margin:0 14px 10px;overflow:hidden}
+.tree-shape-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer}
+.tree-shape-hdr-l{display:flex;align-items:center;gap:8px}
+.tree-shape-hdr-ic{font-size:18px}
+.tree-shape-hdr-t{font-family:var(--font);font-weight:800;font-size:13px;color:var(--text);letter-spacing:0.03em}
+.tree-shape-hdr-s{font-size:11px;color:var(--muted);margin-top:1px}
+.tree-shape-chevron{font-size:14px;color:var(--muted);transition:transform .2s}
+.tree-shape-chevron.open{transform:rotate(180deg)}
+.tree-shape-body{display:none;border-top:1px solid var(--bg);padding:12px 14px 14px}
+.tree-shape-body.open{display:block}
+.ts-levels{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.ts-level-row{display:flex;align-items:center;gap:8px}
+.ts-level-depth{font-size:10px;font-weight:800;font-family:var(--font);color:var(--muted);letter-spacing:0.06em;width:54px;flex-shrink:0;text-transform:uppercase}
+.ts-level-inp{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;font-size:13px;font-family:var(--body);color:var(--text);outline:none}
+.ts-level-inp:focus{border-color:var(--acc)}
+.ts-level-inp[readonly]{background:var(--bg);color:var(--muted)}
+.ts-level-rm{background:transparent;border:none;font-size:16px;color:var(--red);cursor:pointer;padding:2px 4px;flex-shrink:0}
+.ts-level-rm:disabled{color:var(--border);cursor:default}
+.ts-connector{width:2px;height:10px;background:var(--border);margin-left:27px}
+.ts-add-level-btn{width:100%;background:var(--bg);border:1.5px dashed var(--border);border-radius:9px;padding:9px;font-family:var(--font);font-weight:700;font-size:12px;color:var(--muted);cursor:pointer;margin-bottom:10px}
+.ts-add-level-btn:active{background:var(--border)}
+.ts-shape-preview{font-size:11px;color:var(--muted);line-height:1.8;padding:8px 10px;background:var(--bg);border-radius:8px;font-family:monospace}
