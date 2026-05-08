@@ -602,26 +602,62 @@ function addSvc(){
 /* ════════════════════════════════
    HOA STRUCTURE EDIT
 ════════════════════════════════ */
+/* Depth → allowed level labels */
+const HOA_LEVEL_LABELS={
+  0:['HOA','Association','Village','Subdivision'],            // root only
+  1:['Phase','Village','Zone','Cluster','Tower','Section'],   // level 2
+  2:['Block','Cluster','Zone','Section','Floor','Building'],  // level 3
+  3:['Unit','Floor','Room','Row','Lot'],                      // level 4
+  4:['Unit','Room','Lot'],                                    // level 5
+};
+
 function openHoaEdit(id,name,level){
+  const node=document.querySelector(`[data-id="${id}"]`);
+  const depth=parseInt(node?.dataset.depth||'0');
+  const residents=parseInt(node?.dataset.residents||'0');
+  const childCount=node?.querySelectorAll('.hoa-node').length||0;
+
   document.getElementById('hoa-edit-id').value=id;
-  document.getElementById('hoa-edit-title').textContent='Edit: '+name;
+  document.getElementById('hoa-edit-title').textContent=depth===0?'Edit HOA Name':'Edit: '+name;
   document.getElementById('hoa-edit-name').value=name;
-  document.getElementById('hoa-edit-level').value=level;
+
+  // Show context strip
+  const ctx=document.getElementById('hoa-edit-ctx');
+  const depthLabel=['Root (HOA)','Level 2','Level 3','Level 4','Level 5'][depth]||`Level ${depth+1}`;
+  const warnings=[];
+  if(depth===0) warnings.push('⚠️ This is your root HOA name — it appears everywhere in the app.');
+  if(residents>0) warnings.push(`👥 ${residents} resident${residents!==1?'s':''} are assigned here.`);
+  if(childCount>0) warnings.push(`📁 ${childCount} sub-group${childCount!==1?'s':''} exist inside this entry.`);
+  ctx.innerHTML=`<div style="background:rgba(15,33,55,.05);border-radius:8px;padding:9px 10px;margin-bottom:10px;font-size:11px;color:var(--muted);line-height:1.7">
+    <strong style="color:var(--text)">Position:</strong> ${depthLabel}${warnings.length?'<br>'+warnings.join('<br>'):''}
+  </div>`;
+
+  // Restrict level label options to what's appropriate for this depth
+  const allowed=HOA_LEVEL_LABELS[depth]||HOA_LEVEL_LABELS[4];
+  const sel=document.getElementById('hoa-edit-level');
+  sel.innerHTML=allowed.map(l=>`<option value="${l}"${l===level?' selected':''}>${l}</option>`).join('');
+
+  // Root: hide delete button (can never delete root)
+  const delBtn=document.getElementById('hoa-edit-del-btn');
+  if(delBtn) delBtn.style.display=depth===0?'none':'';
+
   document.getElementById('hoa-edit-overlay').classList.add('on');
 }
 function saveHoaEdit(){
   const id=document.getElementById('hoa-edit-id').value;
   const newName=document.getElementById('hoa-edit-name').value.trim();
+  const newLevel=document.getElementById('hoa-edit-level').value;
   if(!newName){toast('⚠️','Enter a name','');return;}
   const node=document.querySelector(`[data-id="${id}"]`);
   if(node){
     node.querySelector('.hoa-node-name').textContent=newName;
-    // Update Edit button to carry new name
-    const editBtn=node.querySelector('.hoa-node-btn:not(.danger)');
-    if(editBtn&&editBtn.textContent==='Edit'){
-      const level=document.getElementById('hoa-edit-level').value;
-      editBtn.setAttribute('onclick',`event.stopPropagation();openHoaEdit('${id}','${newName}','${level}')`);
-    }
+    // Update the Edit button's onclick to carry updated name+level
+    node.querySelectorAll('.hoa-node-btn').forEach(btn=>{
+      if(btn.textContent.trim()==='Edit'){
+        const depth=node.dataset.depth||'0';
+        btn.setAttribute('onclick',`event.stopPropagation();openHoaEdit('${id}','${newName}','${newLevel}')`);
+      }
+    });
   }
   closeHoaEdit();
   toast('✅','Updated',`"${newName}" has been saved.`);
