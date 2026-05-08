@@ -502,14 +502,157 @@ function clearPostPhoto(prevWrapperId,prevImgId,inputId){
 function removePost(el){el.closest('.post-card').remove();}
 
 /* ── SERVICES ── */
-function addSvc(){
-  const n=document.getElementById('svc-name').value;if(!n){toast('⚠️','Enter name','');return;}
-  const ic=document.querySelector('.ic-opt.on')?.textContent||'📌';
-  document.getElementById('a-svc-list').insertAdjacentHTML('beforeend',`<div class="mr"><div class="mr-av">${ic}</div><div class="mr-info"><div class="mr-name">${n}</div><div class="mr-meta">Booking · Active</div></div><span class="tag tg-teal">Live</span></div>`);
-  document.getElementById('r-svc-grid').insertAdjacentHTML('beforeend',`<div class="s3-chip" onclick="rOpenDetail('rd-book')"><div class="s3-ic">${ic}</div><div class="s3-lbl">${n}</div><div class="s3-sub">Tap to book</div></div>`);
-  document.getElementById('svc-name').value='';
-  toast('✅','Service Added!',`"${n}" is now live in the resident Services tab.`);
+/* ════════════════════════════════
+   SERVICE MANAGEMENT
+════════════════════════════════ */
+const SVCS=[
+  {ic:'🛺',name:'Tricycle / E-Trike Service',meta:'Managed by TODA Admin · Booking',type:'booking',days:'Daily (Mon – Sun)',slots:['6:00 AM','7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM'],maxbook:'1 (exclusive)',status:'live'},
+  {ic:'🏊',name:'Pool / Clubhouse Reservation',meta:'HOA Admin · Booking',type:'booking',days:'Daily (Mon – Sun)',slots:['6:00 AM','8:00 AM','10:00 AM','12:00 PM','2:00 PM','4:00 PM'],maxbook:'1 (exclusive)',status:'live'},
+  {ic:'🔧',name:'Contact Repairman / Maintenance',meta:'HOA Maintenance Team · Request',type:'request',days:'Monday – Friday',slots:[],maxbook:'Unlimited',status:'live'},
+  {ic:'🅿️',name:'Report Illegal Parking',meta:'Report · Active',type:'request',days:'Daily (Mon – Sun)',slots:[],maxbook:'Unlimited',status:'live'},
+  {ic:'🚗',name:'Special Parking Request',meta:'Request · Active',type:'request',days:'Daily (Mon – Sun)',slots:[],maxbook:'Unlimited',status:'live'},
+  {ic:'🗑️',name:'Garbage Schedule',meta:'Information · Active',type:'info',days:'Daily (Mon – Sun)',slots:[],maxbook:'Unlimited',status:'live'},
+];
+
+function openSvcEdit(idx){
+  const s=SVCS[idx];
+  document.getElementById('svc-edit-idx').value=idx;
+  document.getElementById('svc-edit-title').textContent='Edit: '+s.name;
+  document.getElementById('svc-edit-name').value=s.name;
+  document.getElementById('svc-edit-meta').value=s.meta;
+  document.getElementById('svc-edit-type').value=s.type;
+  document.getElementById('svc-edit-days').value=s.days;
+  document.getElementById('svc-edit-maxbook').value=s.maxbook;
+  document.getElementById('svc-edit-status').value=s.status;
+  // Toggle slot editor visibility
+  document.getElementById('svc-edit-slots-wrap').style.display=s.type==='request'?'none':'';
+  // Render slots
+  renderEditSlots(s.slots);
+  document.getElementById('svc-edit-overlay').classList.add('on');
 }
+function renderEditSlots(slots){
+  document.getElementById('svc-edit-slot-list').innerHTML=slots.map((sl,i)=>
+    `<div class="slot-editor-chip">${sl}<span class="rm" onclick="removeEditSlot(${i})">×</span></div>`
+  ).join('');
+}
+function addEditSlot(){
+  const inp=document.getElementById('svc-edit-slot-inp');
+  const val=inp.value.trim();if(!val)return;
+  const idx=+document.getElementById('svc-edit-idx').value;
+  SVCS[idx].slots.push(val);
+  renderEditSlots(SVCS[idx].slots);
+  inp.value='';
+}
+function removeEditSlot(i){
+  const idx=+document.getElementById('svc-edit-idx').value;
+  SVCS[idx].slots.splice(i,1);
+  renderEditSlots(SVCS[idx].slots);
+}
+function saveSvcEdit(){
+  const idx=+document.getElementById('svc-edit-idx').value;
+  const s=SVCS[idx];
+  s.name=document.getElementById('svc-edit-name').value||s.name;
+  s.meta=document.getElementById('svc-edit-meta').value;
+  s.type=document.getElementById('svc-edit-type').value;
+  s.days=document.getElementById('svc-edit-days').value;
+  s.maxbook=document.getElementById('svc-edit-maxbook').value;
+  s.status=document.getElementById('svc-edit-status').value;
+  // Update the service list row
+  const row=document.querySelector(`[data-svc-idx="${idx}"]`);
+  if(row){
+    row.querySelector('.mr-name').textContent=s.name;
+    row.querySelector('.mr-meta').textContent=s.meta;
+    const tag=row.querySelector('.tag');
+    tag.className='tag '+(s.status==='live'?'tg-teal':s.status==='hidden'?'tg-navy':'tg-amber');
+    tag.textContent=s.status==='live'?'Live':s.status==='hidden'?'Hidden':'Unavailable';
+  }
+  closeSvcEdit();
+  toast('✅','Saved!',`"${s.name}" has been updated.`);
+}
+function deleteSvc(){
+  const idx=+document.getElementById('svc-edit-idx').value;
+  const s=SVCS[idx];
+  if(!confirm(`Remove "${s.name}" from your services list? Residents will no longer see it.`))return;
+  SVCS.splice(idx,1);
+  const row=document.querySelector(`[data-svc-idx="${idx}"]`);
+  if(row)row.remove();
+  // Re-index remaining rows
+  document.querySelectorAll('[data-svc-idx]').forEach((r,i)=>{
+    r.dataset.svcIdx=i;r.querySelector('.mr-edit').setAttribute('onclick',`openSvcEdit(${i})`);
+  });
+  closeSvcEdit();
+  toast('🗑','Removed',`"${s.name}" has been removed from your services.`);
+}
+function closeSvcEdit(){document.getElementById('svc-edit-overlay').classList.remove('on');}
+
+function addSvc(){
+  const n=document.getElementById('svc-name').value.trim();if(!n){toast('⚠️','Enter name','');return;}
+  if(SVCS.length>=8){toast('🔒','Limit Reached','Free plan allows up to 8 services. Upgrade to Pro to add more.');return;}
+  const ic=document.querySelector('.ic-opt.on')?.textContent||'📌';
+  const type=document.getElementById('ap-services').querySelector('select').value.includes('Booking')?'booking':
+             document.getElementById('ap-services').querySelector('select').value.includes('Request')?'request':'info';
+  const idx=SVCS.length;
+  SVCS.push({ic,name:n,meta:'Active',type,days:'Daily (Mon – Sun)',slots:['9:00 AM','11:00 AM','2:00 PM'],maxbook:'1 (exclusive)',status:'live'});
+  document.getElementById('a-svc-list').insertAdjacentHTML('beforeend',
+    `<div class="mr" data-svc-idx="${idx}"><div class="mr-av">${ic}</div><div class="mr-info"><div class="mr-name">${n}</div><div class="mr-meta">Active</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(${idx})">Edit</button></div>`);
+  document.getElementById('svc-name').value='';
+  toast('✅','Service Added!',`"${n}" is now live. Tap Edit to configure time slots and availability.`);
+}
+
+/* ════════════════════════════════
+   HOA STRUCTURE EDIT
+════════════════════════════════ */
+function openHoaEdit(id,name,level){
+  document.getElementById('hoa-edit-id').value=id;
+  document.getElementById('hoa-edit-title').textContent='Edit: '+name;
+  document.getElementById('hoa-edit-name').value=name;
+  document.getElementById('hoa-edit-level').value=level;
+  document.getElementById('hoa-edit-overlay').classList.add('on');
+}
+function saveHoaEdit(){
+  const id=document.getElementById('hoa-edit-id').value;
+  const newName=document.getElementById('hoa-edit-name').value.trim();
+  if(!newName){toast('⚠️','Enter a name','');return;}
+  const node=document.querySelector(`[data-id="${id}"]`);
+  if(node){
+    node.querySelector('.hoa-node-name').textContent=newName;
+    // Update Edit button to carry new name
+    const editBtn=node.querySelector('.hoa-node-btn:not(.danger)');
+    if(editBtn&&editBtn.textContent==='Edit'){
+      const level=document.getElementById('hoa-edit-level').value;
+      editBtn.setAttribute('onclick',`event.stopPropagation();openHoaEdit('${id}','${newName}','${level}')`);
+    }
+  }
+  closeHoaEdit();
+  toast('✅','Updated',`"${newName}" has been saved.`);
+}
+function deleteHoaNodeById(id,residentCount){
+  if(residentCount>0){
+    // Block deletion — show detailed instructions
+    document.getElementById('hoa-edit-overlay').classList.remove('on');
+    toast('🚫','Cannot Delete',
+      `This group has ${residentCount} resident${residentCount!==1?'s':''} assigned to it.\n\nTo delete:\n1. Reassign all residents to a different group\n2. Remove any block leaders assigned here\n3. Then try deleting again`);
+    return;
+  }
+  const node=document.querySelector(`[data-id="${id}"]`);
+  const name=node?.querySelector('.hoa-node-name')?.textContent||'this group';
+  if(!confirm(`Delete "${name}"? This cannot be undone.`))return;
+  node?.remove();
+  closeHoaEdit();
+  toast('🗑','Deleted',`"${name}" has been removed from the structure.`);
+}
+function deleteHoaNode(){
+  const id=document.getElementById('hoa-edit-id').value;
+  const node=document.querySelector(`[data-id="${id}"]`);
+  const residents=parseInt(node?.dataset.residents||'0');
+  deleteHoaNodeById(id,residents);
+}
+function closeHoaEdit(){document.getElementById('hoa-edit-overlay').classList.remove('on');}
+
+/* ── TYPE TOGGLE in svc edit sheet ── */
+document.getElementById('svc-edit-type')?.addEventListener('change',function(){
+  document.getElementById('svc-edit-slots-wrap').style.display=this.value==='request'?'none':'';
+});
 
 /* ── QR ── */
 function toggleQrF(){const r=document.getElementById('qr-role').value;document.getElementById('qrf-resident').style.display=r==='toda'?'none':'';document.getElementById('qrf-toda').style.display=r==='toda'?'':'none';}
