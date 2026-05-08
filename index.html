@@ -1508,6 +1508,7 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
     </div>
     <div class="edit-sheet-body">
       <input type="hidden" id="hoa-edit-id">
+      <div id="hoa-edit-ctx"></div>
       <div class="fg"><span class="lbl">Name</span><input class="inp" type="text" id="hoa-edit-name" placeholder="e.g. Block 7"></div>
       <div class="fg"><span class="lbl">Level Label</span>
         <select class="inp" id="hoa-edit-level">
@@ -1515,7 +1516,7 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
         </select>
       </div>
       <button class="btn btn-acc" onclick="saveHoaEdit()">💾 Save Changes</button>
-      <button class="es-del-btn" onclick="deleteHoaNode()">🗑 Delete this Group</button>
+      <button class="es-del-btn" id="hoa-edit-del-btn" onclick="deleteHoaNode()">🗑 Delete this Group</button>
     </div>
   </div>
 </div>
