@@ -354,12 +354,12 @@
         <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div><div class="subhdr-title">➕ Manage Services</div></div></div>
         <div class="sec mt12"><span class="sec-t">Current Services <span style="font-family:var(--body);font-weight:600;font-size:11px;color:var(--muted);text-transform:none;letter-spacing:0">6 of 8 used</span></span></div>
         <div id="a-svc-list">
-          <div class="mr"><div class="mr-av">🛺</div><div class="mr-info"><div class="mr-name">Tricycle / E-Trike Service</div><div class="mr-meta">Managed by TODA Admin</div></div><span class="tag tg-teal">Live</span></div>
-          <div class="mr"><div class="mr-av">🏊</div><div class="mr-info"><div class="mr-name">Pool / Clubhouse Reservation</div><div class="mr-meta">Booking · Active</div></div><span class="tag tg-teal">Live</span></div>
-          <div class="mr"><div class="mr-av">🔧</div><div class="mr-info"><div class="mr-name">Contact Repairman / Maintenance</div><div class="mr-meta">Request · Active</div></div><span class="tag tg-teal">Live</span></div>
-          <div class="mr"><div class="mr-av">🅿️</div><div class="mr-info"><div class="mr-name">Report Illegal Parking</div><div class="mr-meta">Report · Active</div></div><span class="tag tg-teal">Live</span></div>
-          <div class="mr"><div class="mr-av">🚗</div><div class="mr-info"><div class="mr-name">Request Guest Parking Sticker</div><div class="mr-meta">Request · Active</div></div><span class="tag tg-teal">Live</span></div>
-          <div class="mr"><div class="mr-av">🗑️</div><div class="mr-info"><div class="mr-name">Garbage Schedule</div><div class="mr-meta">Information · Active</div></div><span class="tag tg-teal">Live</span></div>
+          <div class="mr" data-svc-idx="0"><div class="mr-av">🛺</div><div class="mr-info"><div class="mr-name">Tricycle / E-Trike Service</div><div class="mr-meta">Managed by TODA Admin · Booking</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(0)">Edit</button></div>
+          <div class="mr" data-svc-idx="1"><div class="mr-av">🏊</div><div class="mr-info"><div class="mr-name">Pool / Clubhouse Reservation</div><div class="mr-meta">Booking · Active</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(1)">Edit</button></div>
+          <div class="mr" data-svc-idx="2"><div class="mr-av">🔧</div><div class="mr-info"><div class="mr-name">Contact Repairman / Maintenance</div><div class="mr-meta">Request · Active</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(2)">Edit</button></div>
+          <div class="mr" data-svc-idx="3"><div class="mr-av">🅿️</div><div class="mr-info"><div class="mr-name">Report Illegal Parking</div><div class="mr-meta">Report · Active</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(3)">Edit</button></div>
+          <div class="mr" data-svc-idx="4"><div class="mr-av">🚗</div><div class="mr-info"><div class="mr-name">Special Parking Request</div><div class="mr-meta">Request · Active</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(4)">Edit</button></div>
+          <div class="mr" data-svc-idx="5"><div class="mr-av">🗑️</div><div class="mr-info"><div class="mr-name">Garbage Schedule</div><div class="mr-meta">Information · Active</div></div><span class="tag tg-teal">Live</span><button class="mr-edit" onclick="openSvcEdit(5)">Edit</button></div>
         </div>
         <div style="margin:4px 14px 12px;background:rgba(245,158,11,.07);border:1.5px solid rgba(245,158,11,.25);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">
           <span style="font-size:18px">⚠️</span>
@@ -459,42 +459,60 @@
         <div class="ibox mt12"><div class="ibox-ic">ℹ️</div><p class="ibox-t">Add your HOA structure from top down. Once set, you can assign residents and leaders to any level — no more manual typing.</p></div>
         <div class="sec"><span class="sec-t">📐 Community Structure</span><span class="sec-a" onclick="openAddGroup(null,0)">+ Add Level</span></div>
         <div id="hoa-tree" style="padding:0 14px 8px">
-          <!-- Rendered by JS -->
-          <div class="hoa-node" data-id="root" data-depth="0">
+          <div class="hoa-node" data-id="root" data-depth="0" data-residents="142">
             <div class="hoa-node-row" onclick="toggleNode('root')">
               <span class="hoa-node-ic">🏛️</span>
               <div class="hoa-node-body"><div class="hoa-node-name">Sunset Village HOA</div><div class="hoa-node-meta">Root · 3 sub-groups</div></div>
-              <span class="hoa-node-add" onclick="event.stopPropagation();openAddGroup('root',1)">+ Add</span>
+              <div class="hoa-node-actions">
+                <button class="hoa-node-btn" onclick="event.stopPropagation();openAddGroup('root',1)">+ Add</button>
+                <button class="hoa-node-btn" onclick="event.stopPropagation();openHoaEdit('root','Sunset Village HOA','Village')">Edit</button>
+              </div>
             </div>
             <div class="hoa-children">
-              <div class="hoa-node" data-id="phase1" data-depth="1">
+              <div class="hoa-node" data-id="phase1" data-depth="1" data-residents="40">
                 <div class="hoa-node-row" onclick="toggleNode('phase1')">
                   <span class="hoa-node-ic">🏘️</span>
                   <div class="hoa-node-body"><div class="hoa-node-name">Phase 1</div><div class="hoa-node-meta">Level 2 · 2 sub-groups</div></div>
-                  <span class="hoa-node-add" onclick="event.stopPropagation();openAddGroup('phase1',2)">+ Add</span>
+                  <div class="hoa-node-actions">
+                    <button class="hoa-node-btn" onclick="event.stopPropagation();openAddGroup('phase1',2)">+ Add</button>
+                    <button class="hoa-node-btn" onclick="event.stopPropagation();openHoaEdit('phase1','Phase 1','Phase')">Edit</button>
+                    <button class="hoa-node-btn danger" onclick="event.stopPropagation();deleteHoaNodeById('phase1',40)">Delete</button>
+                  </div>
                 </div>
                 <div class="hoa-children">
-                  <div class="hoa-node" data-id="p1b1" data-depth="2">
+                  <div class="hoa-node" data-id="p1b1" data-depth="2" data-residents="18">
                     <div class="hoa-node-row">
                       <span class="hoa-node-ic">🏠</span>
                       <div class="hoa-node-body"><div class="hoa-node-name">Block 1</div><div class="hoa-node-meta">Level 3 · 18 residents</div></div>
-                      <span class="hoa-node-add" onclick="openAddGroup('p1b1',3)">+ Add</span>
+                      <div class="hoa-node-actions">
+                        <button class="hoa-node-btn" onclick="openAddGroup('p1b1',3)">+ Add</button>
+                        <button class="hoa-node-btn" onclick="openHoaEdit('p1b1','Block 1','Block')">Edit</button>
+                        <button class="hoa-node-btn danger" onclick="deleteHoaNodeById('p1b1',18)">Delete</button>
+                      </div>
                     </div>
                   </div>
-                  <div class="hoa-node" data-id="p1b2" data-depth="2">
+                  <div class="hoa-node" data-id="p1b2" data-depth="2" data-residents="22">
                     <div class="hoa-node-row">
                       <span class="hoa-node-ic">🏠</span>
                       <div class="hoa-node-body"><div class="hoa-node-name">Block 2</div><div class="hoa-node-meta">Level 3 · 22 residents</div></div>
-                      <span class="hoa-node-add" onclick="openAddGroup('p1b2',3)">+ Add</span>
+                      <div class="hoa-node-actions">
+                        <button class="hoa-node-btn" onclick="openAddGroup('p1b2',3)">+ Add</button>
+                        <button class="hoa-node-btn" onclick="openHoaEdit('p1b2','Block 2','Block')">Edit</button>
+                        <button class="hoa-node-btn danger" onclick="deleteHoaNodeById('p1b2',22)">Delete</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="hoa-node" data-id="phase2" data-depth="1">
+              <div class="hoa-node" data-id="phase2" data-depth="1" data-residents="80">
                 <div class="hoa-node-row" onclick="toggleNode('phase2')">
                   <span class="hoa-node-ic">🏘️</span>
                   <div class="hoa-node-body"><div class="hoa-node-name">Phase 2</div><div class="hoa-node-meta">Level 2 · 3 sub-groups</div></div>
-                  <span class="hoa-node-add" onclick="event.stopPropagation();openAddGroup('phase2',2)">+ Add</span>
+                  <div class="hoa-node-actions">
+                    <button class="hoa-node-btn" onclick="event.stopPropagation();openAddGroup('phase2',2)">+ Add</button>
+                    <button class="hoa-node-btn" onclick="event.stopPropagation();openHoaEdit('phase2','Phase 2','Phase')">Edit</button>
+                    <button class="hoa-node-btn danger" onclick="event.stopPropagation();deleteHoaNodeById('phase2',80)">Delete</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1286,6 +1304,88 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
     <div style="display:flex;gap:8px">
       <button class="btn btn-ghost" style="flex:1" onclick="closeModal('avail-book-modal')">Not now</button>
       <button class="btn btn-acc" style="flex:2" onclick="closeModal('avail-book-modal');rOpenDetail('rd-book')">✓ Yes, Book This Date</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     SERVICE EDIT SHEET
+════════════════════════════════ -->
+<div class="edit-sheet-overlay" id="svc-edit-overlay" onclick="if(event.target===this)closeSvcEdit()">
+  <div class="edit-sheet">
+    <div class="edit-sheet-handle"></div>
+    <div class="edit-sheet-hdr">
+      <div class="edit-sheet-title" id="svc-edit-title">Edit Service</div>
+      <div class="edit-sheet-close" onclick="closeSvcEdit()">✕</div>
+    </div>
+    <div class="edit-sheet-body">
+      <input type="hidden" id="svc-edit-idx">
+      <div class="fg"><span class="lbl">Service Name</span><input class="inp" type="text" id="svc-edit-name" placeholder="Service name"></div>
+      <div class="fg"><span class="lbl">Managed By / Description</span><input class="inp" type="text" id="svc-edit-meta" placeholder="e.g. Managed by TODA Admin"></div>
+      <div class="fg"><span class="lbl">Type</span>
+        <select class="inp" id="svc-edit-type">
+          <option value="booking">Booking (time slots)</option>
+          <option value="request">Request (form)</option>
+          <option value="info">Information (schedule / no booking)</option>
+        </select>
+      </div>
+      <div id="svc-edit-slots-wrap">
+        <div class="fg"><span class="lbl">Available Days</span>
+          <select class="inp" id="svc-edit-days">
+            <option>Monday – Friday</option>
+            <option>Monday – Saturday</option>
+            <option>Daily (Mon – Sun)</option>
+            <option>Weekends only</option>
+            <option>By request</option>
+          </select>
+        </div>
+        <div class="fg">
+          <span class="lbl">Time Slots</span>
+          <div class="slot-editor" id="svc-edit-slot-list"></div>
+          <div class="slot-add-row">
+            <input class="slot-add-inp" type="text" id="svc-edit-slot-inp" placeholder="e.g. 9:00 AM">
+            <button class="slot-add-btn" onclick="addEditSlot()">+ Add</button>
+          </div>
+        </div>
+        <div class="fg"><span class="lbl">Max Bookings per Slot</span>
+          <select class="inp" id="svc-edit-maxbook">
+            <option>1 (exclusive)</option><option>2</option><option>3</option><option>5</option><option>10</option><option>Unlimited</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><span class="lbl">Status</span>
+        <select class="inp" id="svc-edit-status">
+          <option value="live">Live (visible to residents)</option>
+          <option value="hidden">Hidden (not visible)</option>
+          <option value="maintenance">Temporarily Unavailable</option>
+        </select>
+      </div>
+      <button class="btn btn-acc" onclick="saveSvcEdit()">💾 Save Changes</button>
+      <button class="es-del-btn" onclick="deleteSvc()">🗑 Remove this Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     HOA NODE EDIT SHEET
+════════════════════════════════ -->
+<div class="edit-sheet-overlay" id="hoa-edit-overlay" onclick="if(event.target===this)closeHoaEdit()">
+  <div class="edit-sheet">
+    <div class="edit-sheet-handle"></div>
+    <div class="edit-sheet-hdr">
+      <div class="edit-sheet-title" id="hoa-edit-title">Edit Group</div>
+      <div class="edit-sheet-close" onclick="closeHoaEdit()">✕</div>
+    </div>
+    <div class="edit-sheet-body">
+      <input type="hidden" id="hoa-edit-id">
+      <div class="fg"><span class="lbl">Name</span><input class="inp" type="text" id="hoa-edit-name" placeholder="e.g. Block 7"></div>
+      <div class="fg"><span class="lbl">Level Label</span>
+        <select class="inp" id="hoa-edit-level">
+          <option>Phase</option><option>Block</option><option>Cluster</option><option>Zone</option><option>Tower</option><option>Floor</option><option>Section</option><option>Village</option>
+        </select>
+      </div>
+      <button class="btn btn-acc" onclick="saveHoaEdit()">💾 Save Changes</button>
+      <button class="es-del-btn" onclick="deleteHoaNode()">🗑 Delete this Group</button>
     </div>
   </div>
 </div>
