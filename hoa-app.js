@@ -1141,3 +1141,301 @@ function submitFormRequest(){
     }
   });
 }
+
+/* ════════════════════════════════
+   PDF TEMPLATE EDITOR
+════════════════════════════════ */
+
+// Configure PDF.js worker
+if(typeof pdfjsLib!=='undefined'){
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+// State
+const TPL={
+  templates:[
+    {name:'Visitor Gate Pass',fields:[
+      {id:'f1',label:'Resident Name',maps:'resident_name',x:160,y:200,w:180,h:22,fontSize:10},
+      {id:'f2',label:'Unit No.',maps:'unit_number',x:160,y:230,w:100,h:22,fontSize:10},
+      {id:'f3',label:'Visit Date',maps:'visit_date',x:160,y:260,w:130,h:22,fontSize:10},
+      {id:'f4',label:'Visitor Name',maps:'visitor_name',x:160,y:290,w:180,h:22,fontSize:10},
+    ],pdfBytes:null,scale:1},
+    {name:'HOA Clearance Certificate',fields:[
+      {id:'f1',label:'Resident Name',maps:'resident_name',x:180,y:210,w:200,h:22,fontSize:11},
+      {id:'f2',label:'Unit No.',maps:'unit_number',x:180,y:245,w:110,h:22,fontSize:11},
+      {id:'f3',label:'Block',maps:'block',x:180,y:278,w:110,h:22,fontSize:11},
+      {id:'f4',label:'Phase',maps:'phase',x:180,y:311,w:110,h:22,fontSize:11},
+      {id:'f5',label:'Date',maps:'date_today',x:180,y:344,w:130,h:22,fontSize:11},
+      {id:'f6',label:'HOA Name',maps:'hoa_name',x:180,y:377,w:200,h:22,fontSize:11},
+    ],pdfBytes:null,scale:1},
+  ],
+  currentIdx:-1,
+  selectedFieldId:null,
+  pdfDoc:null,
+  scale:1.4,
+  // Sample data for preview/fill
+  sampleData:{
+    resident_name:'Jose Reyes',unit_number:'Unit 12B',block:'Block 7',phase:'Phase 2',
+    date_today:new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}),
+    hoa_name:'Sunset Village HOA',hoa_subdivision:'Sunset Village Phase 2',
+    request_type:'Visitor Gate Pass',visit_date:'May 10, 2026',visit_time:'2:00 PM – 5:00 PM',
+    visitor_name:'Mark Dela Cruz',booking_slot:'Saturday, May 10, 9:00 AM',
+    admin_name:'Admin — Sunset Village HOA',
+  }
+};
+
+/* ── Open editor for existing template ── */
+function tplOpenEditor(idx){
+  TPL.currentIdx=idx;
+  const t=TPL.templates[idx];
+  document.getElementById('tpl-list-view').style.display='none';
+  document.getElementById('tpl-editor-view').style.display='flex';
+  document.getElementById('tpl-editor-name').textContent=t.name;
+  tplDeselectField();
+  if(t.pdfBytes){
+    tplRenderPdf(t.pdfBytes);
+  } else {
+    // Show placeholder page with fields only
+    document.getElementById('tpl-drop-hint').style.display='none';
+    const wrap=document.getElementById('tpl-canvas-wrap');
+    wrap.style.display='block';
+    const c=document.getElementById('tpl-pdf-canvas');
+    c.width=595;c.height=842;
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,595,842);
+    ctx.strokeStyle='#e5e7eb';ctx.lineWidth=1;ctx.strokeRect(1,1,593,840);
+    ctx.fillStyle='#9ca3af';ctx.font='13px sans-serif';ctx.textAlign='center';
+    ctx.fillText('Upload your PDF to see it here.',297,421);
+    ctx.fillText('Fields will overlay on top of your document.',297,441);
+    ctx.textAlign='left';
+    document.getElementById('tpl-fields-layer').style.pointerEvents='';
+    tplRenderFields();
+  }
+}
+
+/* ── Close editor ── */
+function tplCloseEditor(){
+  document.getElementById('tpl-editor-view').style.display='none';
+  document.getElementById('tpl-list-view').style.display='';
+  TPL.currentIdx=-1;TPL.selectedFieldId=null;
+}
+
+/* ── Upload PDF ── */
+function tplUpload(inp){
+  const f=inp.files[0];if(!f||f.type!=='application/pdf'){toast('⚠️','PDF Only','Please upload a valid PDF file.');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const bytes=new Uint8Array(e.target.result);
+    // If editor is open, load into current template
+    if(TPL.currentIdx>=0){
+      TPL.templates[TPL.currentIdx].pdfBytes=bytes;
+      tplRenderPdf(bytes);
+    } else {
+      // New template from list view
+      const name=f.name.replace('.pdf','').replace(/-|_/g,' ');
+      TPL.templates.push({name,fields:[],pdfBytes:bytes,scale:1});
+      const idx=TPL.templates.length-1;
+      const list=document.getElementById('tpl-list');
+      list.insertAdjacentHTML('beforeend',
+        `<div class="tpl-tpl-row" data-tpl-idx="${idx}">
+          <div class="tpl-tpl-ic">📄</div>
+          <div class="tpl-tpl-b"><div class="tpl-tpl-name">${name}</div><div class="tpl-tpl-meta">0 fields mapped · Just uploaded</div></div>
+          <div class="tpl-tpl-btns">
+            <button class="tpl-tool-btn" onclick="tplOpenEditor(${idx})">✏️ Edit</button>
+            <button class="tpl-tool-btn" onclick="tplGenerate(${idx})">📥 Use</button>
+          </div>
+        </div>`);
+      tplOpenEditor(idx);
+    }
+  };
+  reader.readAsArrayBuffer(f);
+  inp.value='';
+}
+
+/* ── Render PDF page using PDF.js ── */
+async function tplRenderPdf(bytes){
+  try{
+    document.getElementById('tpl-drop-hint').style.display='none';
+    const wrap=document.getElementById('tpl-canvas-wrap');wrap.style.display='block';
+    const pdfDoc=await pdfjsLib.getDocument({data:bytes}).promise;
+    TPL.pdfDoc=pdfDoc;
+    const page=await pdfDoc.getPage(1);
+    const viewport=page.getViewport({scale:TPL.scale});
+    const c=document.getElementById('tpl-pdf-canvas');
+    c.width=viewport.width;c.height=viewport.height;
+    await page.render({canvasContext:c.getContext('2d'),viewport}).promise;
+    document.getElementById('tpl-fields-layer').style.pointerEvents='';
+    tplRenderFields();
+  } catch(e){
+    toast('⚠️','PDF Error','Could not render this PDF. Make sure it is not password protected.');
+  }
+}
+
+/* ── Render all field overlays ── */
+function tplRenderFields(){
+  const t=TPL.templates[TPL.currentIdx];if(!t)return;
+  const layer=document.getElementById('tpl-fields-layer');
+  layer.innerHTML='';
+  t.fields.forEach(f=>{
+    const el=document.createElement('div');
+    el.className='tpl-field'+(TPL.selectedFieldId===f.id?' selected':'');
+    el.id='tpl-f-'+f.id;
+    el.style.cssText=`left:${f.x}px;top:${f.y}px;width:${f.w}px;height:${f.h}px;font-size:${f.fontSize}px`;
+    el.innerHTML=`<span class="tpl-field-lbl">${f.label}</span><span class="tpl-field-rm" onclick="tplDeleteFieldById('${f.id}')">×</span><div class="tpl-field-resize" data-fid="${f.id}"></div>`;
+    el.addEventListener('mousedown',ev=>{if(ev.target.classList.contains('tpl-field-resize')||ev.target.classList.contains('tpl-field-rm'))return;tplStartDrag(ev,f.id);});
+    el.addEventListener('touchstart',ev=>{if(ev.target.classList.contains('tpl-field-resize')||ev.target.classList.contains('tpl-field-rm'))return;tplStartDragTouch(ev,f.id);},{passive:false});
+    el.addEventListener('click',ev=>{if(!ev.target.classList.contains('tpl-field-rm'))tplSelectField(f.id);});
+    // Resize
+    el.querySelector('.tpl-field-resize').addEventListener('mousedown',ev=>{ev.stopPropagation();tplStartResize(ev,f.id);});
+    layer.appendChild(el);
+  });
+}
+
+/* ── Select field ── */
+function tplSelectField(id){
+  TPL.selectedFieldId=id;
+  const t=TPL.templates[TPL.currentIdx];
+  const f=t.fields.find(x=>x.id===id);if(!f)return;
+  document.getElementById('tpl-no-sel').style.display='none';
+  document.getElementById('tpl-field-props').style.display='';
+  document.getElementById('tpl-prop-label').value=f.label;
+  document.getElementById('tpl-prop-maps').value=f.maps;
+  document.getElementById('tpl-prop-size').value=f.fontSize||10;
+  document.getElementById('tpl-prop-x').value=Math.round(f.x);
+  document.getElementById('tpl-prop-y').value=Math.round(f.y);
+  document.getElementById('tpl-custom-val-wrap').style.display=f.maps==='custom'?'':'none';
+  document.getElementById('tpl-prop-custom').value=f.customVal||'';
+  tplRenderFields();
+}
+function tplDeselectField(){
+  TPL.selectedFieldId=null;
+  document.getElementById('tpl-no-sel').style.display='';
+  document.getElementById('tpl-field-props').style.display='none';
+}
+function tplUpdateSelected(prop,val){
+  const t=TPL.templates[TPL.currentIdx];
+  const f=t.fields.find(x=>x.id===TPL.selectedFieldId);if(!f)return;
+  f[prop]=prop==='fontSize'?parseInt(val):val;
+  if(prop==='maps'){document.getElementById('tpl-custom-val-wrap').style.display=val==='custom'?'':' none';}
+  tplRenderFields();
+}
+function tplUpdatePos(){
+  const t=TPL.templates[TPL.currentIdx];
+  const f=t.fields.find(x=>x.id===TPL.selectedFieldId);if(!f)return;
+  f.x=parseFloat(document.getElementById('tpl-prop-x').value)||f.x;
+  f.y=parseFloat(document.getElementById('tpl-prop-y').value)||f.y;
+  tplRenderFields();
+}
+
+/* ── Add field ── */
+function tplAddField(maps,label){
+  const t=TPL.templates[TPL.currentIdx];if(!t)return;
+  const id='f'+Date.now();
+  const canvas=document.getElementById('tpl-pdf-canvas');
+  const cx=canvas.width/2-90,cy=Math.min(100+(t.fields.length*35),canvas.height-50);
+  t.fields.push({id,label,maps,x:cx,y:cy,w:180,h:24,fontSize:10});
+  tplRenderFields();
+  tplSelectField(id);
+}
+
+/* ── Delete field ── */
+function tplDeleteFieldById(id){
+  const t=TPL.templates[TPL.currentIdx];
+  t.fields=t.fields.filter(f=>f.id!==id);
+  if(TPL.selectedFieldId===id)tplDeselectField();
+  tplRenderFields();
+}
+function tplDeleteSelected(){if(TPL.selectedFieldId)tplDeleteFieldById(TPL.selectedFieldId);}
+
+/* ── Drag (mouse) ── */
+function tplStartDrag(ev,id){
+  ev.preventDefault();
+  tplSelectField(id);
+  const t=TPL.templates[TPL.currentIdx];
+  const f=t.fields.find(x=>x.id===id);if(!f)return;
+  const startX=ev.clientX-f.x,startY=ev.clientY-f.y;
+  const move=e=>{f.x=e.clientX-startX;f.y=e.clientY-startY;tplRenderFields();tplSyncPos(f);};
+  const up=()=>{document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);};
+  document.addEventListener('mousemove',move);document.addEventListener('mouseup',up);
+}
+
+/* ── Drag (touch) ── */
+function tplStartDragTouch(ev,id){
+  ev.preventDefault();
+  tplSelectField(id);
+  const t=TPL.templates[TPL.currentIdx];
+  const f=t.fields.find(x=>x.id===id);if(!f)return;
+  const touch=ev.touches[0];
+  const startX=touch.clientX-f.x,startY=touch.clientY-f.y;
+  const move=e=>{const tc=e.touches[0];f.x=tc.clientX-startX;f.y=tc.clientY-startY;tplRenderFields();tplSyncPos(f);};
+  const up=()=>{document.removeEventListener('touchmove',move);document.removeEventListener('touchend',up);};
+  document.addEventListener('touchmove',move,{passive:false});
+  document.addEventListener('touchend',up);
+}
+
+/* ── Resize ── */
+function tplStartResize(ev,id){
+  ev.preventDefault();
+  const t=TPL.templates[TPL.currentIdx];
+  const f=t.fields.find(x=>x.id===id);if(!f)return;
+  const startX=ev.clientX,startY=ev.clientY,startW=f.w,startH=f.h;
+  const move=e=>{f.w=Math.max(60,startW+(e.clientX-startX));f.h=Math.max(18,startH+(e.clientY-startY));tplRenderFields();};
+  const up=()=>{document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);};
+  document.addEventListener('mousemove',move);document.addEventListener('mouseup',up);
+}
+
+function tplSyncPos(f){
+  document.getElementById('tpl-prop-x').value=Math.round(f.x);
+  document.getElementById('tpl-prop-y').value=Math.round(f.y);
+}
+
+/* ── Save layout ── */
+function tplSaveLayout(){
+  const t=TPL.templates[TPL.currentIdx];if(!t)return;
+  // Update meta in list view
+  const row=document.querySelector(`[data-tpl-idx="${TPL.currentIdx}"] .tpl-tpl-meta`);
+  if(row)row.textContent=`${t.fields.length} fields mapped · Just saved`;
+  toast('💾','Layout Saved!',`${t.fields.length} fields saved for "${t.name}".`);
+}
+
+/* ── Export filled PDF using pdf-lib ── */
+async function tplExportFilled(){
+  const t=TPL.templates[TPL.currentIdx];if(!t)return;
+  if(!t.pdfBytes){toast('⚠️','No PDF','Upload your PDF template first before downloading.');return;}
+  toast('⏳','Generating…','Filling in your template…');
+  try{
+    const {PDFDocument,rgb,StandardFonts}=PDFLib;
+    const pdfDoc=await PDFDocument.load(t.pdfBytes);
+    const page=pdfDoc.getPages()[0];
+    const {height}=page.getSize();
+    const font=await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const data={...TPL.sampleData};
+    t.fields.forEach(f=>{
+      const val=f.maps==='custom'?(f.customVal||''):(data[f.maps]||f.label);
+      // pdf-lib uses bottom-left origin; canvas uses top-left — convert Y
+      const pdfY=height-(f.y/TPL.scale)-(f.fontSize||10);
+      page.drawText(val,{
+        x:f.x/TPL.scale,
+        y:pdfY,
+        size:f.fontSize||10,
+        font,
+        color:rgb(0.06,0.13,0.22),
+      });
+    });
+    const pdfBytes=await pdfDoc.save();
+    const blob=new Blob([pdfBytes],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=t.name.replace(/\s+/g,'-')+'-filled.pdf';
+    a.click();URL.revokeObjectURL(url);
+    toast('📥','Downloaded!',`"${t.name}" has been filled and saved to your device.`);
+  } catch(e){
+    toast('⚠️','Error',`Could not generate PDF: ${e.message}`);
+  }
+}
+
+/* ── Use template from list (generate with sample data) ── */
+function tplGenerate(idx){
+  TPL.currentIdx=idx;
+  tplExportFilled();
+}
