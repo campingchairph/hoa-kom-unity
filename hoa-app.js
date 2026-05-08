@@ -602,65 +602,204 @@ function addSvc(){
 /* ════════════════════════════════
    HOA STRUCTURE EDIT
 ════════════════════════════════ */
-/* Depth → allowed level labels */
-const HOA_LEVEL_LABELS={
-  0:['HOA','Association','Village','Subdivision'],            // root only
-  1:['Phase','Village','Zone','Cluster','Tower','Section'],   // level 2
-  2:['Block','Cluster','Zone','Section','Floor','Building'],  // level 3
-  3:['Unit','Floor','Room','Row','Lot'],                      // level 4
-  4:['Unit','Room','Lot'],                                    // level 5
-};
+/* ════════════════════════════════
+   HOA TREE SHAPE
+════════════════════════════════ */
+// TREE_SHAPE[depth] = label for that level
+// e.g. ['HOA','Phase','Block'] means depth0=HOA, depth1=Phase, depth2=Block
+const TREE_SHAPE=['HOA','Phase','Block'];
 
-function openHoaEdit(id,name,level){
+function tsLabelAt(depth){return TREE_SHAPE[depth]||`Level ${depth+1}`;}
+
+function toggleTreeShape(){
+  const body=document.getElementById('ts-body');
+  const chev=document.getElementById('ts-chevron');
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+  if(open)tsRenderShape();
+}
+
+function tsRenderShape(){
+  const levels=document.getElementById('ts-levels');
+  levels.innerHTML='';
+  TREE_SHAPE.forEach((lbl,i)=>{
+    const isRoot=i===0;
+    levels.insertAdjacentHTML('beforeend',`
+      ${i>0?'<div class="ts-connector"></div>':''}
+      <div class="ts-level-row" data-ts-idx="${i}">
+        <div class="ts-level-depth">${isRoot?'Root':'Level '+(i+1)}</div>
+        <input class="ts-level-inp" type="text" value="${lbl}"
+          placeholder="${isRoot?'e.g. HOA':'e.g. Phase, Block, Unit'}"
+          ${isRoot?'':''}
+          oninput="TREE_SHAPE[${i}]=this.value;tsUpdatePreview()">
+        <button class="ts-level-rm" onclick="tsRemoveLevel(${i})" ${TREE_SHAPE.length<=1||isRoot?'disabled':''}>×</button>
+      </div>`);
+  });
+  tsUpdatePreview();
+}
+
+function tsUpdatePreview(){
+  document.getElementById('ts-preview').textContent=
+    TREE_SHAPE.map((l,i)=>'  '.repeat(i)+(i===0?'':'└─ ')+l).join('\n');
+  document.getElementById('ts-summary').textContent=TREE_SHAPE.join(' → ');
+}
+
+function tsAddLevel(){
+  if(TREE_SHAPE.length>=5){
+    toast('🔒','Max 5 Levels','Free plan supports up to 5 hierarchy levels. Upgrade to Pro for more.');
+    return;
+  }
+  TREE_SHAPE.push('');
+  tsRenderShape();
+}
+
+function tsRemoveLevel(i){
+  if(i===0)return; // never remove root
+  // Check if any nodes exist at this depth
+  const nodesAtDepth=document.querySelectorAll(`[data-depth="${i}"]`);
+  if(nodesAtDepth.length>0){
+    toast('⚠️','Cannot Remove',`There are entries at this level (${tsLabelAt(i)}). Delete all entries at this level first.`);
+    return;
+  }
+  TREE_SHAPE.splice(i,1);
+  tsRenderShape();
+}
+
+function tsSaveShape(){
+  // Update all Add buttons and node metas in the existing tree to reflect new labels
+  document.querySelectorAll('.hoa-node').forEach(node=>{
+    const depth=parseInt(node.dataset.depth||'0');
+    const childDepth=depth+1;
+    const childLabel=TREE_SHAPE[childDepth];
+    // Update "+ Add" button label
+    node.querySelectorAll('.hoa-node-btn').forEach(btn=>{
+      if(btn.textContent.startsWith('+ '))btn.textContent=childLabel?`+ ${childLabel}`:'+ Add';
+    });
+    // Update meta label
+    const meta=node.querySelector('.hoa-node-meta');
+    if(meta){
+      const parts=meta.textContent.split('·');
+      if(parts.length>=1)meta.textContent=tsLabelAt(depth)+(parts[1]?' ·'+parts[1]:'');
+    }
+  });
+  tsUpdatePreview();
+  closeTreeShape();
+  toast('✅','Tree Shape Saved!',`Structure: ${TREE_SHAPE.join(' → ')}`);
+}
+
+function closeTreeShape(){
+  document.getElementById('ts-body').classList.remove('open');
+  document.getElementById('ts-chevron').classList.remove('open');
+}
+
+/* Init tree shape on page load */
+function initTreeShape(){
+  tsUpdatePreview();
+}
+
+/* ── HOA NODE EDIT ── */
+function openHoaEdit(id){
   const node=document.querySelector(`[data-id="${id}"]`);
   const depth=parseInt(node?.dataset.depth||'0');
   const residents=parseInt(node?.dataset.residents||'0');
-  const childCount=node?.querySelectorAll('.hoa-node').length||0;
+  const childCount=node?.querySelectorAll(':scope > .hoa-children > .hoa-node').length||0;
+  const name=node?.querySelector('.hoa-node-name')?.textContent||'';
+  const levelLabel=tsLabelAt(depth);
 
   document.getElementById('hoa-edit-id').value=id;
-  document.getElementById('hoa-edit-title').textContent=depth===0?'Edit HOA Name':'Edit: '+name;
+  document.getElementById('hoa-edit-title').textContent=depth===0?'Edit HOA Name':'Edit '+levelLabel;
   document.getElementById('hoa-edit-name').value=name;
+  document.getElementById('hoa-edit-level-display').value=levelLabel;
 
-  // Show context strip
-  const ctx=document.getElementById('hoa-edit-ctx');
-  const depthLabel=['Root (HOA)','Level 2','Level 3','Level 4','Level 5'][depth]||`Level ${depth+1}`;
+  // Context strip
   const warnings=[];
-  if(depth===0) warnings.push('⚠️ This is your root HOA name — it appears everywhere in the app.');
-  if(residents>0) warnings.push(`👥 ${residents} resident${residents!==1?'s':''} are assigned here.`);
-  if(childCount>0) warnings.push(`📁 ${childCount} sub-group${childCount!==1?'s':''} exist inside this entry.`);
-  ctx.innerHTML=`<div style="background:rgba(15,33,55,.05);border-radius:8px;padding:9px 10px;margin-bottom:10px;font-size:11px;color:var(--muted);line-height:1.7">
-    <strong style="color:var(--text)">Position:</strong> ${depthLabel}${warnings.length?'<br>'+warnings.join('<br>'):''}
-  </div>`;
+  if(depth===0)warnings.push('⚠️ This is your root HOA name — it appears everywhere in the app.');
+  if(residents>0)warnings.push(`👥 ${residents} resident${residents!==1?'s':''} assigned here.`);
+  if(childCount>0)warnings.push(`📁 ${childCount} ${tsLabelAt(depth+1)||'sub-group'}${childCount!==1?'s':''} inside.`);
+  const ctx=document.getElementById('hoa-edit-ctx');
+  ctx.innerHTML=warnings.length
+    ?`<div style="background:rgba(15,33,55,.05);border-radius:8px;padding:9px 10px;margin-bottom:10px;font-size:11px;color:var(--muted);line-height:1.8">${warnings.join('<br>')}</div>`
+    :'';
 
-  // Restrict level label options to what's appropriate for this depth
-  const allowed=HOA_LEVEL_LABELS[depth]||HOA_LEVEL_LABELS[4];
-  const sel=document.getElementById('hoa-edit-level');
-  sel.innerHTML=allowed.map(l=>`<option value="${l}"${l===level?' selected':''}>${l}</option>`).join('');
-
-  // Root: hide delete button (can never delete root)
+  // Root: hide delete
   const delBtn=document.getElementById('hoa-edit-del-btn');
-  if(delBtn) delBtn.style.display=depth===0?'none':'';
+  if(delBtn)delBtn.style.display=depth===0?'none':'';
 
   document.getElementById('hoa-edit-overlay').classList.add('on');
 }
+
 function saveHoaEdit(){
   const id=document.getElementById('hoa-edit-id').value;
   const newName=document.getElementById('hoa-edit-name').value.trim();
-  const newLevel=document.getElementById('hoa-edit-level').value;
   if(!newName){toast('⚠️','Enter a name','');return;}
   const node=document.querySelector(`[data-id="${id}"]`);
   if(node){
     node.querySelector('.hoa-node-name').textContent=newName;
-    // Update the Edit button's onclick to carry updated name+level
+    // Update Edit button onclick to use new name
     node.querySelectorAll('.hoa-node-btn').forEach(btn=>{
-      if(btn.textContent.trim()==='Edit'){
-        const depth=node.dataset.depth||'0';
-        btn.setAttribute('onclick',`event.stopPropagation();openHoaEdit('${id}','${newName}','${newLevel}')`);
-      }
+      if(btn.textContent.trim()==='Edit')
+        btn.setAttribute('onclick',`${btn.getAttribute('onclick')?.includes('stopPropagation')?'event.stopPropagation();':''}openHoaEdit('${id}')`);
     });
   }
   closeHoaEdit();
-  toast('✅','Updated',`"${newName}" has been saved.`);
+  toast('✅','Updated',`"${newName}" saved.`);
+}
+
+/* ── ADD GROUP ── */
+function openAddGroup(parentId,depth){
+  if(depth>=TREE_SHAPE.length){
+    toast('ℹ️','Deepest Level',`"${tsLabelAt(depth-1)}" is the deepest level in your tree shape. Add another level in the Tree Shape section first.`);
+    return;
+  }
+  const label=tsLabelAt(depth);
+  const name=prompt(`Name of the new ${label}? (e.g. ${label} 3)`);
+  if(!name||!name.trim())return;
+  const id='node'+Date.now();
+  const parentNode=parentId?document.querySelector(`[data-id="${parentId}"] > .hoa-children`):document.getElementById('hoa-tree');
+  if(!parentNode)return;
+  const childDepth=depth+1;
+  const addBtn=TREE_SHAPE[childDepth]?`<button class="hoa-node-btn" onclick="openAddGroup('${id}',${childDepth})">+ ${tsLabelAt(childDepth)}</button>`:'';
+  const ic=depth===0?'🏛️':depth===1?'🏘️':'🏠';
+  parentNode.insertAdjacentHTML('beforeend',`
+    <div class="hoa-node" data-id="${id}" data-depth="${depth}" data-residents="0">
+      <div class="hoa-node-row"${childDepth<TREE_SHAPE.length?' onclick="toggleNode(\''+id+'\')"':''}>
+        <span class="hoa-node-ic">${ic}</span>
+        <div class="hoa-node-body"><div class="hoa-node-name">${name.trim()}</div><div class="hoa-node-meta">${label} · 0 residents</div></div>
+        <div class="hoa-node-actions">
+          ${addBtn}
+          <button class="hoa-node-btn" onclick="openHoaEdit('${id}')">Edit</button>
+          <button class="hoa-node-btn danger" onclick="deleteHoaNodeById('${id}',0)">Delete</button>
+        </div>
+      </div>
+      ${childDepth<TREE_SHAPE.length?`<div class="hoa-children"></div>`:''}
+    </div>`);
+}
+
+function closeHoaEdit(){document.getElementById('hoa-edit-overlay').classList.remove('on');}
+
+function deleteHoaNodeById(id,residentCount){
+  if(residentCount>0){
+    toast('🚫','Cannot Delete',
+      `This group has ${residentCount} resident${residentCount!==1?'s':''} assigned.\n\nTo delete:\n1. Reassign all residents to another group\n2. Remove any leaders assigned here\n3. Then try deleting again`);
+    return;
+  }
+  const node=document.querySelector(`[data-id="${id}"]`);
+  // Also block if has child nodes
+  const children=node?.querySelectorAll('.hoa-node').length||0;
+  if(children>0){
+    toast('🚫','Cannot Delete',`This group still has ${children} sub-group${children!==1?'s':''} inside it. Delete or reassign them first.`);
+    return;
+  }
+  const name=node?.querySelector('.hoa-node-name')?.textContent||'this group';
+  if(!confirm(`Delete "${name}"? This cannot be undone.`))return;
+  node?.remove();
+  closeHoaEdit();
+  toast('🗑','Deleted',`"${name}" removed.`);
+}
+function deleteHoaNode(){
+  const id=document.getElementById('hoa-edit-id').value;
+  const node=document.querySelector(`[data-id="${id}"]`);
+  deleteHoaNodeById(id,parseInt(node?.dataset.residents||'0'));
 }
 function deleteHoaNodeById(id,residentCount){
   if(residentCount>0){
@@ -815,31 +954,6 @@ function todaTab(t){
 
 /* ── HOA STRUCTURE ── */
 function toggleNode(id){const ch=document.querySelector(`[data-id="${id}"] .hoa-children`);if(ch)ch.style.display=ch.style.display==='none'?'':'none';}
-function openAddGroup(parentId,depth){
-  if(depth>=5){toast('🔒','Level Limit Reached','Free plan supports up to 5 hierarchy levels. Upgrade to Pro to add a 6th sub-level.');return;}
-  const name=prompt(`Add a sub-group under ${parentId||'root'}:
-Examples: Phase 3, Block 5, Tower A, Floor 2`);
-  if(!name||!name.trim())return;
-  const icons=['🏛️','🏘️','🏠','🏢','🚪','📍'];
-  const ic=icons[Math.min(depth,icons.length-1)];
-  const newId='grp-'+Date.now();
-  const container=parentId?document.querySelector(`[data-id="${parentId}"] .hoa-children`):document.getElementById('hoa-tree');
-  if(!container){toast('⚠️','Structure error','Parent group not found.');return;}
-  // Ensure children container exists
-  if(!document.querySelector(`[data-id="${parentId}"] .hoa-children`)&&parentId){
-    const parent=document.querySelector(`[data-id="${parentId}"]`);
-    if(parent){const ch=document.createElement('div');ch.className='hoa-children';parent.appendChild(ch);}
-  }
-  const node=document.createElement('div');node.className='hoa-node';node.dataset.id=newId;node.dataset.depth=depth;
-  node.innerHTML=`<div class="hoa-node-row"><span class="hoa-node-ic">${ic}</span><div class="hoa-node-body"><div class="hoa-node-name">${name.trim()}</div><div class="hoa-node-meta">Level ${depth+1} · 0 members</div></div>${depth<4?`<span class="hoa-node-add" onclick="event.stopPropagation();openAddGroup('${newId}',${depth+1})">+ Add</span>`:''}</div>`;
-  const target=document.querySelector(`[data-id="${parentId}"] .hoa-children`)||document.getElementById('hoa-tree');
-  target.appendChild(node);
-  // Update qa-group dropdown
-  const sel=document.getElementById('qa-group');
-  if(sel){const opt=document.createElement('option');opt.value=newId;opt.textContent=name.trim();sel.appendChild(opt);}
-  toast('✅','Group Added!',`"${name.trim()}" added to your HOA structure. You can now assign members to this group.`);
-  refreshPickersFromTree();
-}
 function quickAddMember(){
   const nm=document.getElementById('qa-name').value;
   const role=document.getElementById('qa-role').value;
@@ -882,6 +996,7 @@ function applyRoleVisibility(){
 /* ── INTERACTIVE ── */
 document.querySelectorAll('.dc').forEach(c=>c.addEventListener('click',function(){this.closest('.date-scroll').querySelectorAll('.dc').forEach(x=>x.classList.remove('on'));this.classList.add('on');}));
 document.querySelectorAll('.slot:not(.taken)').forEach(s=>s.addEventListener('click',function(){this.closest('.slot-grid').querySelectorAll('.slot').forEach(x=>x.classList.remove('on'));this.classList.add('on');}));
+initTreeShape();
 
 /* ════════════════════════════════
    SIMPLE MODE
