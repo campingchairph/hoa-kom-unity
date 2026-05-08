@@ -143,7 +143,7 @@
         </div>
         <div class="sec"><span class="sec-t">⚡ Quick Actions</span></div>
         <div class="svc-compact">
-          <div class="svc-chip hero" onclick="aNav('post')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/313578-megaphone/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Post</div></div>
+          <div class="svc-chip" onclick="aNav('post')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/313578-megaphone/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Post</div></div>
           <div class="svc-chip" onclick="aNav('bookings')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/f32794-calendar/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Bookings</div></div>
           <div class="svc-chip" onclick="aNav('qr')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/5656e5-camera/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">QR Code</div></div>
           <div class="svc-chip" onclick="aNav('members')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/a14880-boy/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Members</div></div>
@@ -393,7 +393,7 @@
       <div class="pg" id="ap-post">
         <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div><div class="subhdr-title">📢 New Announcement</div><div class="subhdr-sub">Visible to all residents instantly</div></div></div>
         <div class="px mt12">
-          <div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill on" onclick="selPill(this)">⚠️ Urgent</div><div class="pill" onclick="selPill(this)">📋 Update</div><div class="pill" onclick="selPill(this)">📅 Event</div><div class="pill" onclick="selPill(this)">💵 Reminder</div></div></div>
+          <div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill" onclick="selPill(this)">⚠️ Urgent</div><div class="pill" onclick="selPill(this)">📋 Update</div><div class="pill" onclick="selPill(this)">📅 Event</div><div class="pill" onclick="selPill(this)">💵 Reminder</div></div></div>
           <div class="fg"><span class="lbl">Title</span><input class="inp" type="text" placeholder="Brief, clear title" id="a-ann-t"></div>
           <div class="fg"><span class="lbl">Details</span><textarea class="inp" placeholder="Full announcement…" style="min-height:90px" id="a-ann-b"></textarea></div>
           <div class="fg">
@@ -500,7 +500,7 @@
         <div class="px">
           <div class="card cp">
             <div class="fg"><span class="lbl">Service Name</span><input class="inp" type="text" placeholder="Full service name (be specific)" id="svc-name"></div>
-            <div class="fg"><span class="lbl">Icon</span><div class="icon-picker" id="icon-picker"><div class="ic-opt on" onclick="pickIc(this)">🛺</div><div class="ic-opt" onclick="pickIc(this)">🏊</div><div class="ic-opt" onclick="pickIc(this)">🏟️</div><div class="ic-opt" onclick="pickIc(this)">🔧</div><div class="ic-opt" onclick="pickIc(this)">🅿️</div><div class="ic-opt" onclick="pickIc(this)">🏀</div><div class="ic-opt" onclick="pickIc(this)">🌳</div><div class="ic-opt" onclick="pickIc(this)">💡</div><div class="ic-opt" onclick="pickIc(this)">🐕</div><div class="ic-opt" onclick="pickIc(this)">🚪</div><div class="ic-opt" onclick="pickIc(this)">📦</div><div class="ic-opt" onclick="pickIc(this)">🚿</div></div></div>
+            <div class="fg"><span class="lbl">Icon</span><div class="icon-picker" id="icon-picker"><div class="ic-opt" onclick="pickIc(this)">🛺</div><div class="ic-opt" onclick="pickIc(this)">🏊</div><div class="ic-opt" onclick="pickIc(this)">🏟️</div><div class="ic-opt" onclick="pickIc(this)">🔧</div><div class="ic-opt" onclick="pickIc(this)">🅿️</div><div class="ic-opt" onclick="pickIc(this)">🏀</div><div class="ic-opt" onclick="pickIc(this)">🌳</div><div class="ic-opt" onclick="pickIc(this)">💡</div><div class="ic-opt" onclick="pickIc(this)">🐕</div><div class="ic-opt" onclick="pickIc(this)">🚪</div><div class="ic-opt" onclick="pickIc(this)">📦</div><div class="ic-opt" onclick="pickIc(this)">🚿</div></div></div>
             <div class="fg"><span class="lbl">Type</span><select class="inp"><option>Booking (time slots)</option><option>Request (form)</option><option>Information (schedule)</option></select></div>
             <button class="btn btn-acc" onclick="addSvc()">➕ Add Service</button>
           </div>
@@ -744,7 +744,7 @@
         <div class="uc" style="border-left-color:var(--amber)"><div class="uc-ic" style="background:rgba(245,158,11,.1)">🗑️</div><div class="uc-b"><div class="uc-t">Bulk Garbage Pickup — Saturday 6AM</div><div class="uc-p">Place bins outside by 6:00 AM.</div><div class="uc-f"><span class="uc-tm">2 days ago</span></div></div></div>
         <div class="sec"><span class="sec-t">🛎️ Quick Services</span><span class="sec-a" onclick="rNav('services')">More</span></div>
         <div class="svc-compact" id="r-quick-grid">
-          <div class="svc-chip hero" onclick="rOpenDetail('rd-book','home')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/fa6099-travel/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Tricycle / E-Trike Service</div></div>
+          <div class="svc-chip" onclick="rOpenDetail('rd-book','home')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/fa6099-travel/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Tricycle / E-Trike Service</div></div>
           <div class="svc-chip" onclick="rOpenDetail('rd-pool','home')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/10c35a-gym/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Pool / Clubhouse Reservation</div></div>
           <div class="svc-chip" onclick="openForm('maintenance','home')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/ff5be0-tools/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Contact Repairman</div></div>
           <div class="svc-chip" onclick="rNav('forms')"><div class="svc-chip-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/65d841-file-text/dynamic/200/color.webp" alt=""></div><div class="svc-chip-lbl">Submit a Form Request</div></div>
@@ -802,7 +802,7 @@
       <div class="pg" id="rp-services">
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">🛎️ All Services</div><div class="subhdr-sub">Tap a service to book or request</div></div></div>
         <div class="svc-3col mt12" id="r-svc-grid">
-          <div class="s3-chip hero" onclick="rOpenDetail('rd-book','services')"><div class="s3-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/fa6099-travel/dynamic/200/color.webp" alt=""></div><div class="s3-lbl">Book Tricycle / E-Trike Service</div><div class="s3-sub">Schedule a ride</div></div>
+          <div class="s3-chip" onclick="rOpenDetail('rd-book','services')"><div class="s3-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/fa6099-travel/dynamic/200/color.webp" alt=""></div><div class="s3-lbl">Book Tricycle / E-Trike Service</div><div class="s3-sub">Schedule a ride</div></div>
           <div class="s3-chip" onclick="rOpenDetail('rd-pool','services')"><div class="s3-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/10c35a-gym/dynamic/200/color.webp" alt=""></div><div class="s3-lbl">Pool / Clubhouse Reservation</div><div class="s3-sub">Reserve a slot</div></div>
           <div class="s3-chip" onclick="rOpenDetail('rd-hall','services')"><div class="s3-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/637858-flash/dynamic/200/color.webp" alt=""></div><div class="s3-lbl">Function Hall Booking</div><div class="s3-sub">Book for events</div></div>
           <div class="s3-chip" onclick="openForm('maintenance','services')"><div class="s3-ic"><img class="ic3-sm" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/ff5be0-tools/dynamic/200/color.webp" alt=""></div><div class="s3-lbl">Contact Repairman / Maintenance</div><div class="s3-sub">Report an issue</div></div>
@@ -873,7 +873,7 @@
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">💬 Send Feedback</div></div></div>
         <div class="ibox mt12"><div class="ibox-ic">🔒</div><p class="ibox-t">Sent <strong>privately</strong> to HOA admin only.</p></div>
         <div class="px">
-          <div class="fg"><span class="lbl">Category</span><div class="pill-row"><div class="pill on" onclick="selPill(this)">🔧 Maintenance</div><div class="pill" onclick="selPill(this)">🔒 Security</div><div class="pill" onclick="selPill(this)">🗑️ Garbage</div><div class="pill" onclick="selPill(this)">💧 Utilities</div><div class="pill" onclick="selPill(this)">🚗 Parking</div><div class="pill" onclick="selPill(this)">💡 Suggestion</div></div></div>
+          <div class="fg"><span class="lbl">Category</span><div class="pill-row"><div class="pill" onclick="selPill(this)">🔧 Maintenance</div><div class="pill" onclick="selPill(this)">🔒 Security</div><div class="pill" onclick="selPill(this)">🗑️ Garbage</div><div class="pill" onclick="selPill(this)">💧 Utilities</div><div class="pill" onclick="selPill(this)">🚗 Parking</div><div class="pill" onclick="selPill(this)">💡 Suggestion</div></div></div>
           <div class="fg"><span class="lbl">Message</span><textarea class="inp" placeholder="Describe your concern in detail…" style="min-height:90px"></textarea></div>
           <div class="tog-row" onclick="this.querySelector('.tog').classList.toggle('on')"><div class="tog-l"><span class="tog-ic">🕵️</span><div><div class="tog-t">Send Anonymously</div><div class="tog-s">Your name won't be attached</div></div></div><div class="tog"></div></div>
           <button class="btn btn-acc" onclick="toast('✅','Sent!','Your feedback was privately sent to HOA admin.')">📨 Send Feedback</button>
@@ -917,9 +917,9 @@
       <div class="pg" id="rd-upd"><div class="ann-hdr"><div class="ann-back" onclick="rCloseDetail()">← Back</div><div style="margin-bottom:4px"><span class="tag tg-teal">📅 Event</span></div><div class="ann-title">General Assembly — April 25, 2026</div><div class="ann-meta">HOA Admin · April 17, 2026</div></div><div class="ann-body">The <strong>Annual General Assembly</strong> will be held on <strong>Friday, April 25, 2026 at 5:30 PM</strong> at the Main Clubhouse.<br><br>Topics: Financial report · 2026 projects · Committee elections · Open forum.<br><br>Light snacks provided. All homeowners are encouraged to attend.</div></div>
       <div class="pg" id="rd-book"><div class="ann-hdr" style="padding-bottom:12px"><div class="ann-back" onclick="rCloseDetail()">← Back</div><div style="font-size:24px;margin-bottom:6px">🛺</div><div class="ann-title">Book Tricycle / E-Trike Service</div><div class="ann-meta">Select your preferred date and time slot</div></div>
         <div class="sec"><span class="sec-t">Select Date</span></div>
-        <div class="date-scroll"><div class="dc"><div class="dc-d">FRI</div><div class="dc-n">18</div></div><div class="dc on"><div class="dc-d">SAT</div><div class="dc-n">19</div></div><div class="dc"><div class="dc-d">SUN</div><div class="dc-n">20</div></div><div class="dc"><div class="dc-d">MON</div><div class="dc-n">21</div></div><div class="dc"><div class="dc-d">TUE</div><div class="dc-n">22</div></div></div>
+        <div class="date-scroll"><div class="dc"><div class="dc-d">FRI</div><div class="dc-n">18</div></div><div class="dc"><div class="dc-d">SAT</div><div class="dc-n">19</div></div><div class="dc"><div class="dc-d">SUN</div><div class="dc-n">20</div></div><div class="dc"><div class="dc-d">MON</div><div class="dc-n">21</div></div><div class="dc"><div class="dc-d">TUE</div><div class="dc-n">22</div></div></div>
         <div class="sec mt12"><span class="sec-t">Available Time Slots</span></div>
-        <div class="px"><div class="slot-grid"><div class="slot taken">6:00 AM</div><div class="slot taken">7:00 AM</div><div class="slot">8:00 AM</div><div class="slot on">9:00 AM</div><div class="slot">10:00 AM</div><div class="slot">11:00 AM</div><div class="slot">1:00 PM</div><div class="slot taken">2:00 PM</div><div class="slot">3:00 PM</div></div></div>
+        <div class="px"><div class="slot-grid"><div class="slot taken">6:00 AM</div><div class="slot taken">7:00 AM</div><div class="slot">8:00 AM</div><div class="slot">9:00 AM</div><div class="slot">10:00 AM</div><div class="slot">11:00 AM</div><div class="slot">1:00 PM</div><div class="slot taken">2:00 PM</div><div class="slot">3:00 PM</div></div></div>
         <div class="ibox mt12"><div class="ibox-ic">ℹ️</div><p class="ibox-t">One booking per household per day. <strong>Strikethrough slots</strong> are already taken.</p></div>
         <div class="px mt12"><button class="btn btn-acc" onclick="submitBooking()">✓ Review &amp; Confirm Booking</button></div>
       </div>
@@ -927,9 +927,9 @@
       <!-- POOL / CLUBHOUSE BOOKING -->
       <div class="pg" id="rd-pool"><div class="ann-hdr" style="padding-bottom:12px"><div class="ann-back" onclick="rCloseDetail()">← Back</div><div style="font-size:24px;margin-bottom:6px">🏊</div><div class="ann-title">Pool / Clubhouse Reservation</div><div class="ann-meta">Select your preferred date and time slot</div></div>
         <div class="sec"><span class="sec-t">Select Date</span></div>
-        <div class="date-scroll" id="pool-date-scroll"><div class="dc"><div class="dc-d">FRI</div><div class="dc-n">18</div></div><div class="dc on"><div class="dc-d">SAT</div><div class="dc-n">19</div></div><div class="dc"><div class="dc-d">SUN</div><div class="dc-n">20</div></div><div class="dc"><div class="dc-d">MON</div><div class="dc-n">21</div></div><div class="dc"><div class="dc-d">TUE</div><div class="dc-n">22</div></div></div>
+        <div class="date-scroll" id="pool-date-scroll"><div class="dc"><div class="dc-d">FRI</div><div class="dc-n">18</div></div><div class="dc"><div class="dc-d">SAT</div><div class="dc-n">19</div></div><div class="dc"><div class="dc-d">SUN</div><div class="dc-n">20</div></div><div class="dc"><div class="dc-d">MON</div><div class="dc-n">21</div></div><div class="dc"><div class="dc-d">TUE</div><div class="dc-n">22</div></div></div>
         <div class="sec mt12"><span class="sec-t">Available Time Slots</span></div>
-        <div class="px"><div class="slot-grid"><div class="slot taken">6:00 AM</div><div class="slot">8:00 AM</div><div class="slot on">10:00 AM</div><div class="slot taken">12:00 PM</div><div class="slot">2:00 PM</div><div class="slot">4:00 PM</div></div></div>
+        <div class="px"><div class="slot-grid"><div class="slot taken">6:00 AM</div><div class="slot">8:00 AM</div><div class="slot">10:00 AM</div><div class="slot taken">12:00 PM</div><div class="slot">2:00 PM</div><div class="slot">4:00 PM</div></div></div>
         <div class="ibox mt12"><div class="ibox-ic">ℹ️</div><p class="ibox-t">Max 2 hours per booking. Bring your HOA resident ID. No outside food in the pool area.</p></div>
         <div class="px mt12"><button class="btn btn-acc" onclick="submitBookingFor('pool')">✓ Review &amp; Confirm Booking</button></div>
       </div>
@@ -937,9 +937,9 @@
       <!-- FUNCTION HALL BOOKING -->
       <div class="pg" id="rd-hall"><div class="ann-hdr" style="padding-bottom:12px"><div class="ann-back" onclick="rCloseDetail()">← Back</div><div style="font-size:24px;margin-bottom:6px">🏟️</div><div class="ann-title">Function Hall Booking</div><div class="ann-meta">Reserve the hall for private events</div></div>
         <div class="sec"><span class="sec-t">Select Date</span></div>
-        <div class="date-scroll" id="hall-date-scroll"><div class="dc"><div class="dc-d">FRI</div><div class="dc-n">18</div></div><div class="dc on"><div class="dc-d">SAT</div><div class="dc-n">19</div></div><div class="dc"><div class="dc-d">SUN</div><div class="dc-n">20</div></div><div class="dc"><div class="dc-d">MON</div><div class="dc-n">21</div></div><div class="dc"><div class="dc-d">TUE</div><div class="dc-n">22</div></div></div>
+        <div class="date-scroll" id="hall-date-scroll"><div class="dc"><div class="dc-d">FRI</div><div class="dc-n">18</div></div><div class="dc"><div class="dc-d">SAT</div><div class="dc-n">19</div></div><div class="dc"><div class="dc-d">SUN</div><div class="dc-n">20</div></div><div class="dc"><div class="dc-d">MON</div><div class="dc-n">21</div></div><div class="dc"><div class="dc-d">TUE</div><div class="dc-n">22</div></div></div>
         <div class="sec mt12"><span class="sec-t">Available Slots</span></div>
-        <div class="px"><div class="slot-grid"><div class="slot on">Morning (8AM–12PM)</div><div class="slot taken">Afternoon (1PM–5PM)</div><div class="slot">Evening (6PM–10PM)</div><div class="slot taken">Full Day</div></div></div>
+        <div class="px"><div class="slot-grid"><div class="slot">Morning (8AM–12PM)</div><div class="slot taken">Afternoon (1PM–5PM)</div><div class="slot">Evening (6PM–10PM)</div><div class="slot taken">Full Day</div></div></div>
         <div class="ibox mt12"><div class="ibox-ic">ℹ️</div><p class="ibox-t">Function hall bookings require HOA approval and a <strong>refundable deposit</strong>. HOA admin will contact you to arrange payment.</p></div>
         <div class="px mt12"><button class="btn btn-acc" onclick="submitBookingFor('hall')">✓ Review &amp; Confirm Booking</button></div>
       </div>
@@ -958,7 +958,7 @@
       <div class="pg" id="rp-post">
         <div class="subhdr"><div class="back-btn" onclick="rNav('home')">←</div><div><div class="subhdr-title">📢 Post to My Block</div><div class="subhdr-sub" id="l-post-subhdr-sub">My assigned blocks</div></div></div>
         <div class="px mt12">
-          <div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill on" onclick="selPill(this)">🚨 Alert</div><div class="pill" onclick="selPill(this)">📋 Info</div><div class="pill" onclick="selPill(this)">🎉 Event</div><div class="pill" onclick="selPill(this)">📌 Reminder</div></div></div>
+          <div class="fg"><span class="lbl">Type</span><div class="pill-row"><div class="pill" onclick="selPill(this)">🚨 Alert</div><div class="pill" onclick="selPill(this)">📋 Info</div><div class="pill" onclick="selPill(this)">🎉 Event</div><div class="pill" onclick="selPill(this)">📌 Reminder</div></div></div>
           <div class="fg"><span class="lbl">Title</span><input class="inp" type="text" placeholder="Brief title…" id="l-post-t"></div>
           <div class="fg"><span class="lbl">Message</span><textarea class="inp" placeholder="Your message…" style="min-height:90px" id="l-post-b"></textarea></div>
           <div class="fg">
@@ -1154,7 +1154,7 @@
         </div>
         <!-- Hub grid -->
         <div class="guard-hub-grid">
-          <div class="ghub-card accent" onclick="gNav('visitors')">
+          <div class="ghub-card" onclick="gNav('visitors')">
             <div class="ghub-card-ic"><img class="ic3" src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/778c78-key/dynamic/200/color.webp" alt=""></div>
             <div class="ghub-card-t">Visitor Management</div>
             <div class="ghub-card-s">Expected, walk-ins & pre-approved</div>
@@ -1380,7 +1380,7 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
     <div class="modal-handle"></div>
     <div class="modal-title">✗ Decline Booking</div>
     <div id="decline-booking-info" style="font-family:var(--font);font-weight:700;font-size:13px;color:var(--text);background:var(--bg);border-radius:9px;padding:10px 12px;margin-bottom:12px;letter-spacing:0.02em"></div>
-    <div class="fg"><span class="lbl">Reason for declining</span><div class="pill-row" id="decline-reason-pills"><div class="pill on" onclick="selPill(this)">Slot unavailable</div><div class="pill" onclick="selPill(this)">Facility closed</div><div class="pill" onclick="selPill(this)">Incomplete request</div><div class="pill" onclick="selPill(this)">Policy violation</div><div class="pill" onclick="selPill(this)">Other</div></div></div>
+    <div class="fg"><span class="lbl">Reason for declining</span><div class="pill-row" id="decline-reason-pills"><div class="pill" onclick="selPill(this)">Slot unavailable</div><div class="pill" onclick="selPill(this)">Facility closed</div><div class="pill" onclick="selPill(this)">Incomplete request</div><div class="pill" onclick="selPill(this)">Policy violation</div><div class="pill" onclick="selPill(this)">Other</div></div></div>
     <div class="fg"><span class="lbl">Additional note (optional)</span><textarea class="inp" placeholder="Extra info for the resident…" style="min-height:65px" id="decline-extra-note"></textarea></div>
     <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" style="flex:1" onclick="closeModal('decline-modal')">Cancel</button><button class="btn btn-red" style="flex:2;padding:10px" onclick="confirmDeclineBooking()">✗ Decline &amp; Notify</button></div>
   </div>
@@ -1403,7 +1403,7 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
     <div class="modal-title">✗ Decline Tricycle Booking</div>
-    <div class="fg"><span class="lbl">Reason</span><div class="pill-row" id="trike-decline-pills"><div class="pill on" onclick="selPill(this)">No driver available</div><div class="pill" onclick="selPill(this)">Slot conflict</div><div class="pill" onclick="selPill(this)">Service suspended</div><div class="pill" onclick="selPill(this)">Weather condition</div><div class="pill" onclick="selPill(this)">Other</div></div></div>
+    <div class="fg"><span class="lbl">Reason</span><div class="pill-row" id="trike-decline-pills"><div class="pill" onclick="selPill(this)">No driver available</div><div class="pill" onclick="selPill(this)">Slot conflict</div><div class="pill" onclick="selPill(this)">Service suspended</div><div class="pill" onclick="selPill(this)">Weather condition</div><div class="pill" onclick="selPill(this)">Other</div></div></div>
     <div class="fg"><span class="lbl">Note (optional)</span><textarea class="inp" placeholder="Add a note for the resident…" style="min-height:58px" id="trike-decline-note"></textarea></div>
     <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" style="flex:1" onclick="closeModal('decline-trike-modal')">Cancel</button><button class="btn btn-red" style="flex:2;padding:10px" onclick="confirmDeclineTrike()">✗ Decline &amp; Notify</button></div>
   </div>
