@@ -258,6 +258,137 @@
         </div>
       </div>
 
+      <!-- TEMPLATE EDITOR -->
+      <div class="pg" id="ap-templates">
+        <div class="subhdr" style="flex-shrink:0"><div class="back-btn" onclick="aNav('dash')">←</div><div><div class="subhdr-title">📄 Letter Templates</div><div class="subhdr-sub">Upload PDF · Map fields · Generate filled letters</div></div></div>
+
+        <!-- TEMPLATE LIST VIEW -->
+        <div id="tpl-list-view">
+          <div class="sec mt12" style="padding:0 14px"><span class="sec-t">Your Templates</span><span class="sec-a" onclick="document.getElementById('tpl-upload-inp').click()">+ Upload PDF</span></div>
+          <input type="file" id="tpl-upload-inp" accept="application/pdf" style="display:none" onchange="tplUpload(this)">
+          <div class="tpl-template-list" id="tpl-list">
+            <div class="tpl-tpl-row" data-tpl-idx="0">
+              <div class="tpl-tpl-ic">📄</div>
+              <div class="tpl-tpl-b">
+                <div class="tpl-tpl-name">Visitor Gate Pass</div>
+                <div class="tpl-tpl-meta">4 fields mapped · Last edited today</div>
+              </div>
+              <div class="tpl-tpl-btns">
+                <button class="tpl-tool-btn" onclick="tplOpenEditor(0)">✏️ Edit</button>
+                <button class="tpl-tool-btn" onclick="tplGenerate(0)">📥 Use</button>
+              </div>
+            </div>
+            <div class="tpl-tpl-row" data-tpl-idx="1">
+              <div class="tpl-tpl-ic">📄</div>
+              <div class="tpl-tpl-b">
+                <div class="tpl-tpl-name">HOA Clearance Certificate</div>
+                <div class="tpl-tpl-meta">6 fields mapped · Last edited Apr 30</div>
+              </div>
+              <div class="tpl-tpl-btns">
+                <button class="tpl-tool-btn" onclick="tplOpenEditor(1)">✏️ Edit</button>
+                <button class="tpl-tool-btn" onclick="tplGenerate(1)">📥 Use</button>
+              </div>
+            </div>
+          </div>
+          <div class="tpl-upload-zone" id="tpl-empty-hint" style="display:none">
+            <div class="tpl-upload-ic">📄</div>
+            <div class="tpl-upload-t">No templates yet</div>
+            <div class="tpl-upload-s">Upload a PDF of your HOA letter and map the fields to resident data.</div>
+            <button class="btn btn-acc" onclick="document.getElementById('tpl-upload-inp').click()">📤 Upload PDF Template</button>
+          </div>
+        </div>
+
+        <!-- EDITOR VIEW (hidden until PDF loaded) -->
+        <div id="tpl-editor-view" style="display:none;flex-direction:column;height:calc(100vh - 100px)">
+          <!-- Toolbar -->
+          <div class="tpl-toolbar">
+            <button class="tpl-tool-btn" onclick="tplCloseEditor()">← Back</button>
+            <div class="tpl-tool-sep"></div>
+            <div style="font-family:var(--font);font-weight:800;font-size:12px;color:var(--text)" id="tpl-editor-name">Template</div>
+            <div class="tpl-tool-sep"></div>
+            <span style="font-size:11px;color:var(--muted);font-weight:600">Add field:</span>
+            <button class="tpl-tool-btn" onclick="tplAddField('resident_name','Resident Name')">👤 Name</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('unit_number','Unit No.')">🏠 Unit</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('block','Block')">📍 Block</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('date_today','Date Today')">📅 Date</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('hoa_name','HOA Name')">🏛️ HOA</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('request_type','Request Type')">📋 Request</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('visit_date','Visit Date')">🗓 Visit Date</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('visitor_name','Visitor Name')">🪪 Visitor</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('admin_name','Admin Name')">✍️ Admin</button>
+            <button class="tpl-tool-btn" onclick="tplAddField('custom','Custom Field')">➕ Custom</button>
+            <div class="tpl-tool-sep"></div>
+            <button class="tpl-tool-btn primary" onclick="tplSaveLayout()">💾 Save Layout</button>
+            <button class="tpl-tool-btn primary" onclick="tplExportFilled()">📥 Download Filled</button>
+          </div>
+
+          <!-- Canvas + side panel -->
+          <div style="display:flex;flex:1;overflow:hidden">
+            <div class="tpl-page-area" id="tpl-page-area">
+              <div class="tpl-upload-zone" id="tpl-drop-hint">
+                <div class="tpl-upload-ic">📄</div>
+                <div class="tpl-upload-t">Upload your PDF template</div>
+                <div class="tpl-upload-s">We'll render it so you can drag and drop field labels onto it.</div>
+                <button class="btn btn-acc" onclick="document.getElementById('tpl-upload-inp').click()">📤 Upload PDF</button>
+              </div>
+              <div class="tpl-page-canvas-wrap" id="tpl-canvas-wrap" style="display:none">
+                <canvas id="tpl-pdf-canvas"></canvas>
+                <div id="tpl-fields-layer" style="position:absolute;inset:0;pointer-events:none"></div>
+              </div>
+            </div>
+
+            <!-- Properties panel -->
+            <div class="tpl-side" id="tpl-side-panel">
+              <div class="tpl-side-title">Field Properties</div>
+              <div class="tpl-no-sel" id="tpl-no-sel">Tap a field on the document to edit its properties, or tap an "Add field" button above.</div>
+              <div id="tpl-field-props" style="display:none">
+                <div class="tpl-prop">
+                  <div class="tpl-prop-lbl">Label shown on PDF</div>
+                  <input class="tpl-prop-inp" id="tpl-prop-label" type="text" placeholder="e.g. Resident Name" oninput="tplUpdateSelected('label',this.value)">
+                </div>
+                <div class="tpl-prop">
+                  <div class="tpl-prop-lbl">Maps to data</div>
+                  <select class="tpl-prop-inp" id="tpl-prop-maps" onchange="tplUpdateSelected('maps',this.value)">
+                    <option value="resident_name">Resident Full Name</option>
+                    <option value="unit_number">Unit Number</option>
+                    <option value="block">Block</option>
+                    <option value="phase">Phase</option>
+                    <option value="date_today">Today's Date</option>
+                    <option value="hoa_name">HOA Name</option>
+                    <option value="hoa_subdivision">Subdivision Name</option>
+                    <option value="request_type">Request Type</option>
+                    <option value="visit_date">Visit Date</option>
+                    <option value="visit_time">Visit Time</option>
+                    <option value="visitor_name">Visitor Name</option>
+                    <option value="booking_slot">Booking Slot</option>
+                    <option value="admin_name">Admin Name</option>
+                    <option value="custom">Custom (type value)</option>
+                  </select>
+                </div>
+                <div class="tpl-prop" id="tpl-custom-val-wrap" style="display:none">
+                  <div class="tpl-prop-lbl">Custom Value</div>
+                  <input class="tpl-prop-inp" id="tpl-prop-custom" type="text" placeholder="Static text to fill" oninput="tplUpdateSelected('customVal',this.value)">
+                </div>
+                <div class="tpl-prop">
+                  <div class="tpl-prop-lbl">Font Size</div>
+                  <select class="tpl-prop-inp" id="tpl-prop-size" onchange="tplUpdateSelected('fontSize',this.value)">
+                    <option value="8">8pt</option><option value="9">9pt</option><option value="10" selected>10pt</option><option value="11">11pt</option><option value="12">12pt</option><option value="14">14pt</option>
+                  </select>
+                </div>
+                <div class="tpl-prop">
+                  <div class="tpl-prop-lbl">Position (X · Y from top-left)</div>
+                  <div style="display:flex;gap:6px">
+                    <input class="tpl-prop-inp" id="tpl-prop-x" type="number" placeholder="X" style="width:50%" oninput="tplUpdatePos()">
+                    <input class="tpl-prop-inp" id="tpl-prop-y" type="number" placeholder="Y" style="width:50%" oninput="tplUpdatePos()">
+                  </div>
+                </div>
+                <button class="tpl-tool-btn danger" style="width:100%;justify-content:center" onclick="tplDeleteSelected()">🗑 Remove Field</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- POST -->
       <div class="pg" id="ap-post">
         <div class="subhdr"><div class="back-btn" onclick="aNav('dash')">←</div><div><div class="subhdr-title">📢 New Announcement</div><div class="subhdr-sub">Visible to all residents instantly</div></div></div>
@@ -546,8 +677,7 @@
       <div class="bni on" id="abn-dash" onclick="aNav('dash')"><div class="bni-ic">📊</div><div class="bni-lbl">Dashboard</div></div>
       <div class="bni" id="abn-post" onclick="aNav('post')"><div class="bni-ic">📢</div><div class="bni-lbl">Post</div></div>
       <div class="bni" id="abn-bookings" onclick="aNav('bookings')"><div class="bni-ic">📅</div><div class="bni-lbl">Bookings</div><div class="bni-badge">4</div></div>
-      <div class="bni" id="abn-calendar" onclick="aNav('calendar')"><div class="bni-ic">📆</div><div class="bni-lbl">Calendar</div></div>
-      <div class="bni" id="abn-qr" onclick="aNav('qr')"><div class="bni-ic">🔐</div><div class="bni-lbl">QR</div></div>
+      <div class="bni" id="abn-templates" onclick="aNav('templates')"><div class="bni-ic">📄</div><div class="bni-lbl">Templates</div></div>
       <div class="bni" id="abn-setup" onclick="aNav('setup')"><div class="bni-ic">🏗️</div><div class="bni-lbl">HOA Setup</div></div>
     </nav>
   </div>
@@ -1423,6 +1553,8 @@ Driver: Kuya Jun · TRC-007')"><div class="tr-time">1:00 PM</div><div class="tr-
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="hoa-app.js"></script>
 </body>
 </html>
